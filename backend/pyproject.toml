@@ -1,0 +1,11 @@
+[project]
+name = "mae4-backend"
+version = "0.1.0"
+description = "MAE-4 Gemelo digital hidrogeomorfológico de humedales costeros y carbono azul"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,16 @@
+# Dependencias y artefactos
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+*.db
+.pytest_cache/
+.next/
+out/
+
+# Entornos y secretos (NO commitear)
+.env
+.env.local
+
+#锁文件 opcional del frontend (se regenera)
+# pnpm-lock.yaml

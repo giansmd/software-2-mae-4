@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light dark;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Utilidades de color para gráficos y badges */
+.text-ok {
+  color: #059669;
+}
+.text-warn {
+  color: #d97706;
+}
+.bg-ok {
+  background-color: #059669;
+}

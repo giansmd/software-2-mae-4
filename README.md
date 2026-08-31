@@ -1,0 +1,181 @@
+# MAE-4 — Gemelo digital hidrogeomorfológico de humedales costeros y carbono azul
+
+Prototipo funcional para Ingeniería de Software II. Representa un humedal costero y
+simula cómo la **restauración hidrológica** afecta la retención de **carbono azul**
+bajo escenarios de aumento del nivel del mar (IPCC) y restauración.
+
+**Hipótesis del trabajo:** la restauración hidrológica puede aumentar la retención de
+carbono **≥ +25 % a 2050**.
+
+> Entorno 100 % local. Se orquesta con Docker Compose (db + backend + frontend).
+> No hay despliegue a la nube ni CI/CD.
+
+---
+
+## Stack
+
+| Capa | Tecnología (versión fijada) |
+|---|---|
+| Backend | Python 3.12, FastAPI 0.141, Uvicorn 0.52, SQLAlchemy 2.0, Pydantic v2, JWT (python-jose) |
+| Base de datos | PostgreSQL 18.6 |
+| Frontend | Next.js 15.5 (App Router), React 19.2, TypeScript 5.7, Tailwind CSS 4.3.3, Recharts 3.10 |
+| Gestor de paquetes | pnpm 11 (frontend), uv/pip (backend) |
+| Reportes | ReportLab 5.0 (PDF), python-docx 1.2 (Word), openpyxl 3.1 (Excel) |
+
+## Estructura
+
+```
+software-2-mae-4/
+├── docker-compose.yml          # orquesta db + backend + frontend
+├── .env.example                # variables de entorno (plantilla)
+├── backend/
+│   ├── Dockerfile
+│   ├── docker-entrypoint.sh    # espera a Postgres, siembra y arranca Uvicorn
+│   ├── requirements.txt
+│   ├── app/
+│   │   ├── main.py             # app FastAPI + CORS + lifespan(seed)
+│   │   ├── config.py           # settings (env)
+│   │   ├── database.py         # engine / sesión
+│   │   ├── dependencies.py     # auth + control de roles
+│   │   ├── models/             # User, Scenario, Measurement, ModelParam
+│   │   ├── schemas/            # Pydantic v2 (request/response)
+│   │   ├── services/           # security (hash/JWT), params
+│   │   ├── routers/            # auth, users, scenarios, measurements, model_params, simulation, reports
+│   │   ├── simulations/engine.py  # motor de retención de carbono
+│   │   ├── reports/            # pdf.py, docx.py, xlsx.py
+│   │   └── seed.py             # datos de demostración + 3 usuarios
+│   └── tests/                  # pytest (motor + integración)
+└── frontend/
+    ├── Dockerfile
+    ├── app/                    # páginas (dashboard, login, scenarios, measurements, admin, profile)
+    ├── components/             # ui/ (button, card), Navbar
+    └── lib/                    # types.ts, api.ts, auth.ts
+```
+
+## Puesta en marcha (un solo comando)
+
+Requiere Docker + el plugin `docker compose` en una máquina Linux.
+
+```bash
+# 1) (opcional) define tus variables:
+cp .env.example .env
+
+# 2) levanta todo:
+docker compose up --build
+```
+
+- Frontend:  http://localhost:3000
+- Backend API (docs Swagger): http://localhost:8000/docs
+- Salud:     http://localhost:8000/health
+
+La base de datos se **crea, migra y siembra automáticamente** al arrancar el backend
+(el entrypoint espera a Postgres vía healthcheck, ejecuta `app.seed` y luego Uvicorn).
+Al primer arranque ya hay un humedal demo, 4 escenarios públicos y mediciones cargadas.
+
+Para detener y limpiar volúmenes: `docker compose down -v`.
+
+## Variables de entorno
+
+Ver `.env.example`. Todas tienen valor por defecto en `docker-compose.yml`, así que
+`docker compose up` funciona sin crear `.env`. Las sensibles (`POSTGRES_PASSWORD`,
+`JWT_SECRET`, `DATABASE_URL`) vienen con defaults de desarrollo; cámbialas para producir.
+
+## Credenciales de seed
+
+| Rol | Email | Contraseña |
+|---|---|---|
+| ADMIN | admin@mae4.dev | Admin12345 |
+| INVESTIGADOR | inv@mae4.dev | Invest12345 |
+| VISITANTE | visit@mae4.dev | Visit12345 |
+
+El **dashboard es público** (acceso sin login) usando los escenarios marcados
+`is_public`. VISITANTE solo lectura; INVESTIGADOR crea escenarios/mediciones y exporta
+reportes; ADMIN gestiona usuarios y calibra el modelo.
+
+## Módulos
+
+- **Usuarios / roles / perfiles**: registro y login con JWT. Perfil editable
+  (nombre, email, institución) y cambio de contraseña. Rutas protegidas por rol.
+- **Escenarios**: CRUD de escenarios (nivel de restauración 0–100 %, SLR bajo/medio/alto,
+  año horizonte, área y densidad base).
+- **Mediciones**: CRUD de muestras temporales del humedal (cobertura, tabla de agua,
+  carbono orgánico del suelo, biomasa).
+- **Parámetros del modelo**: tabla `model_params` editable por ADMIN (calibración).
+- **Motor de simulación**: ver abajo.
+- **Dashboard**: KPIs (retención base, proyección a horizonte, % variación, superficie
+  efectiva), comparación de escenarios superpuestos (Recharts) e indicador de hipótesis.
+- **Reportes**: PDF / Word / Excel de la simulación de un escenario (INVESTIGADOR/ADMIN).
+
+## Base científica del modelo de retención de carbono
+
+El motor (`backend/app/simulations/engine.py`) es un modelo **explicable**, no un mock.
+Parte de la métrica de carbono azul costero: humedales (marismas, manglares, turba)
+secuestran y almacenan carbono en suelo y biomasa, y su productividad depende de la
+hidrología (regímenes de agua y salinidad).
+
+**Línea base** (año inicial):
+
+```
+C0 = A0 · D0
+A0 = superficie efectiva del humedal (ha)
+D0 = densidad de carbono suelo + biomasa (tC/ha)
+```
+
+**Restauración hidrológica** (nivel `R` en 0–1) — curva saturante:
+
+```
+factor_restauracion = Bmax · (1 − e^(−k·R))
+densidad(t) = D0 · (1 + factor_restauracion)
+```
+
+La ganancia de retención es máxima a restauración total (`Bmax`, p.ej. 0.50) pero con
+**rendimientos decrecientes** (ley de saturación exponencial, parámetro `k`): cada
+porcentaje extra de restauración aporta menos que el anterior. Esto refleja la literatura
+de blue carbon donde la recuperación de la hidrología mejora el secuestro hasta un tope.
+
+**Subida del nivel del mar** (escenario SLR IPCC) — pérdida progresiva:
+
+```
+frac = (año − año_inicial) / (horizonte − año_inicial)
+area_efectiva(t) = A0 · (1 − pérdida_area(SLR) · frac)
+densidad(t)       = D0 · (1 + factor_restauracion) · (1 − pérdida_densidad(SLR) · frac)
+```
+
+La superficie se reduce por inundación/salinización y la densidad de carbono decae, con
+**mayor impacto en escenarios altos** (IPCC ~ +1.0 m para 2100 frente a ~ +0.4 m bajo).
+Los factores de pérdida (`slr_area_loss_*`, `slr_density_loss_*`) son parámetros
+calibrubles por el ADMIN en la tabla `model_params`.
+
+**Retenido** y variación:
+
+```
+Retenido(t) = area_efectiva(t) · densidad(t)
+Variación % = (Retenido(t) − C0) / C0 · 100
+Hipótesis   = Variación(horizonte) ≥ +25 %
+```
+
+Valores por defecto (realistas para humedal tipo, ~80–85 tC/ha de suelo + biomasa):
+`baseline_area_ha = 120`, `baseline_carbon_density = 85`, `restoration_boost_max = 0.50`,
+`restoration_k = 2.5`, pérdidas SLR bajo/medio/alto = 0.06/0.12/0.22 (área) y
+0.05/0.12/0.20 (densidad). Con restauración alta (90 %) + SLR bajo el modelo alcanza
+~ +37 % a 2050, validando la hipótesis; sin restauración + SLR alto cae por debajo de la
+base. Se documentan como parámetros editables, no como constantes ocultas.
+
+## Pruebas
+
+```
+cd backend
+python -m venv .venv && . .venv/bin/activate
+pip install -r requirements.txt
+pytest
+```
+
+Incluye tests del motor (restauración alta > baja; hipótesis ≥ +25 %; SLR reduce retención)
+y tests de integración contra SQLite (auth, control de roles, CRUD, simulación y exportación
+de los tres formatos de reporte). **8 tests pasan.**
+
+## Notas
+
+- Sin LLM/Gemini ni APIs externas: todo el cálculo es local.
+- El frontend consume la API vía `NEXT_PUBLIC_API_URL` (por defecto `http://localhost:8000/api`).
+- Las imágenes Docker son solo para desarrollo local (hot-reload en backend y frontend).
