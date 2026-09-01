@@ -1,16 +1,29 @@
 # Dependencias y artefactos
 node_modules/
+frontend/node_modules/
+frontend/.pnpm-store/
+backend/.venv/
 .venv/
 __pycache__/
+backend/**/__pycache__/
 *.pyc
 *.db
 .pytest_cache/
+backend/.pytest_cache/
 .next/
+frontend/.next/
 out/
+frontend/out/
+*.tsbuildinfo
+.pnpm-debug.log*
 
 # Entornos y secretos (NO commitear)
 .env
 .env.local
+.env*.local
+
+# Logs
+*.log
 
 #锁文件 opcional del frontend (se regenera)
 # pnpm-lock.yaml

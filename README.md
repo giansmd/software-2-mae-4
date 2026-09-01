@@ -74,6 +74,11 @@ Al primer arranque ya hay un humedal demo, 4 escenarios públicos y mediciones c
 
 Para detener y limpiar volúmenes: `docker compose down -v`.
 
+Si ya existía un volumen creado con PostgreSQL anterior a 18, después de actualizar
+la imagen hay que eliminarlo en desarrollo (`docker compose down -v`) y volver a
+levantar el stack. Para conservar esos datos se requiere una migración con
+`pg_upgrade`; no se debe borrar el volumen.
+
 ## Variables de entorno
 
 Ver `.env.example`. Todas tienen valor por defecto en `docker-compose.yml`, así que
