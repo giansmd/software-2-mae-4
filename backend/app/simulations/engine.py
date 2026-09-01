@@ -70,41 +70,24 @@ def run_simulation(
         p.update(params)
 
     start_year = int(p["start_year"])
-    R = max(0.0, min(100.0, restoration_level)) / 100.0
-    boost_max = float(p["restoration_boost_max"])
-    k = float(p["restoration_k"])
-
-    area_loss_key, density_loss_key = _SLR_KEYS[sea_level_rise]
-    slr_area_loss = float(p[area_loss_key])
-    slr_density_loss = float(p[density_loss_key])
-
     baseline_carbon = baseline_area_ha * baseline_carbon_density
-    restoration_factor = boost_max * (1.0 - math.exp(-k * R))
 
     span = max(1, horizon_year - start_year)
     series: list[dict] = []
     for year in range(start_year, horizon_year + 1):
         frac = (year - start_year) / span
-        effective_area = baseline_area_ha * (1.0 - slr_area_loss * frac)
-        density = (
-            baseline_carbon_density
-            * (1.0 + restoration_factor)
-            * (1.0 - slr_density_loss * frac)
+        point = calculate_state(
+            restoration_level=restoration_level,
+            sea_level_rise=sea_level_rise,
+            progress=frac,
+            baseline_area_ha=baseline_area_ha,
+            baseline_carbon_density=baseline_carbon_density,
+            params=p,
         )
-        retained = effective_area * density
-        variation_pct = (
-            (retained - baseline_carbon) / baseline_carbon * 100.0
-            if baseline_carbon
-            else 0.0
-        )
-        vegetation_cover = min(1.0, 0.6 + 0.4 * R * (1.0 - math.exp(-k * R)))
         series.append(
             {
                 "year": year,
-                "retained_carbon": round(retained, 2),
-                "effective_area_ha": round(effective_area, 2),
-                "vegetation_cover": round(vegetation_cover, 4),
-                "variation_pct": round(variation_pct, 2),
+                **point,
             }
         )
 
@@ -123,4 +106,54 @@ def run_simulation(
         "meets_hypothesis": horizon["variation_pct"] >= HYPOTHESIS_THRESHOLD,
         "hypothesis_threshold_pct": HYPOTHESIS_THRESHOLD,
         "series": series,
+    }
+
+
+def calculate_state(
+    *,
+    restoration_level: float,
+    sea_level_rise: SeaLevelRise,
+    progress: float,
+    baseline_area_ha: float,
+    baseline_carbon_density: float,
+    params: Optional[dict[str, float]] = None,
+) -> dict[str, float]:
+    """Calculate one state along the same projection curve used by the engine.
+
+    ``progress`` is a normalized value between 0 and 1.  Keeping this operation
+    separate lets the realtime stream reuse the scientific equations without
+    generating a complete annual series for every websocket tick.
+    """
+    p = dict(DEFAULT_PARAMS)
+    if params:
+        p.update(params)
+
+    R = max(0.0, min(100.0, restoration_level)) / 100.0
+    boost_max = float(p["restoration_boost_max"])
+    k = float(p["restoration_k"])
+    area_loss_key, density_loss_key = _SLR_KEYS[sea_level_rise]
+    slr_area_loss = float(p[area_loss_key])
+    slr_density_loss = float(p[density_loss_key])
+    frac = max(0.0, min(1.0, progress))
+
+    baseline_carbon = baseline_area_ha * baseline_carbon_density
+    restoration_factor = boost_max * (1.0 - math.exp(-k * R))
+    effective_area = baseline_area_ha * (1.0 - slr_area_loss * frac)
+    density = (
+        baseline_carbon_density
+        * (1.0 + restoration_factor)
+        * (1.0 - slr_density_loss * frac)
+    )
+    retained = effective_area * density
+    variation_pct = (
+        (retained - baseline_carbon) / baseline_carbon * 100.0
+        if baseline_carbon
+        else 0.0
+    )
+    vegetation_cover = min(1.0, 0.6 + 0.4 * R * (1.0 - math.exp(-k * R)))
+    return {
+        "retained_carbon": round(retained, 2),
+        "effective_area_ha": round(effective_area, 2),
+        "vegetation_cover": round(vegetation_cover, 4),
+        "variation_pct": round(variation_pct, 2),
     }

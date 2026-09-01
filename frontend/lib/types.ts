@@ -67,3 +67,27 @@ export interface SimulationResult {
 }
 
 export type ReportFormat = "pdf" | "docx" | "xlsx";
+
+export interface LiveValues {
+  water_table: number;
+  vegetation_cover: number;
+  soil_organic_carbon: number;
+  biomass: number;
+  retained_carbon: number;
+  effective_area_ha: number;
+  variation_pct: number;
+}
+
+export interface LiveStateMessage {
+  type: "state";
+  sequence: number;
+  timestamp: string;
+  virtual_time: string;
+  source: "simulated";
+  values: LiveValues;
+}
+
+export type LiveServerMessage =
+  | LiveStateMessage
+  | { type: "status"; status: string; value?: number }
+  | { type: "error"; message: string };

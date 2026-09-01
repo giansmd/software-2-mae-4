@@ -42,6 +42,7 @@ software-2-mae-4/
 │   │   ├── services/           # security (hash/JWT), params
 │   │   ├── routers/            # auth, users, scenarios, measurements, model_params, simulation, reports
 │   │   ├── simulations/engine.py  # motor de retención de carbono
+│   │   ├── realtime/              # estados sintéticos en tiempo real
 │   │   ├── reports/            # pdf.py, docx.py, xlsx.py
 │   │   └── seed.py             # datos de demostración + 3 usuarios
 │   └── tests/                  # pytest (motor + integración)
@@ -107,8 +108,13 @@ reportes; ADMIN gestiona usuarios y calibra el modelo.
   carbono orgánico del suelo, biomasa).
 - **Parámetros del modelo**: tabla `model_params` editable por ADMIN (calibración).
 - **Motor de simulación**: ver abajo.
+- **Monitoreo en vivo**: stream WebSocket de estados sintéticos del escenario
+  (`/api/realtime/ws/{scenario_id}`), con controles de inicio, pausa, reinicio y velocidad.
 - **Dashboard**: KPIs (retención base, proyección a horizonte, % variación, superficie
   efectiva), comparación de escenarios superpuestos (Recharts) e indicador de hipótesis.
+- **Dashboard en vivo**: `/realtime`, con buffer de los últimos estados y gráficas de
+  carbono, superficie, nivel freático y cobertura vegetal. La fuente se etiqueta como
+  `simulated`; todavía no representa lecturas de sensores.
 - **Reportes**: PDF / Word / Excel de la simulación de un escenario (INVESTIGADOR/ADMIN).
 
 ## Base científica del modelo de retención de carbono

@@ -25,6 +25,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000/api
 ## Estructura
 
 - `app/page.tsx` — Dashboard público (escenarios públicos, KPIs, gráfico comparativo, indicador de hipótesis ≥+25%).
+- `app/realtime/page.tsx` — Monitoreo en vivo de un escenario público mediante WebSocket.
 - `app/login/page.tsx` — Login y registro.
 - `app/scenarios/page.tsx` — CRUD de escenarios + exportar PDF/Word/Excel.
 - `app/scenarios/[id]/page.tsx` — Simulación con ajuste de parámetros en vivo.
@@ -33,6 +34,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000/api
 - `app/profile/page.tsx` — Edición de perfil y contraseña.
 - `lib/api.ts` — Cliente fetch con token Bearer.
 - `lib/auth.ts` — Gestión de token/rol y hook `useAuth`.
+- `lib/realtime.ts` — Hook de conexión, controles y buffer de estados en vivo.
 
 ## Notas
 

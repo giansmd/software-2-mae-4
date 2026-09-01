@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   LineChart,
   Line,
@@ -146,6 +147,12 @@ export default function DashboardPage() {
           retención de carbono. Hipótesis: aumentar ≥ {HYPOTHESIS_PCT}% de
           carbono retenido al horizonte.
         </p>
+        <Link
+          href="/realtime"
+          className="mt-4 inline-flex rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
+        >
+          Abrir monitoreo en vivo
+        </Link>
       </header>
 
       {error && (
