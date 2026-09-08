@@ -343,3 +343,60 @@ def test_admin_can_manage_another_admin_while_self_remains_active(client):
     # After deactivation, the token is rejected entirely.
     gone = client.get("/api/users", headers={"Authorization": f"Bearer {admin_b_token}"})
     assert gone.status_code == 401
+
+
+# ---------------------------------------------------------------------------
+# VALID-001: calibration parameter ranges
+# ---------------------------------------------------------------------------
+
+def test_model_param_rejects_out_of_range_values(client):
+    # VALID-001: an ADMIN must not be able to store fractions > 1, negative
+    # losses/slopes, or implausible years, since the engine consumes them
+    # without clamping (invalid scientific outputs, NaN in reports).
+    admin_token = _login(client, "admin@mae4.dev", "Admin12345")
+    headers = {"Authorization": f"Bearer {admin_token}"}
+
+    cases = [
+        ("restoration_boost_max", 1.5),
+        ("restoration_boost_max", -0.1),
+        ("restoration_k", -2.0),
+        ("slr_area_loss_low", -0.05),
+        ("slr_area_loss_high", 2.0),
+        ("slr_density_loss_medium", 1.2),
+        ("start_year", 1800.0),
+        ("start_year", 2200.0),
+    ]
+    for key, value in cases:
+        r = client.put(f"/api/model-params/{key}", json={"value": value}, headers=headers)
+        assert r.status_code == 422, (key, value, r.status_code, r.text)
+
+    # Non-finite values (JSON literal Infinity) are rejected as well.
+    inf = client.put(
+        "/api/model-params/restoration_k",
+        content='{"value": Infinity}',
+        headers={**headers, "content-type": "application/json"},
+    )
+    assert inf.status_code == 422, inf.text
+
+    # The stored values remain unchanged after the rejections.
+    listing = client.get("/api/model-params", headers=headers).json()
+    current = {p["key"]: p["value"] for p in listing}
+    assert current["restoration_boost_max"] == 0.50
+    assert current["restoration_k"] == 2.5
+
+
+def test_model_param_accepts_valid_values_within_range(client):
+    admin_token = _login(client, "admin@mae4.dev", "Admin12345")
+    headers = {"Authorization": f"Bearer {admin_token}"}
+
+    ok = client.put(
+        "/api/model-params/restoration_boost_max", json={"value": 0.75}, headers=headers
+    )
+    assert ok.status_code == 200, ok.text
+    assert ok.json()["value"] == 0.75
+
+    # Restore the default so the rest of the module is unaffected.
+    restored = client.put(
+        "/api/model-params/restoration_boost_max", json={"value": 0.50}, headers=headers
+    )
+    assert restored.status_code == 200, restored.text
