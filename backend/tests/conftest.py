@@ -6,7 +6,9 @@ import os
 # real database (schema drift, writes on external data) or fails because of
 # the host's environment.
 os.environ["DATABASE_URL"] = "sqlite:///./test_mae4.db"
-os.environ.setdefault("JWT_SECRET", "test-secret-key")
+# Hermetic test secret: strong enough to satisfy the SEC-001 config guard, so
+# the suite never depends on (or is broken by) a JWT_SECRET from the host.
+os.environ["JWT_SECRET"] = "test-secret-key-0123456789abcdef0123456789abcdef"
 os.environ.setdefault("SEED_ON_STARTUP", "true")
 
 import pytest
