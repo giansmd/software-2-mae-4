@@ -37,6 +37,13 @@ class Settings(BaseSettings):
     # Seed
     seed_on_startup: bool = True
 
+    # Rate limiting (SEC-004): per-IP budgets for authentication endpoints.
+    # In-memory and per-process; adjust when scaling beyond one worker.
+    login_rate_limit: int = 60
+    login_rate_window_minutes: int = 15
+    register_rate_limit: int = 20
+    register_rate_window_minutes: int = 15
+
     # CORS (comma separated list of allowed origins)
     cors_origins: str = "http://localhost:3000,http://frontend:3000"
 

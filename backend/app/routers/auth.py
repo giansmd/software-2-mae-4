@@ -1,14 +1,16 @@
 """Authentication endpoints: register, login (JWT), profile."""
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.database import get_db
 from app.dependencies import get_current_user
 from app.models.user import Role, User
 from app.schemas.auth import LoginRequest, RegisterRequest, Token
 from app.schemas.user import PasswordChange, ProfileUpdate, UserOut
+from app.services.rate_limit import FixedWindowLimiter, enforce
 from app.services.security import (
     create_access_token,
     hash_password,
@@ -17,9 +19,22 @@ from app.services.security import (
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+# SEC-004: per-IP budgets to slow down brute force and registration spam.
+# The limiters are module singletons built from settings; tests may replace
+# them to exercise the 429 path.
+LOGIN_LIMITER = FixedWindowLimiter(
+    limit=settings.login_rate_limit,
+    window_seconds=settings.login_rate_window_minutes * 60,
+)
+REGISTER_LIMITER = FixedWindowLimiter(
+    limit=settings.register_rate_limit,
+    window_seconds=settings.register_rate_window_minutes * 60,
+)
+
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
-def register(payload: RegisterRequest, db: Session = Depends(get_db)) -> Token:
+def register(payload: RegisterRequest, request: Request, db: Session = Depends(get_db)) -> Token:
+    enforce(REGISTER_LIMITER, request, "registro")
     if db.query(User).filter(User.email == payload.email).first():
         raise HTTPException(status.HTTP_409_CONFLICT, "El email ya está registrado")
     user = User(
@@ -36,7 +51,8 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)) -> Token:
 
 
 @router.post("/login", response_model=Token)
-def login(payload: LoginRequest, db: Session = Depends(get_db)) -> Token:
+def login(payload: LoginRequest, request: Request, db: Session = Depends(get_db)) -> Token:
+    enforce(LOGIN_LIMITER, request, "inicio de sesión")
     user = db.query(User).filter(User.email == payload.email).first()
     if not user or not verify_password(payload.password, user.hashed_password) or not user.is_active:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Credenciales inválidas")

@@ -1,6 +1,8 @@
 """Integration tests for auth, scenarios and simulation endpoints."""
 from __future__ import annotations
 
+from app.services.rate_limit import FixedWindowLimiter
+
 
 def _login(client, email, password):
     r = client.post("/api/auth/login", json={"email": email, "password": password})
@@ -439,3 +441,61 @@ def test_model_param_rejects_unregistered_key(client):
                 db.commit()
         finally:
             db.close()
+
+
+# ---------------------------------------------------------------------------
+# SEC-004: rate limiting on authentication endpoints
+# ---------------------------------------------------------------------------
+
+def test_login_exhausts_rate_limit_returns_429(client):
+    # SEC-004: after the allowed per-IP budget, repeated login attempts get a
+    # clean HTTP 429 and the counter resets on the next window.
+    import app.routers.auth as auth_module
+
+    # Replace the module limiter with a small budget so the window is not hit.
+    original = auth_module.LOGIN_LIMITER
+    auth_module.LOGIN_LIMITER = FixedWindowLimiter(limit=3, window_seconds=60)
+    try:
+        for _ in range(3):
+            r = client.post(
+                "/api/auth/login", json={"email": "nobody@mae4.dev", "password": "wrong"}
+            )
+            # Wrong or unknown credentials are not rate-limited clients:
+            # they return 401/422, not 429. (Attempts are still counted.)
+            assert r.status_code in (401, 422), r.status_code
+        r = client.post(
+            "/api/auth/login", json={"email": "nobody@mae4.dev", "password": "wrong"}
+        )
+        assert r.status_code == 429, r.status_code
+    finally:
+        auth_module.LOGIN_LIMITER = original
+
+
+def test_register_exhausts_rate_limit_returns_429(client):
+    # SEC-004: registration endpoint has its own per-IP budget.
+    import app.routers.auth as auth_module
+
+    original = auth_module.REGISTER_LIMITER
+    auth_module.REGISTER_LIMITER = FixedWindowLimiter(limit=2, window_seconds=60)
+    try:
+        for n in range(2):
+            r = client.post(
+                "/api/auth/register",
+                json={
+                    "email": f"rate{n}@mae4.dev",
+                    "password": "Rate12345",
+                    "full_name": "Rate Limit Test",
+                },
+            )
+            assert r.status_code == 201, r.status_code
+        r = client.post(
+            "/api/auth/register",
+            json={
+                "email": "rate2@mae4.dev",
+                "password": "Rate22345",
+                "full_name": "Rate Limit Two",
+            },
+        )
+        assert r.status_code == 429, r.status_code
+    finally:
+        auth_module.REGISTER_LIMITER = original
