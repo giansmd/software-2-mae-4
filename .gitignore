@@ -25,5 +25,4 @@ frontend/out/
 # Logs
 *.log
 
-#锁文件 opcional del frontend (se regenera)
-# pnpm-lock.yaml
+# pnpm-lock.yaml es obligatorio y está versionado (build reproducible); no ignorarlo.
