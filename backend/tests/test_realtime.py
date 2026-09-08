@@ -56,3 +56,29 @@ def test_private_realtime_stream_requires_access(client):
         f"/api/realtime/ws/{scenario['id']}?token={token}"
     ) as websocket:
         assert websocket.receive_json()["type"] == "state"
+
+
+def test_admin_realtime_stream_allows_private_scenario_of_other_user(client):
+    admin_token = client.post(
+        "/api/auth/login",
+        json={"email": "admin@mae4.dev", "password": "Admin12345"},
+    ).json()["access_token"]
+    inv_token = client.post(
+        "/api/auth/login",
+        json={"email": "inv@mae4.dev", "password": "Invest12345"},
+    ).json()["access_token"]
+    scenario = client.post(
+        "/api/scenarios",
+        json={
+            "name": "Escenario privado para ADMIN",
+            "restoration_level": 30,
+            "sea_level_rise": "medium",
+        },
+        headers={"Authorization": f"Bearer {inv_token}"},
+    ).json()
+
+    with client.websocket_connect(
+        f"/api/realtime/ws/{scenario['id']}?token={admin_token}"
+    ) as websocket:
+        first = websocket.receive_json()
+        assert first["type"] == "state"

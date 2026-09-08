@@ -8,7 +8,7 @@ from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
 
 from app.database import SessionLocal
 from app.models.scenario import Scenario
-from app.models.user import User
+from app.models.user import Role, User
 from app.services.params import load_model_params
 from app.services.security import decode_access_token
 from app.realtime.stream import DEFAULT_SPEED, MAX_SPEED, MIN_SPEED, TICKS_PER_HORIZON, build_live_state
@@ -43,7 +43,9 @@ async def stream_scenario(
         if scenario is None:
             await websocket.close(code=1008, reason="Escenario no encontrado")
             return
-        if not scenario.is_public and (user is None or scenario.owner_id != user.id):
+        if not scenario.is_public and (
+            user is None or (user.role != Role.ADMIN and scenario.owner_id != user.id)
+        ):
             await websocket.close(code=1008, reason="No tiene permiso para este escenario")
             return
         params = load_model_params(db)
