@@ -33,8 +33,12 @@ import {
 
 export default function ScenariosPage() {
   const router = useRouter();
-  const { isAuthed, role, loading: authLoading } = useAuth();
+  const { isAuthed, role, user, loading: authLoading } = useAuth();
   const canExport = role === "INVESTIGADOR" || role === "ADMIN";
+  // El backend autoriza editar/borrar al propietario o a un ADMIN
+  // (_authorize_owner_or_admin en backend/app/routers/scenarios.py).
+  const canEdit = (s: Scenario) =>
+    role === "ADMIN" || (!!user && s.owner_id === user.id);
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -326,21 +330,25 @@ export default function ScenariosPage() {
                       <Sliders className="h-4 w-4" /> Simular
                     </Button>
                   </Link>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => openEdit(s)}
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="text-red-600"
-                    onClick={() => handleDelete(s.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  {canEdit(s) && (
+                    <>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => openEdit(s)}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-red-600"
+                        onClick={() => handleDelete(s.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </>
+                  )}
                 </div>
                 {canExport && (
                   <div className="mt-3 flex gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
