@@ -11,7 +11,7 @@ from app.models.user import Role, User
 from app.reports import build_docx_report, build_pdf_report, build_xlsx_report
 from app.schemas.simulation import SimulationResult
 from app.services.params import load_model_params
-from app.simulations.engine import run_simulation
+from app.simulations.engine import InvalidSimulationParamsError, run_simulation
 
 router = APIRouter(prefix="/reports", tags=["reports"])
 
@@ -26,16 +26,19 @@ def _simulate(scenario_id: int, db: Session, user: User) -> SimulationResult:
     if not scenario.is_public and user.role != Role.ADMIN and scenario.owner_id != user.id:
         raise HTTPException(403, "No tiene permiso para reportar este escenario")
     params = load_model_params(db)
-    result = run_simulation(
-        restoration_level=scenario.restoration_level,
-        sea_level_rise=scenario.sea_level_rise,
-        horizon_year=scenario.horizon_year,
-        baseline_area_ha=scenario.baseline_area_ha,
-        baseline_carbon_density=scenario.baseline_carbon_density,
-        params=params,
-        scenario_id=scenario.id,
-        scenario_name=scenario.name,
-    )
+    try:
+        result = run_simulation(
+            restoration_level=scenario.restoration_level,
+            sea_level_rise=scenario.sea_level_rise,
+            horizon_year=scenario.horizon_year,
+            baseline_area_ha=scenario.baseline_area_ha,
+            baseline_carbon_density=scenario.baseline_carbon_density,
+            params=params,
+            scenario_id=scenario.id,
+            scenario_name=scenario.name,
+        )
+    except InvalidSimulationParamsError as exc:
+        raise HTTPException(400, str(exc)) from exc
     return SimulationResult(**result)
 
 

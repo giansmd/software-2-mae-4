@@ -1,8 +1,10 @@
 """Unit tests for the carbon retention simulation engine."""
 from __future__ import annotations
 
+import pytest
+
 from app.models.scenario import SeaLevelRise
-from app.simulations.engine import run_simulation
+from app.simulations.engine import InvalidSimulationParamsError, run_simulation
 
 
 def test_high_restoration_retains_more_than_low():
@@ -48,3 +50,30 @@ def test_sea_level_rise_reduces_retention():
     low = run_simulation(sea_level_rise=SeaLevelRise.LOW, **base)
     high = run_simulation(sea_level_rise=SeaLevelRise.HIGH, **base)
     assert high["horizon_carbon"] < low["horizon_carbon"]
+
+
+# ---------------------------------------------------------------------------
+# ENG-001: horizon before/in initial year must fail controlled, not IndexError
+# ---------------------------------------------------------------------------
+
+
+def test_horizon_year_before_start_year_raises_invalid_params():
+    with pytest.raises(InvalidSimulationParamsError):
+        run_simulation(
+            restoration_level=0.0,
+            sea_level_rise=SeaLevelRise.MEDIUM,
+            horizon_year=2024,  # anterior al start_year por defecto (2025)
+            baseline_area_ha=120.0,
+            baseline_carbon_density=85.0,
+        )
+
+
+def test_horizon_year_equal_start_year_raises_invalid_params():
+    with pytest.raises(InvalidSimulationParamsError):
+        run_simulation(
+            restoration_level=0.0,
+            sea_level_rise=SeaLevelRise.MEDIUM,
+            horizon_year=2025,  # igual al start_year por defecto
+            baseline_area_ha=120.0,
+            baseline_carbon_density=85.0,
+        )

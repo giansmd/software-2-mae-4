@@ -10,9 +10,17 @@ from app.models.scenario import Scenario
 from app.models.user import Role, User
 from app.schemas.simulation import SimulationRequest, SimulationResult
 from app.services.params import load_model_params
-from app.simulations.engine import run_simulation
+from app.simulations.engine import InvalidSimulationParamsError, run_simulation
 
 router = APIRouter(prefix="/simulations", tags=["simulations"])
+
+
+def _run_checked(**kwargs):
+    """Ejecuta el motor traduciendo parámetros inconsistentes a HTTP 400 (ENG-001)."""
+    try:
+        return run_simulation(**kwargs)
+    except InvalidSimulationParamsError as exc:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, str(exc)) from exc
 
 
 def _resolve(db: Session, payload: SimulationRequest, user: User | None) -> dict:
@@ -24,7 +32,7 @@ def _resolve(db: Session, payload: SimulationRequest, user: User | None) -> dict
         if not scenario.is_public:
             if user is None or (user.role != Role.ADMIN and scenario.owner_id != user.id):
                 raise HTTPException(status.HTTP_403_FORBIDDEN, "No tiene permiso para simular este escenario")
-        return run_simulation(
+        return _run_checked(
             restoration_level=scenario.restoration_level,
             sea_level_rise=scenario.sea_level_rise,
             horizon_year=scenario.horizon_year,
@@ -47,7 +55,7 @@ def _resolve(db: Session, payload: SimulationRequest, user: User | None) -> dict
             "Debe proveer scenario_id o todos los parámetros inline "
             "(restoration_level, sea_level_rise, horizon_year, baseline_area_ha, baseline_carbon_density)",
         )
-    return run_simulation(
+    return _run_checked(
         restoration_level=payload.restoration_level,
         sea_level_rise=payload.sea_level_rise,
         horizon_year=payload.horizon_year,

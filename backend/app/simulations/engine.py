@@ -54,6 +54,10 @@ _SLR_KEYS = {
 }
 
 
+class InvalidSimulationParamsError(ValueError):
+    """Raised when the projection parameters are inconsistent (e.g. horizon before start)."""
+
+
 def run_simulation(
     *,
     restoration_level: float,
@@ -70,6 +74,10 @@ def run_simulation(
         p.update(params)
 
     start_year = int(p["start_year"])
+    if horizon_year <= start_year:
+        raise InvalidSimulationParamsError(
+            f"horizon_year ({horizon_year}) debe ser mayor que start_year ({start_year})"
+        )
     baseline_carbon = baseline_area_ha * baseline_carbon_density
 
     span = max(1, horizon_year - start_year)

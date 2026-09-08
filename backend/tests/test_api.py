@@ -216,3 +216,53 @@ def test_admin_can_read_and_list_any_measurement(client):
     listed = client.get("/api/measurements", headers={"Authorization": f"Bearer {admin_token}"})
     assert listed.status_code == 200
     assert any(m["id"] == mid for m in listed.json())
+
+
+def test_invalid_horizon_returns_400_in_simulation_and_reports(client):
+    # ENG-001: with start_year set after the horizon (reachable via model-params
+    # since VALID-001 allows any value), the engine must reject with 400, not
+    # crash with IndexError (500) in simulation and report endpoints.
+    admin_token = _login(client, "admin@mae4.dev", "Admin12345")
+    inv_token = _login(client, "inv@mae4.dev", "Invest12345")
+    admin_headers = {"Authorization": f"Bearer {admin_token}"}
+    inv_headers = {"Authorization": f"Bearer {inv_token}"}
+
+    # Set start_year beyond any scenario horizon (seeded demos use 2050).
+    put = client.put("/api/model-params/start_year", json={"value": 2070}, headers=admin_headers)
+    assert put.status_code == 200, put.text
+
+    # Inline simulation with horizon before the new start year -> 400.
+    r = client.post(
+        "/api/simulations/run",
+        json={
+            "restoration_level": 50,
+            "sea_level_rise": "low",
+            "horizon_year": 2050,
+            "baseline_area_ha": 120,
+            "baseline_carbon_density": 85,
+        },
+        headers=inv_headers,
+    )
+    assert r.status_code == 400, r.text
+
+    # Report export of a seeded scenario (horizon 2050) -> 400 as well.
+    public = client.get("/api/scenarios").json()
+    sid = public[0]["id"]
+    rep = client.get(f"/api/reports/{sid}/pdf", headers=inv_headers)
+    assert rep.status_code == 400, rep.text
+
+    # Restore the default so the rest of the module is unaffected.
+    put = client.put("/api/model-params/start_year", json={"value": 2025}, headers=admin_headers)
+    assert put.status_code == 200, put.text
+    ok = client.post(
+        "/api/simulations/run",
+        json={
+            "restoration_level": 50,
+            "sea_level_rise": "low",
+            "horizon_year": 2050,
+            "baseline_area_ha": 120,
+            "baseline_carbon_density": 85,
+        },
+        headers=inv_headers,
+    )
+    assert ok.status_code == 200, ok.text
