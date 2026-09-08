@@ -2,7 +2,9 @@
 # Entrypoint del backend: espera a PostgreSQL, siembra la BD y arranca Uvicorn con hot-reload.
 set -e
 
-echo "Esperando a PostgreSQL (${DATABASE_URL})..."
+# Log sin credenciales: solo host:puerto/db (se omite el userinfo de DATABASE_URL).
+DB_TARGET="${DATABASE_URL#*@}"
+echo "Esperando a PostgreSQL (${DB_TARGET})..."
 until python - <<'PY'
 import os
 import psycopg2
