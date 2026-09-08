@@ -400,3 +400,42 @@ def test_model_param_accepts_valid_values_within_range(client):
         "/api/model-params/restoration_boost_max", json={"value": 0.50}, headers=headers
     )
     assert restored.status_code == 200, restored.text
+
+
+def test_model_param_rejects_unregistered_key(client):
+    # VALID-002: fail-closed for future calibration keys without a registered
+    # range. A param added to DEFAULT_PARAMS/PARAM_META but not to PARAM_RANGES
+    # (model_params.py) must be rejected with 422 instead of being persisted
+    # with an arbitrary finite value.
+    from app.database import SessionLocal
+    from app.models.model_param import ModelParam
+
+    token = _login(client, "admin@mae4.dev", "Admin12345")
+    headers = {"Authorization": f"Bearer {token}"}
+
+    db = SessionLocal()
+    try:
+        db.add(ModelParam(key="future_metric", value=1.0, unit=None, description="Clave futura sin rango"))
+        db.commit()
+    finally:
+        db.close()
+
+    try:
+        r = client.put(
+            "/api/model-params/future_metric", json={"value": 5.0}, headers=headers
+        )
+        assert r.status_code == 422, (r.status_code, r.text)
+
+        # The stored value must remain untouched.
+        listing = client.get("/api/model-params", headers=headers).json()
+        current = {p["key"]: p["value"] for p in listing}
+        assert current["future_metric"] == 1.0
+    finally:
+        db = SessionLocal()
+        try:
+            row = db.query(ModelParam).filter(ModelParam.key == "future_metric").first()
+            if row is not None:
+                db.delete(row)
+                db.commit()
+        finally:
+            db.close()

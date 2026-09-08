@@ -33,20 +33,29 @@ PARAM_RANGES: dict[str, tuple[float, float]] = {
 
 
 def validate_param_value(key: str, value: float) -> None:
-    """Reject non-finite or out-of-range calibration values with HTTP 422."""
+    """Reject non-finite, out-of-range or unregistered calibration values (HTTP 422).
+
+    Fail-closed (VALID-002): a key without a registered range is rejected as
+    well, so a future parameter added to DEFAULT_PARAMS/PARAM_META cannot be
+    persisted with an arbitrary finite value until its range is declared here.
+    """
+    bounds = PARAM_RANGES.get(key)
+    if bounds is None:
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            f"El parámetro '{key}' no tiene un rango de validación registrado; añádelo a PARAM_RANGES",
+        )
     if not math.isfinite(value):
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_CONTENT,
             f"El valor de '{key}' debe ser finito",
         )
-    bounds = PARAM_RANGES.get(key)
-    if bounds is not None:
-        low, high = bounds
-        if not (low <= value <= high):
-            raise HTTPException(
-                status.HTTP_422_UNPROCESSABLE_CONTENT,
-                f"El valor de '{key}' debe estar entre {low:g} y {high:g}",
-            )
+    low, high = bounds
+    if not (low <= value <= high):
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            f"El valor de '{key}' debe estar entre {low:g} y {high:g}",
+        )
 
 
 @router.get("", response_model=list[ModelParamOut])
