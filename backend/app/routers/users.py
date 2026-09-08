@@ -13,6 +13,45 @@ from app.services.security import hash_password
 router = APIRouter(prefix="/users", tags=["users"])
 
 
+def _guard_admin_change(
+    db: Session,
+    target: User,
+    current: User,
+    *,
+    role: Role | None = None,
+    is_active: bool | None = None,
+) -> None:
+    """AUTH-002: prevent admin self-lockout and guarantee that at least one
+    active ADMIN always remains in the system."""
+    if target.id == current.id and (
+        (role is not None and role != Role.ADMIN) or is_active is False
+    ):
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            "No puedes degradar ni desactivar tu propia cuenta",
+        )
+    loses_admin = (
+        target.role == Role.ADMIN
+        and target.is_active
+        and ((role is not None and role != Role.ADMIN) or is_active is False)
+    )
+    if loses_admin:
+        other_active_admins = (
+            db.query(User)
+            .filter(
+                User.role == Role.ADMIN,
+                User.is_active.is_(True),
+                User.id != target.id,
+            )
+            .count()
+        )
+        if other_active_admins == 0:
+            raise HTTPException(
+                status.HTTP_400_BAD_REQUEST,
+                "Debe quedar al menos un ADMIN activo en el sistema",
+            )
+
+
 @router.get("", response_model=list[UserOut])
 def list_users(
     db: Session = Depends(get_db),
@@ -47,12 +86,19 @@ def update_user(
     user_id: int,
     payload: UserUpdate,
     db: Session = Depends(get_db),
-    _: User = Depends(require_role(Role.ADMIN)),
+    current: User = Depends(require_role(Role.ADMIN)),
 ) -> User:
     user = db.get(User, user_id)
     if user is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Usuario no encontrado")
     data = payload.model_dump(exclude_unset=True)
+    _guard_admin_change(
+        db,
+        user,
+        current,
+        role=data.get("role"),
+        is_active=data.get("is_active"),
+    )
     for field, value in data.items():
         setattr(user, field, value)
     db.commit()
@@ -64,10 +110,11 @@ def update_user(
 def delete_user(
     user_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_role(Role.ADMIN)),
+    current: User = Depends(require_role(Role.ADMIN)),
 ) -> None:
     user = db.get(User, user_id)
     if user is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Usuario no encontrado")
+    _guard_admin_change(db, user, current, is_active=False)
     user.is_active = False
     db.commit()

@@ -266,3 +266,80 @@ def test_invalid_horizon_returns_400_in_simulation_and_reports(client):
         headers=inv_headers,
     )
     assert ok.status_code == 200, ok.text
+
+
+# ---------------------------------------------------------------------------
+# AUTH-002: admin self-lockout protection
+# ---------------------------------------------------------------------------
+
+def _ensure_admin_b(client, admin_token):
+    """Create (or reuse) a second ADMIN via the admin endpoint."""
+    email, password = "admin2@mae4.dev", "Admin22345"
+    r = client.post(
+        "/api/users",
+        json={
+            "email": email,
+            "password": password,
+            "full_name": "Administrador B",
+            "institution": "Otra Universidad",
+            "role": "ADMIN",
+        },
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    if r.status_code == 409:  # already created earlier in this module
+        return _login(client, email, password)
+    assert r.status_code == 201, r.text
+    return _login(client, email, password)
+
+
+def _user_id(client, token, email):
+    users = client.get("/api/users", headers={"Authorization": f"Bearer {token}"}).json()
+    return next(u["id"] for u in users if u["email"] == email)
+
+
+def test_admin_cannot_demote_deactivate_or_delete_self(client):
+    # AUTH-002: an ADMIN must not be able to degrade or deactivate its own
+    # account (self-lockout). PATCH/DELETE on the own user id are rejected.
+    admin_token = _login(client, "admin@mae4.dev", "Admin12345")
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    me = client.get("/api/auth/me", headers=headers)
+    assert me.status_code == 200
+    uid = me.json()["id"]
+
+    demote = client.patch(f"/api/users/{uid}", json={"role": "INVESTIGADOR"}, headers=headers)
+    assert demote.status_code == 400, demote.text
+    deactivate = client.patch(f"/api/users/{uid}", json={"is_active": False}, headers=headers)
+    assert deactivate.status_code == 400, deactivate.text
+    delete = client.delete(f"/api/users/{uid}", headers=headers)
+    assert delete.status_code == 400, delete.text
+
+    # The account is still an active ADMIN afterwards.
+    still = client.get("/api/auth/me", headers=headers)
+    assert still.status_code == 200
+    assert still.json()["role"] == "ADMIN"
+    assert still.json()["is_active"] is True
+
+
+def test_admin_can_manage_another_admin_while_self_remains_active(client):
+    # AUTH-002: legitimate admin management still works — demoting/deactivating
+    # a *different* ADMIN is allowed, because the acting ADMIN remains active.
+    admin_token = _login(client, "admin@mae4.dev", "Admin12345")
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    admin_b_token = _ensure_admin_b(client, admin_token)
+    uid = _user_id(client, admin_token, "admin2@mae4.dev")
+
+    demote = client.patch(f"/api/users/{uid}", json={"role": "INVESTIGADOR"}, headers=headers)
+    assert demote.status_code == 200, demote.text
+    assert demote.json()["role"] == "INVESTIGADOR"
+
+    # The demoted user no longer passes as ADMIN (but is still active).
+    gone = client.get("/api/users", headers={"Authorization": f"Bearer {admin_b_token}"})
+    assert gone.status_code == 403
+
+    deactivate = client.patch(f"/api/users/{uid}", json={"is_active": False}, headers=headers)
+    assert deactivate.status_code == 200, deactivate.text
+    assert deactivate.json()["is_active"] is False
+
+    # After deactivation, the token is rejected entirely.
+    gone = client.get("/api/users", headers={"Authorization": f"Bearer {admin_b_token}"})
+    assert gone.status_code == 401
