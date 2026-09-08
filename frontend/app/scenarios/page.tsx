@@ -33,7 +33,8 @@ import {
 
 export default function ScenariosPage() {
   const router = useRouter();
-  const { isAuthed, loading: authLoading } = useAuth();
+  const { isAuthed, role, loading: authLoading } = useAuth();
+  const canExport = role === "INVESTIGADOR" || role === "ADMIN";
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -341,29 +342,31 @@ export default function ScenariosPage() {
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="mt-3 flex gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleExport(s.id, "pdf")}
-                  >
-                    <FileText className="h-4 w-4" /> PDF
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleExport(s.id, "docx")}
-                  >
-                    <FileDown className="h-4 w-4" /> Word
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleExport(s.id, "xlsx")}
-                  >
-                    <FileSpreadsheet className="h-4 w-4" /> Excel
-                  </Button>
-                </div>
+                {canExport && (
+                  <div className="mt-3 flex gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleExport(s.id, "pdf")}
+                    >
+                      <FileText className="h-4 w-4" /> PDF
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleExport(s.id, "docx")}
+                    >
+                      <FileDown className="h-4 w-4" /> Word
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleExport(s.id, "xlsx")}
+                    >
+                      <FileSpreadsheet className="h-4 w-4" /> Excel
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           ))}
