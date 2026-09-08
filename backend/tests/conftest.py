@@ -1,7 +1,11 @@
 """Pytest configuration: run the app against an isolated SQLite database."""
 import os
 
-os.environ.setdefault("DATABASE_URL", "sqlite:///./test_mae4.db")
+# Hermetic test database: always force a local SQLite file, ignoring any
+# DATABASE_URL present in the environment, so the suite never connects to a
+# real database (schema drift, writes on external data) or fails because of
+# the host's environment.
+os.environ["DATABASE_URL"] = "sqlite:///./test_mae4.db"
 os.environ.setdefault("JWT_SECRET", "test-secret-key")
 os.environ.setdefault("SEED_ON_STARTUP", "true")
 

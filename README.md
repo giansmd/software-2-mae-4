@@ -185,6 +185,10 @@ Incluye tests del motor (restauración alta > baja; hipótesis ≥ +25 %; SLR re
 y tests de integración contra SQLite (auth, control de roles, CRUD, simulación y exportación
 de los tres formatos de reporte). **8 tests pasan.**
 
+Los tests siempre corren contra una base SQLite local hermética (`test_mae4.db`),
+ignorando cualquier `DATABASE_URL` presente en el entorno: nunca escriben sobre una
+base real ni dependen de su esquema.
+
 ## Notas
 
 - Sin LLM/Gemini ni APIs externas: todo el cálculo es local.
