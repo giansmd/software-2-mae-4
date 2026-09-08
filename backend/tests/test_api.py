@@ -24,6 +24,25 @@ def test_visitor_cannot_create_scenario(client):
     assert r.status_code == 403
 
 
+def test_token_with_non_numeric_sub_returns_401(client):
+    # AUTH-001: a signed token whose sub is not a numeric id must be treated as
+    # invalid (401), not crash with ValueError (HTTP 500).
+    from app.services.security import create_access_token
+
+    token = create_access_token("not-a-number")
+    r = client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"})
+    assert r.status_code == 401
+
+
+def test_token_with_non_numeric_sub_is_anonymous(client):
+    # Same malformed token should behave as anonymous on optional-auth endpoints.
+    from app.services.security import create_access_token
+
+    token = create_access_token("not-a-number")
+    r = client.get("/api/scenarios", headers={"Authorization": f"Bearer {token}"})
+    assert r.status_code == 200
+
+
 def test_investigator_can_create_and_simulate(client):
     token = _login(client, "inv@mae4.dev", "Invest12345")
     r = client.post(

@@ -41,4 +41,7 @@ def decode_access_token(token: str) -> str | None:
         payload = jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
     except JWTError:
         return None
-    return payload.get("sub")
+    sub = payload.get("sub")
+    if sub is None or not str(sub).isdigit():
+        return None
+    return str(sub)
