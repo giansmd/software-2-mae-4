@@ -4,7 +4,7 @@ from __future__ import annotations
 import asyncio
 import datetime
 
-from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from app.database import SessionLocal
 from app.models.scenario import Scenario
@@ -29,14 +29,28 @@ def _resolve_user(token: str | None, db) -> User | None:
     return user if user and user.is_active else None
 
 
+def _extract_token(websocket: WebSocket) -> str | None:
+    """Extrae el token JWT del subprotocolo Sec-WebSocket-Protocol.
+
+    El token viaja como subprotocolo del handshake en lugar del query string,
+    evitando su exposición en logs de proxy, historial y referrers. Si el
+    cliente envía varios subprotocolos, se usa el primero (orden de
+    preferencia del cliente).
+    """
+    header = websocket.headers.get("sec-websocket-protocol")
+    if not header:
+        return None
+    return header.split(",")[0].strip() or None
+
+
 @router.websocket("/ws/{scenario_id}")
 async def stream_scenario(
     websocket: WebSocket,
     scenario_id: int,
-    token: str | None = Query(default=None),
 ) -> None:
     db = SessionLocal()
-    await websocket.accept()
+    token = _extract_token(websocket)
+    await websocket.accept(subprotocol=token)
     try:
         scenario = db.get(Scenario, scenario_id)
         user = _resolve_user(token, db)

@@ -53,7 +53,8 @@ def test_private_realtime_stream_requires_access(client):
     assert error.value.code == 1008
 
     with client.websocket_connect(
-        f"/api/realtime/ws/{scenario['id']}?token={token}"
+        f"/api/realtime/ws/{scenario['id']}",
+        headers={"Sec-WebSocket-Protocol": token},
     ) as websocket:
         assert websocket.receive_json()["type"] == "state"
 
@@ -78,7 +79,8 @@ def test_admin_realtime_stream_allows_private_scenario_of_other_user(client):
     ).json()
 
     with client.websocket_connect(
-        f"/api/realtime/ws/{scenario['id']}?token={admin_token}"
+        f"/api/realtime/ws/{scenario['id']}",
+        headers={"Sec-WebSocket-Protocol": admin_token},
     ) as websocket:
         first = websocket.receive_json()
         assert first["type"] == "state"

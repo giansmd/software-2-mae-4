@@ -23,9 +23,14 @@ function buildWebSocketUrl(scenarioId: number): string {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
   const url = new URL(`${apiUrl.replace(/\/$/, "")}/realtime/ws/${scenarioId}`);
   url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
-  const token = getToken();
-  if (token) url.searchParams.set("token", token);
   return url.toString();
+}
+
+function buildWebSocketSubprotocols(): string[] {
+  // El JWT viaja como subprotocolo Sec-WebSocket-Protocol, no en el query
+  // string, para no exponerlo en logs de proxy, historial ni referrers.
+  const token = getToken();
+  return token ? [token] : [];
 }
 
 export function useRealtimeSimulation(scenarioId: number | null) {
@@ -38,7 +43,7 @@ export function useRealtimeSimulation(scenarioId: number | null) {
   useEffect(() => {
     if (scenarioId === null) return;
 
-    const socket = new WebSocket(buildWebSocketUrl(scenarioId));
+    const socket = new WebSocket(buildWebSocketUrl(scenarioId), buildWebSocketSubprotocols());
     socketRef.current = socket;
     setStatus("connecting");
     setPoints([]);
