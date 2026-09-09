@@ -19,14 +19,18 @@ router = APIRouter(prefix="/realtime", tags=["realtime"])
 def _resolve_user(token: str | None, db) -> User | None:
     if not token:
         return None
-    subject = decode_access_token(token)
-    if subject is None:
+    claims = decode_access_token(token)
+    if claims is None:
         return None
     try:
-        user = db.get(User, int(subject))
+        user = db.get(User, int(claims[0]))
     except (TypeError, ValueError):
         return None
-    return user if user and user.is_active else None
+    if user is None or not user.is_active:
+        return None
+    if claims[1] != user.token_version:  # SEC-002: token revocado tras cambiar contraseña
+        return None
+    return user
 
 
 def _extract_token(websocket: WebSocket) -> str | None:

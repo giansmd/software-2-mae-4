@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import enum
 
-from sqlalchemy import Boolean, Enum as SAEnum, String
+from sqlalchemy import Boolean, Enum as SAEnum, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base
@@ -25,3 +25,6 @@ class User(Base):
     institution: Mapped[str | None] = mapped_column(String(255), nullable=True)
     role: Mapped[Role] = mapped_column(SAEnum(Role), default=Role.VISITANTE)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    # SEC-002: bumped on every password change so previously issued JWTs (which
+    # carry the older version in their "ver" claim) are invalidated immediately.
+    token_version: Mapped[int] = mapped_column(Integer, default=0, server_default="0")

@@ -47,7 +47,10 @@ def register(payload: RegisterRequest, request: Request, db: Session = Depends(g
     db.add(user)
     db.commit()
     db.refresh(user)
-    return Token(access_token=create_access_token(user.id), user=UserOut.model_validate(user))
+    return Token(
+        access_token=create_access_token(user.id, token_version=user.token_version),
+        user=UserOut.model_validate(user),
+    )
 
 
 @router.post("/login", response_model=Token)
@@ -56,7 +59,10 @@ def login(payload: LoginRequest, request: Request, db: Session = Depends(get_db)
     user = db.query(User).filter(User.email == payload.email).first()
     if not user or not verify_password(payload.password, user.hashed_password) or not user.is_active:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Credenciales inválidas")
-    return Token(access_token=create_access_token(user.id), user=UserOut.model_validate(user))
+    return Token(
+        access_token=create_access_token(user.id, token_version=user.token_version),
+        user=UserOut.model_validate(user),
+    )
 
 
 @router.get("/me", response_model=UserOut)
@@ -92,4 +98,5 @@ def change_password(
     if not verify_password(payload.current_password, user.hashed_password):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Contraseña actual incorrecta")
     user.hashed_password = hash_password(payload.new_password)
+    user.token_version += 1  # SEC-002: invalida todos los JWT emitidos hasta ahora
     db.commit()

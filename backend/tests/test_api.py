@@ -543,3 +543,73 @@ def test_client_ip_uses_xff_first_hop_when_trusting_proxy():
         assert client_ip(_scope_request()) == "203.0.113.9"
     finally:
         settings.rate_limit_trust_proxy = original
+
+
+# ---------------------------------------------------------------------------
+# SEC-002: password change invalidates previously issued JWTs
+# ---------------------------------------------------------------------------
+
+def test_change_password_invalidates_previous_tokens(client):
+    # SEC-002: a token issued before the password change must stop working
+    # immediately (401), while a fresh login with the new password succeeds.
+    r = client.post(
+        "/api/auth/register",
+        json={
+            "email": "sec002@mae4.dev",
+            "password": "Sec00212345",
+            "full_name": "SEC-002 Test",
+        },
+    )
+    assert r.status_code == 201, r.text
+    old_token = r.json()["access_token"]
+
+    # Old token is valid before the change.
+    me = client.get("/api/auth/me", headers={"Authorization": f"Bearer {old_token}"})
+    assert me.status_code == 200
+
+    # Change the password.
+    r = client.post(
+        "/api/auth/me/password",
+        json={"current_password": "Sec00212345", "new_password": "NuevoSec00299"},
+        headers={"Authorization": f"Bearer {old_token}"},
+    )
+    assert r.status_code == 204, r.text
+
+    # The old token is now rejected (revoked at the version level).
+    me = client.get("/api/auth/me", headers={"Authorization": f"Bearer {old_token}"})
+    assert me.status_code == 401
+
+    # Login with the old password fails, with the new password succeeds.
+    r = client.post("/api/auth/login", json={"email": "sec002@mae4.dev", "password": "Sec00212345"})
+    assert r.status_code == 401
+    new_token = _login(client, "sec002@mae4.dev", "NuevoSec00299")
+    me = client.get("/api/auth/me", headers={"Authorization": f"Bearer {new_token}"})
+    assert me.status_code == 200
+
+
+def test_change_password_does_not_revoke_other_users_tokens(client):
+    # SEC-002: the invalidation is per-user; tokens of other users remain valid
+    # after a password change (no global secret rotation).
+    r = client.post(
+        "/api/auth/register",
+        json={
+            "email": "sec002b@mae4.dev",
+            "password": "Sec002b12345",
+            "full_name": "SEC-002 Other",
+        },
+    )
+    assert r.status_code == 201, r.text
+    my_token = r.json()["access_token"]
+
+    r = client.post(
+        "/api/auth/me/password",
+        json={"current_password": "Sec002b12345", "new_password": "NuevoSec002b88"},
+        headers={"Authorization": f"Bearer {my_token}"},
+    )
+    assert r.status_code == 204
+
+    # A seeded investigator token still authenticates normally.
+    inv_token = _login(client, "inv@mae4.dev", "Invest12345")
+    me = client.get("/api/auth/me", headers={"Authorization": f"Bearer {inv_token}"})
+    assert me.status_code == 200
+    assert me.json()["email"] == "inv@mae4.dev"

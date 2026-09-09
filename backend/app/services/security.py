@@ -27,16 +27,25 @@ def verify_password(password: str, hashed: str) -> bool:
         return bcrypt.check(pw, h)
 
 
-def create_access_token(subject: str | int, expires_minutes: int | None = None) -> str:
+def create_access_token(
+    subject: str | int,
+    expires_minutes: int | None = None,
+    token_version: int = 0,
+) -> str:
     expire = datetime.now(timezone.utc) + timedelta(
         minutes=expires_minutes or settings.access_token_expire_minutes
     )
-    payload = {"sub": str(subject), "exp": expire}
+    payload = {"sub": str(subject), "exp": expire, "ver": token_version}
     return jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
 
 
-def decode_access_token(token: str) -> str | None:
-    """Return the subject (user id as string) or None if invalid."""
+def decode_access_token(token: str) -> tuple[str, int] | None:
+    """Return ``(subject, token_version)`` or ``None`` if the token is invalid.
+
+    Tokens signed before SEC-002 have no ``ver`` claim and are treated as
+    version 0, so they stay valid until the user's password changes (which
+    bumps ``users.token_version`` past 0).
+    """
     try:
         payload = jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
     except JWTError:
@@ -44,4 +53,7 @@ def decode_access_token(token: str) -> str | None:
     sub = payload.get("sub")
     if sub is None or not str(sub).isdigit():
         return None
-    return str(sub)
+    ver = payload.get("ver", 0)
+    if isinstance(ver, bool) or not isinstance(ver, int) or ver < 0:
+        return None
+    return str(sub), ver

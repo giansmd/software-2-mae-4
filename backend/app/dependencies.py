@@ -27,11 +27,13 @@ def get_current_user(
 ) -> User:
     if not token:
         raise _credentials_error
-    sub = decode_access_token(token)
-    if sub is None:
+    claims = decode_access_token(token)
+    if claims is None:
         raise _credentials_error
-    user = db.get(User, int(sub))
+    user = db.get(User, int(claims[0]))
     if user is None or not user.is_active:
+        raise _credentials_error
+    if claims[1] != user.token_version:  # SEC-002: token revocado tras cambiar contraseña
         raise _credentials_error
     return user
 
@@ -43,11 +45,13 @@ def get_optional_user(
     """Like get_current_user but returns None instead of 401 for anonymous access."""
     if not token:
         return None
-    sub = decode_access_token(token)
-    if sub is None:
+    claims = decode_access_token(token)
+    if claims is None:
         return None
-    user = db.get(User, int(sub))
+    user = db.get(User, int(claims[0]))
     if user is None or not user.is_active:
+        return None
+    if claims[1] != user.token_version:  # SEC-002: token revocado tras cambiar contraseña
         return None
     return user
 
