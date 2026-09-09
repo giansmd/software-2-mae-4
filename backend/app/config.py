@@ -43,6 +43,12 @@ class Settings(BaseSettings):
     login_rate_window_minutes: int = 15
     register_rate_limit: int = 20
     register_rate_window_minutes: int = 15
+    # RATE-001: when the backend is reachable ONLY through a trusted reverse
+    # proxy, enable this to key the limit by the client IP taken from
+    # X-Forwarded-For. Keep False for direct connections: honoring the header
+    # without a trusted proxy lets a client spoof it and bypass the per-IP
+    # budget (the default is fail-safe).
+    rate_limit_trust_proxy: bool = False
 
     # CORS (comma separated list of allowed origins)
     cors_origins: str = "http://localhost:3000,http://frontend:3000"

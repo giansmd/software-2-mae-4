@@ -1,10 +1,20 @@
-"""In-memory fixed-window rate limiter for authentication endpoints (SEC-004)."""
+"""In-memory fixed-window rate limiter for authentication endpoints (SEC-004).
+
+RATE-001: by default the limiter keys on the direct peer IP
+(``request.client.host``) and ignores ``X-Forwarded-For``. Honoring the proxy
+header without a trusted proxy would let a client spoof it and bypass the
+per-IP budget, so it is opt-in: set ``RATE_LIMIT_TRUST_PROXY=true`` only when
+the app is reachable exclusively through a trusted reverse proxy that
+overwrites ``X-Forwarded-For`` (see ``app.config.Settings.rate_limit_trust_proxy``).
+"""
 from __future__ import annotations
 
 import threading
 import time
 
 from fastapi import HTTPException, Request, status
+
+from app.config import settings
 
 
 class FixedWindowLimiter:
@@ -34,6 +44,18 @@ class FixedWindowLimiter:
 
 
 def client_ip(request: Request) -> str:
+    """Return the client key used for rate limiting.
+
+    Uses the direct peer IP (``request.client.host``); when
+    ``RATE_LIMIT_TRUST_PROXY`` is enabled, the first hop of
+    ``X-Forwarded-For`` is used instead (see the module docstring for when that
+    is safe). Falls back to the literal key ``\"unknown\"`` only when no peer
+    information is available.
+    """
+    if settings.rate_limit_trust_proxy:
+        forwarded = request.headers.get("x-forwarded-for")
+        if forwarded:
+            return forwarded.split(",")[0].strip()
     return request.client.host if request.client else "unknown"
 
 

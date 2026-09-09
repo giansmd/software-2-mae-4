@@ -499,3 +499,47 @@ def test_register_exhausts_rate_limit_returns_429(client):
         assert r.status_code == 429, r.status_code
     finally:
         auth_module.REGISTER_LIMITER = original
+
+
+# ---------------------------------------------------------------------------
+# RATE-001: client key for rate limiting behind proxies
+# ---------------------------------------------------------------------------
+
+def _scope_request(client=("203.0.113.9", 1234), xff=None):
+    from starlette.requests import Request
+
+    headers = [(b"x-forwarded-for", xff.encode())] if xff else []
+    return Request({"type": "http", "client": client, "headers": headers})
+
+
+def test_client_ip_ignores_xff_by_default():
+    # RATE-001: without a trusted proxy, X-Forwarded-For is ignored so a client
+    # cannot spoof a different IP and bypass the per-IP budget. Peer-less
+    # requests fall back to the literal "unknown" key.
+    from app.config import settings
+    from app.services.rate_limit import client_ip
+
+    original = settings.rate_limit_trust_proxy
+    settings.rate_limit_trust_proxy = False
+    try:
+        assert client_ip(_scope_request(xff="198.51.100.7")) == "203.0.113.9"
+        assert client_ip(_scope_request()) == "203.0.113.9"
+        assert client_ip(_scope_request(client=None)) == "unknown"
+    finally:
+        settings.rate_limit_trust_proxy = original
+
+
+def test_client_ip_uses_xff_first_hop_when_trusting_proxy():
+    # RATE-001: with RATE_LIMIT_TRUST_PROXY enabled, the first hop of
+    # X-Forwarded-For (the real client) is used; without the header the direct
+    # peer IP still applies.
+    from app.config import settings
+    from app.services.rate_limit import client_ip
+
+    original = settings.rate_limit_trust_proxy
+    settings.rate_limit_trust_proxy = True
+    try:
+        assert client_ip(_scope_request(xff="198.51.100.7, 10.0.0.2")) == "198.51.100.7"
+        assert client_ip(_scope_request()) == "203.0.113.9"
+    finally:
+        settings.rate_limit_trust_proxy = original

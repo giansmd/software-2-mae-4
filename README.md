@@ -189,6 +189,15 @@ Los tests siempre corren contra una base SQLite local hermética (`test_mae4.db`
 ignorando cualquier `DATABASE_URL` presente en el entorno: nunca escriben sobre una
 base real ni dependen de su esquema.
 
+### Seguridad
+
+- Autenticación con rate limiting por IP en memoria (SEC-004): login 60 intentos / 15 min
+  y registro 20 / 15 min por IP. Por defecto la cuota se calcula sobre la IP directa del
+  peer e **ignora `X-Forwarded-For`** (RATE-001, fail-safe ante spoofing); si el backend se
+  despliega detrás de un proxy inverso de confianza, activa `RATE_LIMIT_TRUST_PROXY=true`
+  para que la cuota use el primer salto de ese header. El limitador es en memoria y por
+  proceso: no se comparte entre workers; al escalar, sustituir por un store compartido.
+
 ## Notas
 
 - Sin LLM/Gemini ni APIs externas: todo el cálculo es local.
