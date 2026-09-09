@@ -1,8 +1,9 @@
 # docker-compose.yml — Orquesta db + backend + frontend de MAE-4.
 # Arranca todo con:  docker compose up
 # (necesitas Docker + el plugin compose instalados; nada más global).
-# JWT_SECRET es OBLIGATORIO (SEC-001): defínelo en .env o exportado, p.ej.
-#   JWT_SECRET=$(openssl rand -hex 32) docker compose up
+# JWT_SECRET y POSTGRES_PASSWORD son OBLIGATORIOS (SEC-001 / SEC-006): defínelos
+# en .env o exportados, p.ej.
+#   JWT_SECRET=$(openssl rand -hex 32) POSTGRES_PASSWORD=$(openssl rand -hex 24) docker compose up
 
 services:
   db:
@@ -10,7 +11,7 @@ services:
     container_name: mae4-db
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD es obligatoria (SEC-006); genera una con: openssl rand -hex 24}"
       POSTGRES_DB: ${POSTGRES_DB:-mae4}
     volumes:
       - pgdata:/var/lib/postgresql

@@ -85,12 +85,14 @@ levantar el stack. Para conservar esos datos se requiere una migración con
 
 ## Variables de entorno
 
-Ver `.env.example`. La mayoría tiene valor por defecto en `docker-compose.yml`, así
-que `docker compose up` funciona sin crear `.env`. **`JWT_SECRET` es obligatorio** y
-el backend aborta el arranque si falta o es débil (SEC-001); `POSTGRES_PASSWORD` y
-`DATABASE_URL` tienen defaults de desarrollo — cámbialos para producir. El seed de
-demo está desactivado por defecto (DOC-001) y solo el perfil demo de compose lo
-activa explícitamente con `SEED_ON_STARTUP=true`.
+Ver `.env.example`. La mayoría tiene valor por defecto en `docker-compose.yml`.
+**`JWT_SECRET` y `POSTGRES_PASSWORD` son obligatorios**: `docker compose` aborta el
+arranque si faltan (SEC-001 / SEC-006); el backend también rechaza `JWT_SECRET`
+débil o conocido. **`DATABASE_URL` no tiene default funcional** (el de
+`docker-compose.yml` es un marcador `***` que no conecta): defínela con la
+contraseña real, p. ej. `postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/mae4`.
+El seed de demo está desactivado por defecto (DOC-001) y solo el perfil demo de
+compose lo activa explícitamente con `SEED_ON_STARTUP=true`.
 
 ## Credenciales de seed (SOLO perfil demo)
 
