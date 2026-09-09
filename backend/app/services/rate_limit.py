@@ -30,6 +30,7 @@ class FixedWindowLimiter:
         self.window_seconds = window_seconds
         self._hits: dict[str, tuple[int, float]] = {}
         self._lock = threading.Lock()
+        self._last_prune = time.monotonic()
 
     def check(self, key: str) -> bool:
         """Register one attempt for the key; return True if still allowed."""
@@ -40,7 +41,19 @@ class FixedWindowLimiter:
                 count, window_start = 0, now
             count += 1
             self._hits[key] = (count, window_start)
+            if now - self._last_prune >= self.window_seconds:
+                self._prune(now)
             return count <= self.limit
+
+    def _prune(self, now: float) -> None:
+        """Drop entries whose window ended. Called with the lock held at most
+        once per window, so memory stays bounded in long-running processes
+        (LIM-001)."""
+        cutoff = now - self.window_seconds
+        self._hits = {
+            key: entry for key, entry in self._hits.items() if entry[1] > cutoff
+        }
+        self._last_prune = now
 
 
 def client_ip(request: Request) -> str:

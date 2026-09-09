@@ -545,6 +545,28 @@ def test_client_ip_uses_xff_first_hop_when_trusting_proxy():
         settings.rate_limit_trust_proxy = original
 
 
+def test_fixed_window_limiter_prunes_expired_keys(monkeypatch):
+    # LIM-001: expired entries are pruned periodically so the in-memory dict
+    # stays bounded in long-running processes.
+    now = 1_000.0
+    monkeypatch.setattr("app.services.rate_limit.time.monotonic", lambda: now)
+    limiter = FixedWindowLimiter(limit=5, window_seconds=60)
+    limiter.check("203.0.113.1")
+    now = 1_001.0
+    limiter.check("203.0.113.2")
+    assert set(limiter._hits) == {"203.0.113.1", "203.0.113.2"}
+
+    # One full window later, inserting a third key prunes the two expired ones.
+    now = 1_001.0 + 60.0
+    limiter.check("203.0.113.3")
+    assert set(limiter._hits) == {"203.0.113.3"}
+
+    # The prune only runs once per window, and fresh entries survive it.
+    now = 1_001.0 + 60.0 + 1.0
+    limiter.check("203.0.113.4")
+    assert set(limiter._hits) == {"203.0.113.3", "203.0.113.4"}
+
+
 # ---------------------------------------------------------------------------
 # SEC-002: password change invalidates previously issued JWTs
 # ---------------------------------------------------------------------------
