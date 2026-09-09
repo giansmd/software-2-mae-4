@@ -34,8 +34,10 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60 * 24
 
-    # Seed
-    seed_on_startup: bool = True
+    # Seed (DOC-001): el seed crea credenciales demo conocidas; por defecto
+    # está DESACTIVADO y debe activarse explícitamente solo en el perfil demo
+    # local. Nunca habilitarlo en un entorno compartido o de producción.
+    seed_on_startup: bool = False
 
     # Rate limiting (SEC-004): per-IP budgets for authentication endpoints.
     # In-memory and per-process; adjust when scaling beyond one worker.

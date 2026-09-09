@@ -69,9 +69,12 @@ docker compose up --build
 - Backend API (docs Swagger): http://localhost:8000/docs
 - Salud:     http://localhost:8000/health
 
-La base de datos se **crea, migra y siembra automáticamente** al arrancar el backend
-(el entrypoint espera a Postgres vía healthcheck, ejecuta `app.seed` y luego Uvicorn).
-Al primer arranque ya hay un humedal demo, 4 escenarios públicos y mediciones cargadas.
+La base de datos se **crea** al arrancar el backend (el entrypoint espera a
+Postgres vía healthcheck y luego Uvicorn). El **seed de demostración es opt-in
+(DOC-001)**: solo se ejecuta cuando `SEED_ON_STARTUP=true`; el perfil demo de
+`docker compose` ya lo fija así, por lo que al primer arranque del stack demo
+hay un humedal, 4 escenarios públicos y mediciones cargadas. Sin esa variable,
+arranca limpio sin credenciales ni datos demo.
 
 Para detener y limpiar volúmenes: `docker compose down -v`.
 
@@ -82,11 +85,20 @@ levantar el stack. Para conservar esos datos se requiere una migración con
 
 ## Variables de entorno
 
-Ver `.env.example`. Todas tienen valor por defecto en `docker-compose.yml`, así que
-`docker compose up` funciona sin crear `.env`. Las sensibles (`POSTGRES_PASSWORD`,
-`JWT_SECRET`, `DATABASE_URL`) vienen con defaults de desarrollo; cámbialas para producir.
+Ver `.env.example`. La mayoría tiene valor por defecto en `docker-compose.yml`, así
+que `docker compose up` funciona sin crear `.env`. **`JWT_SECRET` es obligatorio** y
+el backend aborta el arranque si falta o es débil (SEC-001); `POSTGRES_PASSWORD` y
+`DATABASE_URL` tienen defaults de desarrollo — cámbialos para producir. El seed de
+demo está desactivado por defecto (DOC-001) y solo el perfil demo de compose lo
+activa explícitamente con `SEED_ON_STARTUP=true`.
 
-## Credenciales de seed
+## Credenciales de seed (SOLO perfil demo)
+
+Estas credenciales **solo existen cuando el seed está activo** (`SEED_ON_STARTUP=true`,
+perfil demo local de `docker compose`). Son públicas, conocidas y **nunca deben
+usarse fuera de la demo local** (DOC-001): no habilites el seed en entornos
+compartidos ni de producción, y si algún día se activa en otro entorno, cámbialas
+o elimina el seed.
 
 | Rol | Email | Contraseña |
 |---|---|---|

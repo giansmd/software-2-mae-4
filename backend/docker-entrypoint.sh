@@ -17,8 +17,13 @@ do
   sleep 1
 done
 
-echo "PostgreSQL listo. Sembrando base de datos..."
-python -m app.seed
+echo "PostgreSQL listo."
+if [ "${SEED_ON_STARTUP:-false}" = "true" ]; then
+    echo "SEED_ON_STARTUP=true: sembrando base de datos (perfil demo)..."
+    python -m app.seed
+else
+    echo "SEED_ON_STARTUP no activo: seed omitido (credenciales demo no se siembran)."
+fi
 
 echo "Arrancando Uvicorn en 0.0.0.0:8000 (hot-reload)"
 exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

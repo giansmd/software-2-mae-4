@@ -31,7 +31,7 @@ services:
       DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/mae4}
       JWT_SECRET: "${JWT_SECRET:?JWT_SECRET es obligatorio (SEC-001); genera uno con: openssl rand -hex 32}"
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://frontend:3000}
-      SEED_ON_STARTUP: "true"
+      SEED_ON_STARTUP: "true"  # perfil demo (DOC-001): credenciales demo conocidas; SOLO local
     volumes:
       - ./backend:/app
     ports:
