@@ -14,6 +14,7 @@ import {
 import { useAuth } from "@/lib/auth";
 import type { User, ModelParam, Role } from "@/lib/types";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
 import {
   Card,
   CardContent,
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/card";
 
 export default function AdminPage() {
+  const { t } = useI18n();
   const router = useRouter();
   const { isAuthed, role, loading: authLoading } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
@@ -142,7 +144,7 @@ export default function AdminPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Usuarios</CardTitle>
+            <CardTitle>{t("admin.usuarios")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <form onSubmit={handleCreateUser} className="grid grid-cols-2 gap-2">
@@ -229,7 +231,7 @@ export default function AdminPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Calibración de parámetros del modelo</CardTitle>
+            <CardTitle>{t("admin.calibracion")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {params.length === 0 ? (

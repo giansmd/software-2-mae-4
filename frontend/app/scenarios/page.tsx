@@ -24,6 +24,7 @@ import {
 import { useAuth } from "@/lib/auth";
 import type { Scenario, SeaLevelRise } from "@/lib/types";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
 import {
   Card,
   CardContent,
@@ -32,6 +33,7 @@ import {
 } from "@/components/ui/card";
 
 export default function ScenariosPage() {
+  const { t } = useI18n();
   const router = useRouter();
   const { isAuthed, role, user, loading: authLoading } = useAuth();
   const canExport = role === "INVESTIGADOR" || role === "ADMIN";
@@ -196,7 +198,7 @@ export default function ScenariosPage() {
         <Card className="mb-6">
           <CardHeader>
             <CardTitle>
-              {editing ? "Editar escenario" : "Crear escenario"}
+              {editing ? t("scenarios.editar") : t("scenarios.crear")}
             </CardTitle>
           </CardHeader>
           <CardContent>

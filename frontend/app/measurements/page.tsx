@@ -14,6 +14,7 @@ import {
 import { useAuth } from "@/lib/auth";
 import type { Measurement, Scenario } from "@/lib/types";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
 import {
   Card,
   CardContent,
@@ -32,6 +33,7 @@ const EMPTY = {
 };
 
 export default function MeasurementsPage() {
+  const { t } = useI18n();
   const router = useRouter();
   const { isAuthed, loading: authLoading } = useAuth();
   const [items, setItems] = useState<Measurement[]>([]);
@@ -170,7 +172,7 @@ export default function MeasurementsPage() {
         <Card className="mb-6">
           <CardHeader>
             <CardTitle>
-              {editing ? "Editar medición" : "Nueva medición"}
+              {editing ? t("measurements.editar") : t("measurements.nueva")}
             </CardTitle>
           </CardHeader>
           <CardContent>

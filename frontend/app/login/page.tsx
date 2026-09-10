@@ -14,9 +14,11 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { useI18n } from "@/lib/i18n";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useI18n();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -61,12 +63,10 @@ export default function LoginPage() {
             <span className="text-lg font-semibold">Gemelo Digital</span>
           </div>
           <CardTitle>
-            {mode === "login" ? "Iniciar sesión" : "Crear cuenta"}
+            {mode === "login" ? t("login.title") : t("login.crearCuenta")}
           </CardTitle>
           <CardDescription>
-            {mode === "login"
-              ? "Accede con tu cuenta de investigador."
-              : "Regístrate como visitante/investigador."}
+            {mode === "login" ? t("login.accede") : t("login.registrateVisitante")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -74,7 +74,7 @@ export default function LoginPage() {
             {mode === "register" && (
               <input
                 className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
-                placeholder="Nombre completo"
+                placeholder={t("login.nombreCompleto")}
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -83,7 +83,7 @@ export default function LoginPage() {
             <input
               className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
               type="email"
-              placeholder="Correo electrónico"
+              placeholder={t("login.email")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -91,7 +91,7 @@ export default function LoginPage() {
             {mode === "register" && (
               <input
                 className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
-                placeholder="Institución (opcional)"
+                placeholder={t("login.institucion")}
                 value={institution}
                 onChange={(e) => setInstitution(e.target.value)}
               />
@@ -99,7 +99,7 @@ export default function LoginPage() {
             <input
               className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
               type="password"
-              placeholder="Contraseña"
+              placeholder={t("login.password")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -109,35 +109,35 @@ export default function LoginPage() {
             )}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-              {mode === "login" ? "Entrar" : "Registrarse"}
+              {mode === "login" ? t("login.entrar") : t("login.registrarse")}
             </Button>
           </form>
           <p className="mt-4 text-center text-sm text-slate-500">
             {mode === "login" ? (
               <>
-                ¿No tienes cuenta?{" "}
+                {t("login.noTienesCuenta")}{" "}
                 <button
                   className="text-emerald-600 underline"
                   onClick={() => setMode("register")}
                 >
-                  Regístrate
+                  {t("login.registrate")}
                 </button>
               </>
             ) : (
               <>
-                ¿Ya tienes cuenta?{" "}
+                {t("login.yaTienesCuenta")}{" "}
                 <button
                   className="text-emerald-600 underline"
                   onClick={() => setMode("login")}
                 >
-                  Inicia sesión
+                  {t("login.iniciaSesion")}
                 </button>
               </>
             )}
           </p>
           <p className="mt-2 text-center text-xs">
             <Link href="/" className="text-slate-400 hover:underline">
-              Volver al dashboard
+              {t("login.volverDashboard")}
             </Link>
           </p>
         </CardContent>

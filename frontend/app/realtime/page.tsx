@@ -18,13 +18,21 @@ import { useRealtimeSimulation, type RealtimeConnectionStatus } from "@/lib/real
 import type { Scenario } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useI18n } from "@/lib/i18n";
 
-const STATUS_LABELS: Record<RealtimeConnectionStatus, string> = {
+const STATUS_LABELS_ES: Record<RealtimeConnectionStatus, string> = {
   connecting: "Conectando",
   running: "Ejecutando",
   paused: "Pausado",
   completed: "Horizonte alcanzado",
   disconnected: "Desconectado",
+};
+const STATUS_LABELS_EN: Record<RealtimeConnectionStatus, string> = {
+  connecting: "Connecting",
+  running: "Running",
+  paused: "Paused",
+  completed: "Horizon reached",
+  disconnected: "Disconnected",
 };
 
 function formatTime(value: string) {
@@ -47,6 +55,8 @@ function Metric({ label, value, unit, accent = "text-slate-900 dark:text-white" 
 }
 
 export default function RealtimePage() {
+  const { t, lang } = useI18n();
+  const STATUS_LABELS = lang === "en" ? STATUS_LABELS_EN : STATUS_LABELS_ES;
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [scenarioId, setScenarioId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -67,7 +77,7 @@ export default function RealtimePage() {
   }, []);
 
   if (loading) {
-    return <main className="mx-auto max-w-7xl px-4 py-12 text-center text-slate-500">Cargando escenarios…</main>;
+    return <main className="mx-auto max-w-7xl px-4 py-12 text-center text-slate-500">{t("common.loading")}</main>;
   }
 
   if (loadError) {
@@ -79,11 +89,11 @@ export default function RealtimePage() {
       <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <div className="mb-2 flex items-center gap-2 text-sm font-medium text-emerald-700 dark:text-emerald-400">
-            <Activity className="h-4 w-4" /> Centro de monitoreo
+            <Activity className="h-4 w-4" /> {t("realtime.centro")}
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">Estado del humedal en vivo</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t("realtime.titulo")}</h1>
           <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">
-            Observa cómo evoluciona el humedal con el escenario seleccionado. Esta primera versión utiliza una señal simulada reproducible.
+            {t("realtime.desc")}
           </p>
         </div>
         <div className={`inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-sm font-medium md:self-auto ${realtime.status === "running" ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300" : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"}`}>
@@ -95,15 +105,15 @@ export default function RealtimePage() {
       <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
         <Card className="h-fit">
           <CardHeader>
-            <CardTitle>Escenario</CardTitle>
+            <CardTitle>{t("realtime.escenario")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
             {scenarios.length === 0 ? (
-              <p className="text-sm text-slate-500">No hay escenarios públicos disponibles.</p>
+              <p className="text-sm text-slate-500">{t("realtime.noEscenariosPub")}</p>
             ) : (
               <>
                 <label className="block text-sm font-medium">
-                  Humedal de referencia
+                  {t("realtime.humedalRef")}
                   <select
                     value={scenarioId ?? ""}
                     onChange={(event) => setScenarioId(Number(event.target.value))}
@@ -115,24 +125,24 @@ export default function RealtimePage() {
                 {scenario && (
                   <div className="space-y-2 rounded-lg bg-slate-50 p-3 text-sm dark:bg-slate-950">
                     <p className="font-medium">{scenario.name}</p>
-                    <p className="text-slate-500">Restauración: {scenario.restoration_level}%</p>
-                    <p className="text-slate-500">SLR: {scenario.sea_level_rise}</p>
-                    <p className="text-slate-500">Horizonte: {scenario.horizon_year}</p>
+                    <p className="text-slate-500">{t("realtime.restauracion", { pct: scenario.restoration_level })}</p>
+                    <p className="text-slate-500">{t("realtime.slr", { v: scenario.sea_level_rise })}</p>
+                    <p className="text-slate-500">{t("realtime.horizonte", { v: scenario.horizon_year })}</p>
                   </div>
                 )}
                 <div className="flex flex-wrap gap-2">
                   <Button size="sm" onClick={realtime.start} disabled={realtime.status === "running" || realtime.status === "connecting"}>
-                    <Play className="h-4 w-4" /> Iniciar
+                    <Play className="h-4 w-4" /> {t("realtime.iniciar")}
                   </Button>
                   <Button size="sm" variant="outline" onClick={realtime.pause} disabled={realtime.status !== "running"}>
-                    <Pause className="h-4 w-4" /> Pausar
+                    <Pause className="h-4 w-4" /> {t("realtime.pausar")}
                   </Button>
                   <Button size="sm" variant="ghost" onClick={realtime.reset}>
-                    <RotateCcw className="h-4 w-4" /> Reiniciar
+                    <RotateCcw className="h-4 w-4" /> {t("realtime.reiniciar")}
                   </Button>
                 </div>
                 <label className="block text-sm font-medium">
-                  Velocidad
+                  {t("realtime.velocidad")}
                   <select
                     defaultValue="4"
                     onChange={(event) => realtime.setSpeed(Number(event.target.value))}
@@ -147,7 +157,7 @@ export default function RealtimePage() {
               </>
             )}
             <p className="border-t border-slate-200 pt-4 text-xs leading-relaxed text-slate-500 dark:border-slate-800">
-              Fuente actual: <strong>simulada</strong>. Los valores representan una reproducción del horizonte del escenario, no lecturas de sensores.
+              {t("realtime.fuente")}
             </p>
           </CardContent>
         </Card>
@@ -155,18 +165,18 @@ export default function RealtimePage() {
         <section className="space-y-6">
           {realtime.error && <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">{realtime.error}</p>}
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            <Metric label="Carbono retenido" value={current ? current.retained_carbon.toFixed(1) : "—"} unit="tC" accent="text-emerald-700 dark:text-emerald-400" />
-            <Metric label="Nivel freático" value={current ? current.water_table.toFixed(2) : "—"} unit="m" accent="text-blue-700 dark:text-blue-400" />
-            <Metric label="Cobertura vegetal" value={current ? `${(current.vegetation_cover * 100).toFixed(1)}` : "—"} unit="%" accent="text-teal-700 dark:text-teal-400" />
-            <Metric label="Superficie efectiva" value={current ? current.effective_area_ha.toFixed(1) : "—"} unit="ha" accent="text-amber-700 dark:text-amber-400" />
+            <Metric label={t("realtime.m.carbon")} value={current ? current.retained_carbon.toFixed(1) : "—"} unit="tC" accent="text-emerald-700 dark:text-emerald-400" />
+            <Metric label={t("realtime.m.freatico")} value={current ? current.water_table.toFixed(2) : "—"} unit="m" accent="text-blue-700 dark:text-blue-400" />
+            <Metric label={t("realtime.m.cobertura")} value={current ? `${(current.vegetation_cover * 100).toFixed(1)}` : "—"} unit="%" accent="text-teal-700 dark:text-teal-400" />
+            <Metric label={t("realtime.m.area")} value={current ? current.effective_area_ha.toFixed(1) : "—"} unit="ha" accent="text-amber-700 dark:text-amber-400" />
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>Carbono y superficie</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[320px] w-full">
+              <CardTitle>{t("realtime.chartCS")}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="h-[320px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={realtime.points} margin={{ left: 8, right: 16, top: 8 }}>
                     <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -174,8 +184,8 @@ export default function RealtimePage() {
                     <YAxis yAxisId="carbon" />
                     <YAxis yAxisId="area" orientation="right" />
                     <Tooltip labelFormatter={(value) => formatTime(String(value))} />
-                    <Line yAxisId="carbon" type="monotone" dataKey="retained_carbon" name="Carbono retenido (tC)" stroke="#059669" strokeWidth={2.5} dot={false} />
-                    <Line yAxisId="area" type="monotone" dataKey="effective_area_ha" name="Superficie efectiva (ha)" stroke="#2563eb" strokeWidth={2} dot={false} />
+                    <Line yAxisId="carbon" type="monotone" dataKey="retained_carbon" name={t("realtime.chartCSline")} stroke="#059669" strokeWidth={2.5} dot={false} />
+                    <Line yAxisId="area" type="monotone" dataKey="effective_area_ha" name={t("realtime.chartCSarea")} stroke="#2563eb" strokeWidth={2} dot={false} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -184,7 +194,7 @@ export default function RealtimePage() {
 
           <div className="grid gap-6 xl:grid-cols-2">
             <Card>
-              <CardHeader><CardTitle>Nivel freático</CardTitle></CardHeader>
+              <CardHeader><CardTitle>{t("realtime.chartFreatico")}</CardTitle></CardHeader>
               <CardContent>
                 <div className="h-[250px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
@@ -193,14 +203,14 @@ export default function RealtimePage() {
                       <XAxis dataKey="time" tickFormatter={formatTime} minTickGap={32} />
                       <YAxis />
                       <Tooltip labelFormatter={(value) => formatTime(String(value))} />
-                      <Line type="monotone" dataKey="water_table" name="Nivel de agua (m)" stroke="#2563eb" strokeWidth={2.5} dot={false} />
+                      <Line type="monotone" dataKey="water_table" name={t("realtime.chartFreaticoLine")} stroke="#2563eb" strokeWidth={2.5} dot={false} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
               </CardContent>
             </Card>
             <Card>
-              <CardHeader><CardTitle>Cobertura vegetal</CardTitle></CardHeader>
+              <CardHeader><CardTitle>{t("realtime.chartCobertura")}</CardTitle></CardHeader>
               <CardContent>
                 <div className="h-[250px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
@@ -209,8 +219,8 @@ export default function RealtimePage() {
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
                       <XAxis dataKey="time" tickFormatter={formatTime} minTickGap={32} />
                       <YAxis tickFormatter={(value) => `${Math.round(Number(value) * 100)}%`} domain={[0, 1]} />
-                      <Tooltip formatter={(value) => [`${(Number(value) * 100).toFixed(1)}%`, "Cobertura"]} labelFormatter={(value) => formatTime(String(value))} />
-                      <Area type="monotone" dataKey="vegetation_cover" name="Cobertura" stroke="#059669" fill="url(#coverFill)" strokeWidth={2.5} />
+                      <Tooltip formatter={(value) => [`${(Number(value) * 100).toFixed(1)}%`, t("realtime.chartCoberturaName")]} labelFormatter={(value) => formatTime(String(value))} />
+                      <Area type="monotone" dataKey="vegetation_cover" name={t("realtime.chartCoberturaName")} stroke="#059669" fill="url(#coverFill)" strokeWidth={2.5} />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>

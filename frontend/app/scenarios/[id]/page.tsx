@@ -19,6 +19,7 @@ import { runSimulation, getScenario, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import type { Scenario, SeaLevelRise, SimulationResult } from "@/lib/types";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
 import {
   Card,
   CardContent,
@@ -41,7 +42,8 @@ function Kpi({ label, value, hint }: { label: string; value: string; hint?: stri
   );
 }
 
-export default function ScenarioSimPage() {
+export default function ScenarioPage() {
+  const { t } = useI18n();
   const params = useParams();
   const router = useRouter();
   const id = Number(params.id);
@@ -138,7 +140,7 @@ export default function ScenarioSimPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[320px_1fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Parámetros</CardTitle>
+            <CardTitle>{t("scenarios.parametros")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <label className="block text-sm">
@@ -237,7 +239,7 @@ export default function ScenarioSimPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Retención de carbono (serie temporal)</CardTitle>
+                  <CardTitle>{t("scenarios.chartSerie")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="h-[340px] w-full">
@@ -272,7 +274,7 @@ export default function ScenarioSimPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Cobertura vegetal (%)</CardTitle>
+                  <CardTitle>{t("scenarios.chartCobertura")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="h-[260px] w-full">

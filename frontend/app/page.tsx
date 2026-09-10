@@ -22,6 +22,7 @@ import type { Scenario, SimulationResult } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 const HYPOTHESIS_PCT = 25;
 
@@ -52,6 +53,7 @@ function Kpi({
 }
 
 export default function DashboardPage() {
+  const { t } = useI18n();
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [results, setResults] = useState<Record<number, SimulationResult>>({});
@@ -139,19 +141,15 @@ export default function DashboardPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">
       <header className="mb-6">
-        <h1 className="text-3xl font-bold">
-          Gemelo Digital de Humedales Costeros
-        </h1>
+        <h1 className="text-3xl font-bold">{t("app.title")}</h1>
         <p className="mt-1 text-slate-600 dark:text-slate-300">
-          Explora escenarios públicos de restauración y su proyección de
-          retención de carbono. Hipótesis: aumentar ≥ {HYPOTHESIS_PCT}% de
-          carbono retenido al horizonte.
+          {t("dash.subtitle", { pct: HYPOTHESIS_PCT })}
         </p>
         <Link
           href="/realtime"
           className="mt-4 inline-flex rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
         >
-          Abrir monitoreo en vivo
+          {t("dash.openRealtime")}
         </Link>
       </header>
 
@@ -163,11 +161,11 @@ export default function DashboardPage() {
 
       <section className="mb-8">
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
-          Escenarios públicos
+          {t("dash.publicScenarios")}
         </h2>
         {scenarios.length === 0 ? (
           <p className="text-sm text-slate-500">
-            No hay escenarios públicos disponibles.
+            {t("dash.noScenarios")}
           </p>
         ) : (
           <div className="flex flex-wrap gap-2">
@@ -190,7 +188,7 @@ export default function DashboardPage() {
 
       {simulating && (
         <div className="mb-4 flex items-center gap-2 text-sm text-slate-500">
-          <Loader2 className="h-4 w-4 animate-spin" /> Simulando…
+          <Loader2 className="h-4 w-4 animate-spin" /> {t("dash.simulating")}
         </div>
       )}
 
@@ -216,28 +214,28 @@ export default function DashboardPage() {
                       <XCircle className="h-4 w-4" />
                     )}
                     {r.meets_hypothesis
-                      ? `Cumple hipótesis (≥${r.hypothesis_threshold_pct}%)`
-                      : `No cumple (${r.hypothesis_threshold_pct}% umbral)`}
+                      ? t("dash.meetsHypothesis", { pct: r.hypothesis_threshold_pct })
+                      : t("dash.notMeets", { pct: r.hypothesis_threshold_pct })}
                   </span>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
                   <Kpi
-                    label="Carbono base"
+                    label={t("dash.carbonBase")}
                     value={`${r.baseline_carbon.toFixed(1)} t`}
                   />
                   <Kpi
-                    label="Carbono horizonte"
+                    label={t("dash.carbonHorizon")}
                     value={`${r.horizon_carbon.toFixed(1)} t`}
                   />
                   <Kpi
-                    label="Variación"
+                    label={t("dash.variation")}
                     value={`${r.horizon_variation_pct > 0 ? "+" : ""}${r.horizon_variation_pct.toFixed(1)}%`}
-                    hint={`Umbral ${r.hypothesis_threshold_pct}%`}
+                    hint={t("dash.threshold", { pct: r.hypothesis_threshold_pct })}
                   />
                   <Kpi
-                    label="Superficie efectiva"
+                    label={t("dash.effectiveArea")}
                     value={`${r.series[r.series.length - 1]?.effective_area_ha.toFixed(1) ?? "-"} ha`}
                   />
                 </div>
@@ -250,7 +248,7 @@ export default function DashboardPage() {
       {chartData.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Retención de carbono proyectada (comparativa)</CardTitle>
+            <CardTitle>{t("dash.projectedChart")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[360px] w-full">
@@ -260,7 +258,7 @@ export default function DashboardPage() {
                   <XAxis dataKey="year" />
                   <YAxis
                     label={{
-                      value: "Carbono retenido (t)",
+                      value: t("dash.yLabel"),
                       angle: -90,
                       position: "insideLeft",
                     }}
@@ -286,11 +284,11 @@ export default function DashboardPage() {
       )}
 
       <div className="mt-8 text-center text-sm text-slate-500">
-        ¿Eres investigador?{" "}
+        {t("dash.researcherCtaPrefix")}{" "}
         <a href="/login" className="text-emerald-600 underline">
-          Inicia sesión
+          {t("dash.loginLink")}
         </a>{" "}
-        para crear y simular tus propios escenarios.
+        {t("dash.researcherCtaSuffix")}
       </div>
     </main>
   );

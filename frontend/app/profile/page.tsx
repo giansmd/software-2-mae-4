@@ -10,6 +10,7 @@ import {
   ApiError,
 } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { useI18n } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,6 +21,7 @@ import {
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { t } = useI18n();
   const { isAuthed, refresh, loading: authLoading } = useAuth();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -61,7 +63,7 @@ export default function ProfilePage() {
         institution: institution || undefined,
       });
       await refresh();
-      setSuccess("Perfil actualizado.");
+      setSuccess(t("profile.actualizado"));
     } catch (e) {
       setError(String((e as ApiError)?.message ?? e));
     }
@@ -76,7 +78,7 @@ export default function ProfilePage() {
         current_password: currentPassword,
         new_password: newPassword,
       });
-      setSuccess("Contraseña actualizada.");
+      setSuccess(t("profile.passwordActualizada"));
       setCurrentPassword("");
       setNewPassword("");
     } catch (e) {
@@ -94,7 +96,7 @@ export default function ProfilePage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-bold">Mi perfil</h1>
+      <h1 className="mb-6 text-3xl font-bold">{t("profile.title")}</h1>
 
       {error && (
         <div className="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
@@ -109,44 +111,44 @@ export default function ProfilePage() {
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Datos de perfil</CardTitle>
+          <CardTitle>{t("profile.datos")}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleProfile} className="space-y-3">
             <input
               className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
-              placeholder="Nombre completo"
+              placeholder={t("profile.nombreCompleto")}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
             <input
               className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
               type="email"
-              placeholder="Correo"
+              placeholder={t("profile.correo")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
               className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
-              placeholder="Institución"
+              placeholder={t("profile.institucion")}
               value={institution}
               onChange={(e) => setInstitution(e.target.value)}
             />
-            <Button type="submit">Guardar perfil</Button>
+            <Button type="submit">{t("profile.guardarPerfil")}</Button>
           </form>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Cambiar contraseña</CardTitle>
+          <CardTitle>{t("profile.cambiarPassword")}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handlePassword} className="space-y-3">
             <input
               className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
               type="password"
-              placeholder="Contraseña actual"
+              placeholder={t("profile.passwordActual")}
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               required
@@ -154,12 +156,12 @@ export default function ProfilePage() {
             <input
               className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
               type="password"
-              placeholder="Nueva contraseña"
+              placeholder={t("profile.passwordNueva")}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
             />
-            <Button type="submit">Cambiar contraseña</Button>
+            <Button type="submit">{t("profile.cambiarPasswordBtn")}</Button>
           </form>
         </CardContent>
       </Card>

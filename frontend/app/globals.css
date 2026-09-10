@@ -1,8 +1,7 @@
 @import "tailwindcss";
 
-:root {
-  color-scheme: light dark;
-}
+/* Dark mode por clase (.dark) en Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
 
 html,
 body {
