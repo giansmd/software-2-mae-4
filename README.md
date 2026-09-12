@@ -197,7 +197,7 @@ pytest
 
 Incluye tests del motor (restauración alta > baja; hipótesis ≥ +25 %; SLR reduce retención)
 y tests de integración contra SQLite (auth, control de roles, CRUD, simulación y exportación
-de los tres formatos de reporte). **8 tests pasan.**
+de los tres formatos de reporte). **33 tests pasan.**
 
 Los tests siempre corren contra una base SQLite local hermética (`test_mae4.db`),
 ignorando cualquier `DATABASE_URL` presente en el entorno: nunca escriben sobre una
