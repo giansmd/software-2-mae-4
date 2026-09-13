@@ -186,6 +186,13 @@ Valores por defecto (realistas para humedal tipo, ~80–85 tC/ha de suelo + biom
 ~ +37 % a 2050, validando la hipótesis; sin restauración + SLR alto cae por debajo de la
 base. Se documentan como parámetros editables, no como constantes ocultas.
 
+**Alcance de la calibración:** el motor usa exclusivamente los parámetros de la tabla
+`model_params` (editables por ADMIN). Las mediciones de campo registradas en
+`measurements` (cobertura, tabla de agua, carbono orgánico del suelo y biomasa) se
+almacenan como datos de colección del proyecto, pero **no alimentan el motor de
+simulación** en esta versión; quedan disponibles como entrada futura de calibración o
+validación del modelo.
+
 ## Pruebas
 
 ```
