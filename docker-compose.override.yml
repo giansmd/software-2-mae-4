@@ -1,0 +1,8 @@
+# Override local (no versionado).
+# Remapea el puerto del host de Postgres a 5433 para evitar el conflicto con un
+# PostgreSQL nativo de Windows (postgresql-x64-18) que ya ocupa 5432.
+# El backend sigue conectándose internamente a db:5432 dentro de la red Docker.
+services:
+  db:
+    ports: !override
+      - "127.0.0.1:5433:5432"

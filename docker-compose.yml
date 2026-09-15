@@ -1,9 +1,8 @@
 # docker-compose.yml — Orquesta db + backend + frontend de MAE-4.
 # Arranca todo con:  docker compose up
 # (necesitas Docker + el plugin compose instalados; nada más global).
-# JWT_SECRET y POSTGRES_PASSWORD son OBLIGATORIOS (SEC-001 / SEC-006): defínelos
-# en .env o exportados, p.ej.
-#   JWT_SECRET=$(openssl rand -hex 32) POSTGRES_PASSWORD=$(openssl rand -hex 24) docker compose up
+# JWT_SECRET es OBLIGATORIO (SEC-001): defínelo en .env o exportado, p.ej.
+#   JWT_SECRET=$(openssl rand -hex 32) docker compose up
 
 services:
   db:
