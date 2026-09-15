@@ -174,7 +174,7 @@ export default function ScenariosPage() {
   if (loading || authLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-brand-500" />
       </div>
     );
   }
@@ -189,7 +189,7 @@ export default function ScenariosPage() {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <div className="mb-4 rounded-md border border-error-300 bg-error-50 p-3 text-sm text-error-700 dark:bg-error-950 dark:text-error-300">
           {error}
         </div>
       )}
@@ -204,14 +204,14 @@ export default function ScenariosPage() {
           <CardContent>
             <form onSubmit={handleSave} className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <input
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 placeholder="Nombre"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
               />
               <input
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 placeholder="Descripción (opcional)"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -234,7 +234,7 @@ export default function ScenariosPage() {
                   onChange={(e) =>
                     setSeaLevelRise(e.target.value as SeaLevelRise)
                   }
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 >
                   <option value="low">Bajo</option>
                   <option value="medium">Medio</option>
@@ -247,7 +247,7 @@ export default function ScenariosPage() {
                   type="number"
                   value={horizon_year}
                   onChange={(e) => setHorizonYear(Number(e.target.value))}
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 />
               </label>
               <label className="text-sm">
@@ -256,7 +256,7 @@ export default function ScenariosPage() {
                   type="number"
                   value={baseline_area_ha}
                   onChange={(e) => setBaselineArea(Number(e.target.value))}
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 />
               </label>
               <label className="text-sm">
@@ -267,7 +267,7 @@ export default function ScenariosPage() {
                   onChange={(e) =>
                     setBaselineCarbon(Number(e.target.value))
                   }
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 />
               </label>
               <label className="flex items-center gap-2 text-sm">
@@ -297,7 +297,7 @@ export default function ScenariosPage() {
       )}
 
       {scenarios.length === 0 ? (
-        <p className="text-slate-500">No hay escenarios todavía.</p>
+        <p className="text-gray-500">No hay escenarios todavía.</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {scenarios.map((s) => (
@@ -306,17 +306,17 @@ export default function ScenariosPage() {
                 <CardTitle className="flex items-start justify-between gap-2">
                   <span>{s.name}</span>
                   {s.is_public && (
-                    <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
+                    <span className="rounded bg-success-100 px-2 py-0.5 text-xs font-medium text-success-800 dark:bg-success-900 dark:text-success-200">
                       Público
                     </span>
                   )}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="mb-2 text-sm text-slate-500">
+                <p className="mb-2 text-sm text-gray-500">
                   {s.description || "Sin descripción"}
                 </p>
-                <dl className="mb-3 grid grid-cols-2 gap-y-1 text-xs text-slate-600 dark:text-slate-300">
+                <dl className="mb-3 grid grid-cols-2 gap-y-1 text-xs text-gray-600 dark:text-gray-300">
                   <dt>Restauración:</dt>
                   <dd>{s.restoration_level}%</dd>
                   <dt>Nivel mar:</dt>
@@ -344,7 +344,7 @@ export default function ScenariosPage() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="text-red-600"
+                        className="text-error-600"
                         onClick={() => handleDelete(s.id)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -353,7 +353,7 @@ export default function ScenariosPage() {
                   )}
                 </div>
                 {canExport && (
-                  <div className="mt-3 flex gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
+                  <div className="mt-3 flex gap-2 border-t border-gray-200 pt-3 dark:border-gray-800">
                     <Button
                       size="sm"
                       variant="outline"

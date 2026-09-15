@@ -148,7 +148,7 @@ export default function MeasurementsPage() {
   if (loading || authLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-brand-500" />
       </div>
     );
   }
@@ -163,7 +163,7 @@ export default function MeasurementsPage() {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <div className="mb-4 rounded-md border border-error-300 bg-error-50 p-3 text-sm text-error-700 dark:bg-error-950 dark:text-error-300">
           {error}
         </div>
       )}
@@ -183,7 +183,7 @@ export default function MeasurementsPage() {
                   type="date"
                   value={form.date}
                   onChange={(e) => setForm({ ...form, date: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                   required
                 />
               </label>
@@ -199,7 +199,7 @@ export default function MeasurementsPage() {
                         : undefined,
                     })
                   }
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 >
                   <option value="">— (ninguno)</option>
                   {scenarios.map((s) => (
@@ -221,7 +221,7 @@ export default function MeasurementsPage() {
                       vegetation_cover: Number(e.target.value),
                     })
                   }
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 />
               </label>
               <label className="text-sm">
@@ -233,7 +233,7 @@ export default function MeasurementsPage() {
                   onChange={(e) =>
                     setForm({ ...form, water_table: Number(e.target.value) })
                   }
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 />
               </label>
               <label className="text-sm">
@@ -248,7 +248,7 @@ export default function MeasurementsPage() {
                       soil_organic_carbon: Number(e.target.value),
                     })
                   }
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 />
               </label>
               <label className="text-sm">
@@ -260,7 +260,7 @@ export default function MeasurementsPage() {
                   onChange={(e) =>
                     setForm({ ...form, biomass: Number(e.target.value) })
                   }
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 />
               </label>
               <label className="text-sm md:col-span-3">
@@ -268,7 +268,7 @@ export default function MeasurementsPage() {
                 <input
                   value={form.note}
                   onChange={(e) => setForm({ ...form, note: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 />
               </label>
               <div className="flex gap-2 md:col-span-3">
@@ -292,7 +292,7 @@ export default function MeasurementsPage() {
       <Card>
         <CardContent className="overflow-x-auto p-0">
           <table className="w-full text-sm">
-            <thead className="bg-slate-100 text-left text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+            <thead className="bg-gray-100 text-left text-gray-600 dark:bg-gray-800 dark:text-gray-300">
               <tr>
                 <th className="px-4 py-2">Fecha</th>
                 <th className="px-4 py-2">Escenario</th>
@@ -307,7 +307,7 @@ export default function MeasurementsPage() {
             <tbody>
               {items.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-6 text-center text-slate-500">
+                  <td colSpan={8} className="px-4 py-6 text-center text-gray-500">
                     No hay mediciones.
                   </td>
                 </tr>
@@ -315,7 +315,7 @@ export default function MeasurementsPage() {
                 items.map((m) => (
                   <tr
                     key={m.id}
-                    className="border-t border-slate-200 dark:border-slate-800"
+                    className="border-t border-gray-200 dark:border-gray-800"
                   >
                     <td className="px-4 py-2">{m.date}</td>
                     <td className="px-4 py-2">{scenarioName(m.scenario_id)}</td>
@@ -336,7 +336,7 @@ export default function MeasurementsPage() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="text-red-600"
+                          className="text-error-600"
                           onClick={() => handleDelete(m.id)}
                         >
                           <Trash2 className="h-4 w-4" />

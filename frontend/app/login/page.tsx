@@ -58,7 +58,7 @@ export default function LoginPage() {
     <main className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 flex items-center gap-2 text-emerald-600">
+          <div className="mx-auto mb-2 flex items-center gap-2 text-brand-500">
             <Waves className="h-6 w-6" />
             <span className="text-lg font-semibold">Gemelo Digital</span>
           </div>
@@ -73,7 +73,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-3">
             {mode === "register" && (
               <input
-                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 placeholder={t("login.nombreCompleto")}
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
@@ -81,7 +81,7 @@ export default function LoginPage() {
               />
             )}
             <input
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               type="email"
               placeholder={t("login.email")}
               value={email}
@@ -90,14 +90,14 @@ export default function LoginPage() {
             />
             {mode === "register" && (
               <input
-                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 placeholder={t("login.institucion")}
                 value={institution}
                 onChange={(e) => setInstitution(e.target.value)}
               />
             )}
             <input
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               type="password"
               placeholder={t("login.password")}
               value={password}
@@ -105,19 +105,19 @@ export default function LoginPage() {
               required
             />
             {error && (
-              <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+              <p className="text-sm text-error-600 dark:text-error-400">{error}</p>
             )}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
               {mode === "login" ? t("login.entrar") : t("login.registrarse")}
             </Button>
           </form>
-          <p className="mt-4 text-center text-sm text-slate-500">
+          <p className="mt-4 text-center text-sm text-gray-500">
             {mode === "login" ? (
               <>
                 {t("login.noTienesCuenta")}{" "}
                 <button
-                  className="text-emerald-600 underline"
+                  className="text-brand-500 underline"
                   onClick={() => setMode("register")}
                 >
                   {t("login.registrate")}
@@ -127,7 +127,7 @@ export default function LoginPage() {
               <>
                 {t("login.yaTienesCuenta")}{" "}
                 <button
-                  className="text-emerald-600 underline"
+                  className="text-brand-500 underline"
                   onClick={() => setMode("login")}
                 >
                   {t("login.iniciaSesion")}
@@ -136,7 +136,7 @@ export default function LoginPage() {
             )}
           </p>
           <p className="mt-2 text-center text-xs">
-            <Link href="/" className="text-slate-400 hover:underline">
+            <Link href="/" className="text-gray-400 hover:underline">
               {t("login.volverDashboard")}
             </Link>
           </p>

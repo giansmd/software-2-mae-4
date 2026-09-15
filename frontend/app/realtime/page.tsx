@@ -39,17 +39,17 @@ function formatTime(value: string) {
   return value.slice(0, 10);
 }
 
-function Metric({ label, value, unit, accent = "text-slate-900 dark:text-white" }: {
+function Metric({ label, value, unit, accent = "text-gray-900 dark:text-white" }: {
   label: string;
   value: string;
   unit: string;
   accent?: string;
 }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-      <p className="text-xs font-medium uppercase tracking-wider text-slate-500">{label}</p>
+    <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+      <p className="text-xs font-medium uppercase tracking-wider text-gray-500">{label}</p>
       <p className={`mt-2 text-2xl font-bold ${accent}`}>{value}</p>
-      <p className="text-xs text-slate-500">{unit}</p>
+      <p className="text-xs text-gray-500">{unit}</p>
     </div>
   );
 }
@@ -77,26 +77,26 @@ export default function RealtimePage() {
   }, []);
 
   if (loading) {
-    return <main className="mx-auto max-w-7xl px-4 py-12 text-center text-slate-500">{t("common.loading")}</main>;
+    return <main className="mx-auto max-w-7xl px-4 py-12 text-center text-gray-500">{t("common.loading")}</main>;
   }
 
   if (loadError) {
-    return <main className="mx-auto max-w-7xl px-4 py-12"><p className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">{loadError}</p></main>;
+    return <main className="mx-auto max-w-7xl px-4 py-12"><p className="rounded-lg border border-error-200 bg-error-50 p-4 text-error-700">{loadError}</p></main>;
   }
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">
       <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-emerald-700 dark:text-emerald-400">
+          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-brand-600 dark:text-brand-400">
             <Activity className="h-4 w-4" /> {t("realtime.centro")}
           </div>
           <h1 className="text-3xl font-bold tracking-tight">{t("realtime.titulo")}</h1>
-          <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">
+          <p className="mt-2 max-w-2xl text-gray-600 dark:text-gray-300">
             {t("realtime.desc")}
           </p>
         </div>
-        <div className={`inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-sm font-medium md:self-auto ${realtime.status === "running" ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300" : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"}`}>
+        <div className={`inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-sm font-medium md:self-auto ${realtime.status === "running" ? "bg-success-100 text-success-800 dark:bg-success-950 dark:text-success-300" : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"}`}>
           {realtime.status === "disconnected" ? <WifiOff className="h-4 w-4" /> : <Wifi className="h-4 w-4" />}
           {STATUS_LABELS[realtime.status]}
         </div>
@@ -109,7 +109,7 @@ export default function RealtimePage() {
           </CardHeader>
           <CardContent className="space-y-5">
             {scenarios.length === 0 ? (
-              <p className="text-sm text-slate-500">{t("realtime.noEscenariosPub")}</p>
+              <p className="text-sm text-gray-500">{t("realtime.noEscenariosPub")}</p>
             ) : (
               <>
                 <label className="block text-sm font-medium">
@@ -117,17 +117,17 @@ export default function RealtimePage() {
                   <select
                     value={scenarioId ?? ""}
                     onChange={(event) => setScenarioId(Number(event.target.value))}
-                    className="mt-2 w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-sm dark:border-slate-700"
+                    className="mt-2 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm dark:border-gray-700"
                   >
                     {scenarios.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
                   </select>
                 </label>
                 {scenario && (
-                  <div className="space-y-2 rounded-lg bg-slate-50 p-3 text-sm dark:bg-slate-950">
+                  <div className="space-y-2 rounded-lg bg-gray-50 p-3 text-sm dark:bg-gray-950">
                     <p className="font-medium">{scenario.name}</p>
-                    <p className="text-slate-500">{t("realtime.restauracion", { pct: scenario.restoration_level })}</p>
-                    <p className="text-slate-500">{t("realtime.slr", { v: scenario.sea_level_rise })}</p>
-                    <p className="text-slate-500">{t("realtime.horizonte", { v: scenario.horizon_year })}</p>
+                    <p className="text-gray-500">{t("realtime.restauracion", { pct: scenario.restoration_level })}</p>
+                    <p className="text-gray-500">{t("realtime.slr", { v: scenario.sea_level_rise })}</p>
+                    <p className="text-gray-500">{t("realtime.horizonte", { v: scenario.horizon_year })}</p>
                   </div>
                 )}
                 <div className="flex flex-wrap gap-2">
@@ -146,7 +146,7 @@ export default function RealtimePage() {
                   <select
                     defaultValue="4"
                     onChange={(event) => realtime.setSpeed(Number(event.target.value))}
-                    className="mt-2 w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-sm dark:border-slate-700"
+                    className="mt-2 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm dark:border-gray-700"
                   >
                     <option value="1">1x</option>
                     <option value="4">4x</option>
@@ -156,19 +156,19 @@ export default function RealtimePage() {
                 </label>
               </>
             )}
-            <p className="border-t border-slate-200 pt-4 text-xs leading-relaxed text-slate-500 dark:border-slate-800">
+            <p className="border-t border-gray-200 pt-4 text-xs leading-relaxed text-gray-500 dark:border-gray-800">
               {t("realtime.fuente")}
             </p>
           </CardContent>
         </Card>
 
         <section className="space-y-6">
-          {realtime.error && <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">{realtime.error}</p>}
+          {realtime.error && <p className="rounded-lg border border-warning-200 bg-warning-50 p-3 text-sm text-warning-800">{realtime.error}</p>}
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            <Metric label={t("realtime.m.carbon")} value={current ? current.retained_carbon.toFixed(1) : "—"} unit="tC" accent="text-emerald-700 dark:text-emerald-400" />
-            <Metric label={t("realtime.m.freatico")} value={current ? current.water_table.toFixed(2) : "—"} unit="m" accent="text-blue-700 dark:text-blue-400" />
-            <Metric label={t("realtime.m.cobertura")} value={current ? `${(current.vegetation_cover * 100).toFixed(1)}` : "—"} unit="%" accent="text-teal-700 dark:text-teal-400" />
-            <Metric label={t("realtime.m.area")} value={current ? current.effective_area_ha.toFixed(1) : "—"} unit="ha" accent="text-amber-700 dark:text-amber-400" />
+            <Metric label={t("realtime.m.carbon")} value={current ? current.retained_carbon.toFixed(1) : "—"} unit="tC" accent="text-success-600 dark:text-success-400" />
+            <Metric label={t("realtime.m.freatico")} value={current ? current.water_table.toFixed(2) : "—"} unit="m" accent="text-brand-700 dark:text-brand-400" />
+            <Metric label={t("realtime.m.cobertura")} value={current ? `${(current.vegetation_cover * 100).toFixed(1)}` : "—"} unit="%" accent="text-blue-light-700 dark:text-blue-light-400" />
+            <Metric label={t("realtime.m.area")} value={current ? current.effective_area_ha.toFixed(1) : "—"} unit="ha" accent="text-warning-700 dark:text-warning-400" />
           </div>
 
           <Card>
@@ -184,8 +184,8 @@ export default function RealtimePage() {
                     <YAxis yAxisId="carbon" />
                     <YAxis yAxisId="area" orientation="right" />
                     <Tooltip labelFormatter={(value) => formatTime(String(value))} />
-                    <Line yAxisId="carbon" type="monotone" dataKey="retained_carbon" name={t("realtime.chartCSline")} stroke="#059669" strokeWidth={2.5} dot={false} />
-                    <Line yAxisId="area" type="monotone" dataKey="effective_area_ha" name={t("realtime.chartCSarea")} stroke="#2563eb" strokeWidth={2} dot={false} />
+                    <Line yAxisId="carbon" type="monotone" dataKey="retained_carbon" name={t("realtime.chartCSline")} stroke="#12b76a" strokeWidth={2.5} dot={false} />
+                    <Line yAxisId="area" type="monotone" dataKey="effective_area_ha" name={t("realtime.chartCSarea")} stroke="#465fff" strokeWidth={2} dot={false} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -203,7 +203,7 @@ export default function RealtimePage() {
                       <XAxis dataKey="time" tickFormatter={formatTime} minTickGap={32} />
                       <YAxis />
                       <Tooltip labelFormatter={(value) => formatTime(String(value))} />
-                      <Line type="monotone" dataKey="water_table" name={t("realtime.chartFreaticoLine")} stroke="#2563eb" strokeWidth={2.5} dot={false} />
+                      <Line type="monotone" dataKey="water_table" name={t("realtime.chartFreaticoLine")} stroke="#465fff" strokeWidth={2.5} dot={false} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -215,12 +215,12 @@ export default function RealtimePage() {
                 <div className="h-[250px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={realtime.points} margin={{ left: 8, right: 16 }}>
-                      <defs><linearGradient id="coverFill" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#10b981" stopOpacity={0.35} /><stop offset="95%" stopColor="#10b981" stopOpacity={0} /></linearGradient></defs>
+                      <defs><linearGradient id="coverFill" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#12b76a" stopOpacity={0.35} /><stop offset="95%" stopColor="#12b76a" stopOpacity={0} /></linearGradient></defs>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
                       <XAxis dataKey="time" tickFormatter={formatTime} minTickGap={32} />
                       <YAxis tickFormatter={(value) => `${Math.round(Number(value) * 100)}%`} domain={[0, 1]} />
                       <Tooltip formatter={(value) => [`${(Number(value) * 100).toFixed(1)}%`, t("realtime.chartCoberturaName")]} labelFormatter={(value) => formatTime(String(value))} />
-                      <Area type="monotone" dataKey="vegetation_cover" name={t("realtime.chartCoberturaName")} stroke="#059669" fill="url(#coverFill)" strokeWidth={2.5} />
+                      <Area type="monotone" dataKey="vegetation_cover" name={t("realtime.chartCoberturaName")} stroke="#12b76a" fill="url(#coverFill)" strokeWidth={2.5} />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>

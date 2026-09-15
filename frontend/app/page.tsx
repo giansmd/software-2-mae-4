@@ -38,12 +38,12 @@ function Kpi({
   return (
     <Card>
       <CardContent className="p-4">
-        <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+        <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
           {label}
         </p>
         <p className="mt-1 text-2xl font-bold">{value}</p>
         {hint && (
-          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
             {hint}
           </p>
         )}
@@ -118,7 +118,7 @@ export default function DashboardPage() {
     });
   }, [results]);
 
-  const colors = ["#059669", "#2563eb", "#d97706", "#9333ea", "#dc2626"];
+  const colors = ["#12b76a", "#465fff", "#f79009", "#7a5af8", "#f04438"];
 
   function toggle(id: number) {
     setSelected((prev) =>
@@ -129,7 +129,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-brand-500" />
       </div>
     );
   }
@@ -142,29 +142,29 @@ export default function DashboardPage() {
     <main className="mx-auto max-w-7xl px-4 py-8">
       <header className="mb-6">
         <h1 className="text-3xl font-bold">{t("app.title")}</h1>
-        <p className="mt-1 text-slate-600 dark:text-slate-300">
+        <p className="mt-1 text-gray-600 dark:text-gray-300">
           {t("dash.subtitle", { pct: HYPOTHESIS_PCT })}
         </p>
         <Link
           href="/realtime"
-          className="mt-4 inline-flex rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
+          className="mt-4 inline-flex rounded-md bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600"
         >
           {t("dash.openRealtime")}
         </Link>
       </header>
 
       {error && (
-        <div className="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <div className="mb-4 rounded-md border border-error-300 bg-error-50 p-3 text-sm text-error-700 dark:bg-error-950 dark:text-error-300">
           {error}
         </div>
       )}
 
       <section className="mb-8">
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
           {t("dash.publicScenarios")}
         </h2>
         {scenarios.length === 0 ? (
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-gray-500">
             {t("dash.noScenarios")}
           </p>
         ) : (
@@ -175,8 +175,8 @@ export default function DashboardPage() {
                 onClick={() => toggle(s.id)}
                 className={`rounded-full border px-3 py-1 text-sm transition-colors ${
                   selected.includes(s.id)
-                    ? "border-emerald-600 bg-emerald-600 text-white"
-                    : "border-slate-300 hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
+                    ? "border-brand-500 bg-brand-500 text-white"
+                    : "border-gray-300 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
                 }`}
               >
                 {s.name}
@@ -187,7 +187,7 @@ export default function DashboardPage() {
       </section>
 
       {simulating && (
-        <div className="mb-4 flex items-center gap-2 text-sm text-slate-500">
+        <div className="mb-4 flex items-center gap-2 text-sm text-gray-500">
           <Loader2 className="h-4 w-4 animate-spin" /> {t("dash.simulating")}
         </div>
       )}
@@ -204,8 +204,8 @@ export default function DashboardPage() {
                   <span
                     className={`flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium ${
                       r.meets_hypothesis
-                        ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
-                        : "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200"
+                        ? "bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200"
+                        : "bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200"
                     }`}
                   >
                     {r.meets_hypothesis ? (
@@ -283,9 +283,9 @@ export default function DashboardPage() {
         </Card>
       )}
 
-      <div className="mt-8 text-center text-sm text-slate-500">
+      <div className="mt-8 text-center text-sm text-gray-500">
         {t("dash.researcherCtaPrefix")}{" "}
-        <a href="/login" className="text-emerald-600 underline">
+        <a href="/login" className="text-brand-500 underline">
           {t("dash.loginLink")}
         </a>{" "}
         {t("dash.researcherCtaSuffix")}

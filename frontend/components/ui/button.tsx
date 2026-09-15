@@ -8,17 +8,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
+  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
   {
     variants: {
       variant: {
-        default: "bg-emerald-600 text-white hover:bg-emerald-700",
-        destructive: "bg-red-600 text-white hover:bg-red-700",
+        default: "bg-brand-500 text-white hover:bg-brand-600",
+        destructive: "bg-error-600 text-white hover:bg-error-700",
         outline:
-          "border border-slate-300 bg-transparent hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800",
-        secondary: "bg-slate-200 text-slate-900 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600",
-        ghost: "hover:bg-slate-100 dark:hover:bg-slate-800",
-        link: "text-emerald-600 underline-offset-4 hover:underline",
+          "border border-gray-300 bg-transparent hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800",
+        secondary: "bg-gray-200 text-gray-900 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600",
+        ghost: "hover:bg-gray-100 dark:hover:bg-gray-800",
+        link: "text-brand-500 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",

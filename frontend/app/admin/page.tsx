@@ -126,7 +126,7 @@ export default function AdminPage() {
   if (loading || authLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-brand-500" />
       </div>
     );
   }
@@ -136,7 +136,7 @@ export default function AdminPage() {
       <h1 className="mb-6 text-3xl font-bold">Administración</h1>
 
       {error && (
-        <div className="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <div className="mb-4 rounded-md border border-error-300 bg-error-50 p-3 text-sm text-error-700 dark:bg-error-950 dark:text-error-300">
           {error}
         </div>
       )}
@@ -149,14 +149,14 @@ export default function AdminPage() {
           <CardContent className="space-y-4">
             <form onSubmit={handleCreateUser} className="grid grid-cols-2 gap-2">
               <input
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 placeholder="Nombre completo"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
               />
               <input
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 placeholder="Correo"
                 type="email"
                 value={email}
@@ -164,7 +164,7 @@ export default function AdminPage() {
                 required
               />
               <input
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 placeholder="Contraseña"
                 type="password"
                 value={password}
@@ -172,7 +172,7 @@ export default function AdminPage() {
                 required
               />
               <input
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                 placeholder="Institución"
                 value={institution}
                 onChange={(e) => setInstitution(e.target.value)}
@@ -180,7 +180,7 @@ export default function AdminPage() {
               <select
                 value={userRole}
                 onChange={(e) => setUserRole(e.target.value as Role)}
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               >
                 <option value="INVESTIGADOR">INVESTIGADOR</option>
                 <option value="ADMIN">ADMIN</option>
@@ -194,7 +194,7 @@ export default function AdminPage() {
 
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="text-left text-slate-500">
+                <thead className="text-left text-gray-500">
                   <tr>
                     <th className="py-2">Nombre</th>
                     <th className="py-2">Rol</th>
@@ -203,10 +203,10 @@ export default function AdminPage() {
                 </thead>
                 <tbody>
                   {users.map((u) => (
-                    <tr key={u.id} className="border-t border-slate-200 dark:border-slate-800">
+                    <tr key={u.id} className="border-t border-gray-200 dark:border-gray-800">
                       <td className="py-2">
                         {u.full_name}
-                        <span className="block text-xs text-slate-400">
+                        <span className="block text-xs text-gray-400">
                           {u.email}
                         </span>
                       </td>
@@ -215,7 +215,7 @@ export default function AdminPage() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="text-red-600"
+                          className="text-error-600"
                           onClick={() => handleDeleteUser(u.id)}
                         >
                           <Trash2 className="h-4 w-4" />
@@ -235,7 +235,7 @@ export default function AdminPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {params.length === 0 ? (
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-gray-500">
                 No hay parámetros disponibles.
               </p>
             ) : (
@@ -243,10 +243,10 @@ export default function AdminPage() {
                 <div key={p.key} className="space-y-1">
                   <label className="flex items-center justify-between text-sm">
                     <span className="font-medium">{p.key}</span>
-                    <span className="text-slate-400">{p.unit ?? ""}</span>
+                    <span className="text-gray-400">{p.unit ?? ""}</span>
                   </label>
                   {p.description && (
-                    <p className="text-xs text-slate-500">{p.description}</p>
+                    <p className="text-xs text-gray-500">{p.description}</p>
                   )}
                   <input
                     type="number"
@@ -256,7 +256,7 @@ export default function AdminPage() {
                     onBlur={(e) =>
                       handleParamChange(p.key, Number(e.target.value))
                     }
-                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                   />
                 </div>
               ))

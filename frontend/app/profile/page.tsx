@@ -89,7 +89,7 @@ export default function ProfilePage() {
   if (loading || authLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-brand-500" />
       </div>
     );
   }
@@ -99,12 +99,12 @@ export default function ProfilePage() {
       <h1 className="mb-6 text-3xl font-bold">{t("profile.title")}</h1>
 
       {error && (
-        <div className="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <div className="mb-4 rounded-md border border-error-300 bg-error-50 p-3 text-sm text-error-700 dark:bg-error-950 dark:text-error-300">
           {error}
         </div>
       )}
       {success && (
-        <div className="mb-4 rounded-md border border-emerald-300 bg-emerald-50 p-3 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <div className="mb-4 rounded-md border border-success-300 bg-success-50 p-3 text-sm text-success-700 dark:bg-success-950 dark:text-success-300">
           {success}
         </div>
       )}
@@ -116,20 +116,20 @@ export default function ProfilePage() {
         <CardContent>
           <form onSubmit={handleProfile} className="space-y-3">
             <input
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               placeholder={t("profile.nombreCompleto")}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
             <input
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               type="email"
               placeholder={t("profile.correo")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               placeholder={t("profile.institucion")}
               value={institution}
               onChange={(e) => setInstitution(e.target.value)}
@@ -146,7 +146,7 @@ export default function ProfilePage() {
         <CardContent>
           <form onSubmit={handlePassword} className="space-y-3">
             <input
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               type="password"
               placeholder={t("profile.passwordActual")}
               value={currentPassword}
@@ -154,7 +154,7 @@ export default function ProfilePage() {
               required
             />
             <input
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               type="password"
               placeholder={t("profile.passwordNueva")}
               value={newPassword}

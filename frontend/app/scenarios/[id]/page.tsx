@@ -32,11 +32,11 @@ function Kpi({ label, value, hint }: { label: string; value: string; hint?: stri
   return (
     <Card>
       <CardContent className="p-4">
-        <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+        <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
           {label}
         </p>
         <p className="mt-1 text-2xl font-bold">{value}</p>
-        {hint && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
+        {hint && <p className="mt-1 text-xs text-gray-500">{hint}</p>}
       </CardContent>
     </Card>
   );
@@ -111,7 +111,7 @@ export default function ScenarioPage() {
   if (loading || authLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-brand-500" />
       </div>
     );
   }
@@ -120,19 +120,19 @@ export default function ScenarioPage() {
     <main className="mx-auto max-w-7xl px-4 py-8">
       <Link
         href="/scenarios"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:underline"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-gray-500 hover:underline"
       >
         <ArrowLeft className="h-4 w-4" /> Volver a escenarios
       </Link>
       <h1 className="mb-1 text-3xl font-bold">
         Simulación: {scenario?.name}
       </h1>
-      <p className="mb-6 text-slate-600 dark:text-slate-300">
+      <p className="mb-6 text-gray-600 dark:text-gray-300">
         Ajusta los parámetros y simula la proyección de retención de carbono.
       </p>
 
       {error && (
-        <div className="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <div className="mb-4 rounded-md border border-error-300 bg-error-50 p-3 text-sm text-error-700 dark:bg-error-950 dark:text-error-300">
           {error}
         </div>
       )}
@@ -161,7 +161,7 @@ export default function ScenarioPage() {
                 onChange={(e) =>
                   setSeaLevelRise(e.target.value as SeaLevelRise)
                 }
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               >
                 <option value="low">Bajo</option>
                 <option value="medium">Medio</option>
@@ -174,7 +174,7 @@ export default function ScenarioPage() {
                 type="number"
                 value={horizon_year}
                 onChange={(e) => setHorizonYear(Number(e.target.value))}
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               />
             </label>
             <label className="block text-sm">
@@ -183,7 +183,7 @@ export default function ScenarioPage() {
                 type="number"
                 value={baseline_area_ha}
                 onChange={(e) => setBaselineArea(Number(e.target.value))}
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               />
             </label>
             <label className="block text-sm">
@@ -194,7 +194,7 @@ export default function ScenarioPage() {
                 onChange={(e) =>
                   setBaselineCarbon(Number(e.target.value))
                 }
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               />
             </label>
             <Button className="w-full" onClick={handleSimulate} disabled={simulating}>
@@ -210,8 +210,8 @@ export default function ScenarioPage() {
               <div
                 className={`flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium ${
                   result.meets_hypothesis
-                    ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
-                    : "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200"
+                    ? "bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200"
+                    : "bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200"
                 }`}
               >
                 {result.meets_hypothesis ? (
@@ -254,7 +254,7 @@ export default function ScenarioPage() {
                           type="monotone"
                           dataKey="retained_carbon"
                           name="Carbono retenido (t)"
-                          stroke="#059669"
+                          stroke="#12b76a"
                           strokeWidth={2}
                           dot={false}
                         />
@@ -262,7 +262,7 @@ export default function ScenarioPage() {
                           type="monotone"
                           dataKey="effective_area_ha"
                           name="Superficie efectiva (ha)"
-                          stroke="#2563eb"
+                          stroke="#465fff"
                           strokeWidth={2}
                           dot={false}
                         />
@@ -287,7 +287,7 @@ export default function ScenarioPage() {
                         <Bar
                           dataKey="vegetation_cover"
                           name="Cobertura (%)"
-                          fill="#10b981"
+                          fill="#12b76a"
                         />
                       </BarChart>
                     </ResponsiveContainer>
@@ -299,7 +299,7 @@ export default function ScenarioPage() {
 
           {!result && !simulating && (
             <Card>
-              <CardContent className="p-10 text-center text-slate-500">
+              <CardContent className="p-10 text-center text-gray-500">
                 Ajusta los parámetros y pulsa «Simular» para ver la proyección.
               </CardContent>
             </Card>

@@ -1,27 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap")
+layer(base);
+
 @import "tailwindcss";
-
-/* Dark mode por clase (.dark) en Tailwind v4 */
-@custom-variant dark (&:where(.dark, .dark *));
-
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
-}
-
-* {
-  box-sizing: border-box;
-}
+@import "./styles/theme.css";
+@import "./styles/base.css";
+@import "./styles/utilities.css";
+@plugin "@tailwindcss/forms";
 
 /* Utilidades de color para gráficos y badges */
 .text-ok {
-  color: #059669;
+  color: var(--color-success-600);
 }
 .text-warn {
-  color: #d97706;
+  color: var(--color-warning-500);
 }
 .bg-ok {
-  background-color: #059669;
+  background-color: var(--color-success-600);
 }
