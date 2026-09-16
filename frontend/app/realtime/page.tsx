@@ -18,6 +18,7 @@ import { useRealtimeSimulation, type RealtimeConnectionStatus } from "@/lib/real
 import type { Scenario } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import WetlandTwinPanel from "@/components/twin/WetlandTwinPanel";
 import { useI18n } from "@/lib/i18n";
 
 const STATUS_LABELS_ES: Record<RealtimeConnectionStatus, string> = {
@@ -170,6 +171,19 @@ export default function RealtimePage() {
             <Metric label={t("realtime.m.cobertura")} value={current ? `${(current.vegetation_cover * 100).toFixed(1)}` : "—"} unit="%" accent="text-blue-light-700 dark:text-blue-light-400" />
             <Metric label={t("realtime.m.area")} value={current ? current.effective_area_ha.toFixed(1) : "—"} unit="ha" accent="text-warning-700 dark:text-warning-400" />
           </div>
+
+          <WetlandTwinPanel
+            values={current}
+            status={realtime.status}
+            baseline={
+              scenario
+                ? {
+                    areaHa: scenario.baseline_area_ha,
+                    carbonDensity: scenario.baseline_carbon_density,
+                  }
+                : null
+            }
+          />
 
           <Card>
             <CardHeader>

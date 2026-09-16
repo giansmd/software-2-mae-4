@@ -18,7 +18,7 @@ carbono **≥ +25 % a 2050**.
 |---|---|
 | Backend | Python 3.12, FastAPI 0.141, Uvicorn 0.52, SQLAlchemy 2.0, Pydantic v2, JWT (python-jose) |
 | Base de datos | PostgreSQL 18.6 |
-| Frontend | Next.js 15.5 (App Router), React 19.2, TypeScript 5.7, Tailwind CSS 4.3.3, Recharts 3.10 |
+| Frontend | Next.js 15.5 (App Router), React 19.2, TypeScript 5.7, Tailwind CSS 4.3.3, Recharts 3.10, Three.js 0.186 (react-three-fiber 9.7, drei 10.7) |
 | Gestor de paquetes | pnpm 11 (frontend), uv/pip (backend) |
 | Reportes | ReportLab 5.0 (PDF), python-docx 1.2 (Word), openpyxl 3.1 (Excel) |
 
@@ -78,6 +78,21 @@ arranca limpio sin credenciales ni datos demo.
 
 Para detener y limpiar volúmenes: `docker compose down -v`.
 
+Si cambias `frontend/package.json` o el lockfile, el volumen nombrado
+`frontend_node_modules` (aislado del host por compatibilidad de binarios) queda
+desincronizado. Reconstrúyelo con:
+
+```bash
+docker compose up -d --build frontend
+# si el contenedor sigue viendo dependencias obsoletas:
+docker compose rm -sf frontend
+docker volume rm software-2-mae-4_frontend_node_modules
+docker compose up -d frontend
+```
+
+El archivo `frontend/.npmrc` fija `confirm-modules-purge=false` para que `pnpm`
+pueda regenerar `node_modules` dentro del contenedor sin abortar por falta de TTY.
+
 Si ya existía un volumen creado con PostgreSQL anterior a 18, después de actualizar
 la imagen hay que eliminarlo en desarrollo (`docker compose down -v`) y volver a
 levantar el stack. Para conservar esos datos se requiere una migración con
@@ -129,7 +144,49 @@ reportes; ADMIN gestiona usuarios y calibra el modelo.
 - **Dashboard en vivo**: `/realtime`, con buffer de los últimos estados y gráficas de
   carbono, superficie, nivel freático y cobertura vegetal. La fuente se etiqueta como
   `simulated`; todavía no representa lecturas de sensores.
+- **Gemelo digital 3D**: capa de visualización sobre el mismo flujo simulado (ver abajo).
 - **Reportes**: PDF / Word / Excel de la simulación de un escenario (INVESTIGADOR/ADMIN).
+
+## Gemelo digital 3D (capa de visualización)
+
+El módulo **Gemelo digital 3D** añade una capa de visualización tridimensional
+**encima de la lógica que ya funciona**: no modifica el motor de simulación, los
+esquemas ni la API. Consume el mismo stream WebSocket de `/realtime`
+(`/api/realtime/ws/{scenario_id}`) y se muestra incrustado en esa página, entre
+las métricas y las gráficas Recharts.
+
+La escena es una **recreación esquemática y procedural** del humedal (sin datos
+geoespaciales ni georreferenciación). Un único escenario se anima **en vivo** al
+iniciar la simulación, y cada variable del modelo se traduce a un parámetro
+visual (mapeo en `frontend/components/twin/wetlandModel.ts`):
+
+| Variable del modelo | Efecto en la escena 3D |
+|---|---|
+| `effective_area_ha` (vs. baseline) | Superficie emergida: al perder área sube el plano de agua y se inunda más terreno |
+| `water_table` | Ajuste fino del nivel de agua (con oscilación estacional del stream) |
+| `vegetation_cover` | Densidad de vegetación (instanced mesh, máx. 3000 matas) |
+| `soil_organic_carbon` | Color de la vegetación (verde sano → marrón degradado) |
+| `retained_carbon` / `variation_pct` | Baliza de carbono de altura y color variables |
+
+Componentes: `components/twin/wetlandModel.ts` (mapeo puro y testeable, sin React
+ni WebGL), `components/twin/WetlandScene.tsx` (escena R3F) y
+`components/twin/WetlandTwinPanel.tsx` (panel con carga diferida
+`next/dynamic({ ssr: false })`, leyenda y aviso de fuente simulada). Respeta
+`prefers-reduced-motion` y pausa el loop de render cuando la simulación no está
+en ejecución.
+
+### Elección tecnológica: Three.js frente a Babylon.js
+
+| Criterio | Three.js (+ react-three-fiber / drei) | Babylon.js |
+|---|---|---|
+| Integración React 19 / Next 15 | Nativa y declarativa (R3F 9 soporta React 19) | Imperativa, o `react-babylonjs` de terceros |
+| Peso / tree-shaking | Núcleo ligero, carga diferida en cliente | Core grande; Babylon Lite es WebGPU-only |
+| Enfoque | Visualización de datos 3D (terreno, agua, instancing) | Motor de juegos/XR con física y GUI |
+| Ajuste al prototipo | Óptimo: mínimo peso, sobre el stack React existente | Sobredimensionado |
+
+**Decisión: Three.js con `@react-three/fiber` + `@react-three/drei`.** Babylon.js
+solo se justificaría si se requirieran física, WebXR/AR o herramientas de motor
+complejas, fuera del alcance de este prototipo.
 
 ## Base científica del modelo de retención de carbono
 

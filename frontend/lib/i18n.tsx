@@ -123,6 +123,16 @@ export const translations: Record<Lang, Record<string, string>> = {
     "realtime.chartFreaticoLine": "Nivel de agua (m)",
     "realtime.chartCobertura": "Cobertura vegetal",
     "realtime.chartCoberturaName": "Cobertura",
+    "realtime.twin.title": "Gemelo digital 3D del humedal",
+    "realtime.twin.desc":
+      "Recreación esquemática del humedal costero. La capa 3D se alimenta del mismo flujo simulado: el agua, la vegetación y el carbono reaccionan a las variables del escenario.",
+    "realtime.twin.legendWater": "Agua",
+    "realtime.twin.legendVegetation": "Vegetación",
+    "realtime.twin.legendCarbon": "Carbono",
+    "realtime.twin.waterTable": "Nivel freático",
+    "realtime.twin.loading": "Cargando escena 3D…",
+    "realtime.twin.source":
+      "Vista esquemática, no georreferenciada · fuente: simulada",
     // Scenarios
     "scenarios.title": "Escenarios",
     "scenarios.new": "Nuevo escenario",
@@ -250,6 +260,16 @@ export const translations: Record<Lang, Record<string, string>> = {
     "realtime.chartFreaticoLine": "Water level (m)",
     "realtime.chartCobertura": "Vegetation cover",
     "realtime.chartCoberturaName": "Cover",
+    "realtime.twin.title": "Wetland 3D digital twin",
+    "realtime.twin.desc":
+      "Schematic recreation of the coastal wetland. The 3D layer is driven by the same simulated stream: water, vegetation and carbon react to the scenario variables.",
+    "realtime.twin.legendWater": "Water",
+    "realtime.twin.legendVegetation": "Vegetation",
+    "realtime.twin.legendCarbon": "Carbon",
+    "realtime.twin.waterTable": "Water table",
+    "realtime.twin.loading": "Loading 3D scene…",
+    "realtime.twin.source":
+      "Schematic view, not georeferenced · source: simulated",
     // Profile
     "profile.title": "My profile",
     "profile.datos": "Profile data",
