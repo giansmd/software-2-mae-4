@@ -17,6 +17,9 @@ frontend/out/
 *.tsbuildinfo
 .pnpm-debug.log*
 
+# Artefactos de modelos ML (se regeneran entrenando desde el motor)
+backend/app/ml/artifacts/
+
 # Entornos y secretos (NO commitear)
 .env
 .env.local

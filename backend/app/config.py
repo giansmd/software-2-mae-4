@@ -39,6 +39,13 @@ class Settings(BaseSettings):
     # local. Nunca habilitarlo en un entorno compartido o de producción.
     seed_on_startup: bool = False
 
+    # Machine learning (ML-001): surrogate model that emulates the scientific
+    # engine. Training data is generated synthetically FROM the engine, so the
+    # dataset is reproducible and needs no external source. Enabled by default;
+    # the model is trained lazily on first use unless ML_TRAIN_ON_STARTUP warms it.
+    ml_enabled: bool = True
+    ml_train_on_startup: bool = False
+
     # Rate limiting (SEC-004): per-IP budgets for authentication endpoints.
     # In-memory and per-process; adjust when scaling beyond one worker.
     login_rate_limit: int = 60

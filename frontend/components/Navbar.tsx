@@ -11,6 +11,7 @@ import { Button } from "./ui/button";
 
 const NAV_ITEMS = [
   { href: "/", label: "nav.dashboard" },
+  { href: "/ml", label: "nav.ml" },
   { href: "/scenarios", label: "nav.scenarios", roles: ["INVESTIGADOR", "ADMIN"] },
   { href: "/measurements", label: "nav.measurements", roles: ["INVESTIGADOR", "ADMIN"] },
   { href: "/admin", label: "nav.admin", roles: ["ADMIN"] },

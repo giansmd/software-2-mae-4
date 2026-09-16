@@ -4,6 +4,8 @@ import type {
   Measurement,
   ModelParam,
   SimulationResult,
+  MLMetadata,
+  MLPredictionResult,
   ReportFormat,
 } from "./types";
 
@@ -226,6 +228,22 @@ export function runSimulation(params: {
 
 export function getSimulation(scenarioId: number): Promise<SimulationResult> {
   return get<SimulationResult>(`/simulations/${scenarioId}`);
+}
+
+// ---------- ML surrogate model ----------
+export function getMLMetadata(): Promise<MLMetadata> {
+  return get<MLMetadata>("/ml/metadata", false);
+}
+
+export function predictML(params: {
+  scenario_id?: number;
+  restoration_level?: number;
+  sea_level_rise?: "low" | "medium" | "high";
+  horizon_year?: number;
+  baseline_area_ha?: number;
+  baseline_carbon_density?: number;
+}): Promise<MLPredictionResult> {
+  return post<MLPredictionResult>("/ml/predict", params, false);
 }
 
 // ---------- Reports ----------

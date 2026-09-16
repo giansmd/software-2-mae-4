@@ -21,6 +21,7 @@ carbono **≥ +25 % a 2050**.
 | Frontend | Next.js 15.5 (App Router), React 19.2, TypeScript 5.7, Tailwind CSS 4.3.3, Recharts 3.10, Three.js 0.186 (react-three-fiber 9.7, drei 10.7) |
 | Gestor de paquetes | pnpm 11 (frontend), uv/pip (backend) |
 | Reportes | ReportLab 5.0 (PDF), python-docx 1.2 (Word), openpyxl 3.1 (Excel) |
+| Machine Learning | scikit-learn 1.9 (Random Forest, modelo *surrogate* del motor) |
 
 ## Estructura
 
@@ -42,18 +43,19 @@ software-2-mae-4/
 │   │   ├── services/           # security (hash/JWT), params
 │   │   ├── routers/            # auth, users, scenarios, measurements, model_params, simulation, reports
 │   │   ├── simulations/engine.py  # motor de retención de carbono
+│   │   ├── ml/                 # modelo ML: dataset sintético, train y registry
 │   │   ├── realtime/              # estados sintéticos en tiempo real
 │   │   ├── reports/            # pdf.py, docx.py, xlsx.py
 │   │   └── seed.py             # datos de demostración + 3 usuarios
 │   └── tests/                  # pytest (motor + integración)
 └── frontend/
     ├── Dockerfile
-    ├── app/                    # páginas (dashboard, login, scenarios, measurements, admin, profile)
+    ├── app/                    # páginas (dashboard, login, scenarios, measurements, admin, profile, ml)
     ├── components/             # ui/ (button, card), Navbar
     └── lib/                    # types.ts, api.ts, auth.ts
 ```
 
-## Puesta en marcha (un solo comando)
+## Puesta en marcha — Quickstart (un solo comando)
 
 Requiere Docker + el plugin `docker compose` en una máquina Linux.
 
@@ -68,6 +70,12 @@ docker compose up --build
 - Frontend:  http://localhost:3000
 - Backend API (docs Swagger): http://localhost:8000/docs
 - Salud:     http://localhost:8000/health
+- Modelo de IA (UI): http://localhost:3000/ml
+
+Al abrir `/ml` por primera vez el backend **entrena el modelo de IA** (unos
+segundos) y lo guarda en `backend/app/ml/artifacts/`. Como se añadió
+`scikit-learn`, hay que **reconstruir la imagen del backend** (`docker compose up
+--build`) tras actualizar el proyecto; el primer entrenamiento es la única espera.
 
 La base de datos se **crea** al arrancar el backend (el entrypoint espera a
 Postgres vía healthcheck y luego Uvicorn). El **seed de demostración es opt-in
@@ -146,6 +154,8 @@ reportes; ADMIN gestiona usuarios y calibra el modelo.
   `simulated`; todavía no representa lecturas de sensores.
 - **Gemelo digital 3D**: capa de visualización sobre el mismo flujo simulado (ver abajo).
 - **Reportes**: PDF / Word / Excel de la simulación de un escenario (INVESTIGADOR/ADMIN).
+- **Modelo de IA**: emulador (*surrogate*) entrenado con escenarios sintéticos del motor;
+  métricas y predicción en `/ml` (ver abajo).
 
 ## Gemelo digital 3D (capa de visualización)
 
@@ -187,6 +197,38 @@ en ejecución.
 **Decisión: Three.js con `@react-three/fiber` + `@react-three/drei`.** Babylon.js
 solo se justificaría si se requirieran física, WebXR/AR o herramientas de motor
 complejas, fuera del alcance de este prototipo.
+
+## Modelo de IA (emulador del motor)
+
+El módulo **Modelo de IA** entrena un modelo *real* de machine learning con
+`scikit-learn` que **emula** al motor determinista. No modifica la lógica
+científica: la aprende y la reproduce en milisegundos, y sirve como capa de
+predicción rápida para explorar escenarios.
+
+- **Datos de entrenamiento (ML-001):** **sintéticos**, generados por el propio
+  motor (`app/ml/dataset.py`). Se muestrean ~8 000 escenarios con una semilla
+  fija, y cada etiqueta es la salida de `run_simulation`. El conjunto es
+  reproducible y no depende de datos externos ni de la base de datos.
+  **No** se usan las mediciones de campo (siguen reservadas a calibración).
+- **Modelos:** un `RandomForestRegressor` multi-salida (predice la variación %
+  y el carbono retenido) y un `RandomForestClassifier` (¿cumple la hipótesis
+  ≥ +25 %?). Se separan en *train/test* (80/20) y se valida con CV (3 folds).
+- **Métricas** (expuestas en `/api/ml/metadata`): R², MAE y RMSE de regresión,
+  accuracy y ROC-AUC de clasificación, además de la **importancia de variables**.
+  Con los parámetros por defecto el emulador supera R² ≈ 0.98.
+- **Artefacto y ciclo de vida:** el modelo se entrena de forma perezosa en el
+  primer uso y se guarda en `app/ml/artifacts/carbon_model.joblib`
+  (ignorado por git; se regenera). `ML_ENABLED` (por defecto `true`) y
+  `ML_TRAIN_ON_STARTUP` (por defecto `false`) controlan el módulo.
+- **API:** `GET /api/ml/metadata` y `POST /api/ml/predict` (acepta `scenario_id`
+  o parámetros inline). La predicción se devuelve **junto al resultado del
+  motor** para comparar el emulador con el cálculo científico.
+- **Frontend:** página `/ml` con las métricas, la importancia de variables, una
+  comparación ML vs motor por nivel de restauración y un formulario de
+  predicción.
+
+> Al ser un *surrogate* de datos sintéticos, la app etiqueta explícitamente su
+> origen (`synthetic`) para no confundirlo con mediciones de campo.
 
 ## Base científica del modelo de retención de carbono
 
@@ -259,9 +301,10 @@ pip install -r requirements.txt
 pytest
 ```
 
-Incluye tests del motor (restauración alta > baja; hipótesis ≥ +25 %; SLR reduce retención)
-y tests de integración contra SQLite (auth, control de roles, CRUD, simulación y exportación
-de los tres formatos de reporte). **33 tests pasan.**
+Incluye tests del motor (restauración alta > baja; hipótesis ≥ +25 %; SLR reduce retención),
+tests de integración contra SQLite (auth, control de roles, CRUD, simulación y exportación
+de los tres formatos de reporte) y tests del modelo de IA (dataset reproducible, calidad de
+la regresión/clasificación, monotonía y endpoints `/api/ml`). **46 tests pasan.**
 
 Los tests siempre corren contra una base SQLite local hermética (`test_mae4.db`),
 ignorando cualquier `DATABASE_URL` presente en el entorno: nunca escriben sobre una
@@ -278,6 +321,8 @@ base real ni dependen de su esquema.
 
 ## Notas
 
-- Sin LLM/Gemini ni APIs externas: todo el cálculo es local.
+- Sin LLM/Gemini ni APIs externas: todo el cálculo y el entrenamiento del modelo
+  de IA son locales (scikit-learn). El *surrogate* se entrena en el primer uso
+  (unos segundos); su artefacto no se versiona.
 - El frontend consume la API vía `NEXT_PUBLIC_API_URL` (por defecto `http://localhost:8000/api`).
 - Las imágenes Docker son solo para desarrollo local (hot-reload en backend y frontend).
