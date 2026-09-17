@@ -36,7 +36,9 @@ def _run_checked(**kwargs) -> dict:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, str(exc)) from exc
 
 
-def _resolve_engine(db: Session, payload: MLPredictionRequest, user: User | None) -> dict:
+def _resolve_engine(
+    db: Session, payload: MLPredictionRequest, user: User | None
+) -> tuple[dict, dict[str, float]]:
     params = load_model_params(db)
     if payload.scenario_id is not None:
         scenario = db.get(Scenario, payload.scenario_id)
@@ -48,15 +50,18 @@ def _resolve_engine(db: Session, payload: MLPredictionRequest, user: User | None
                     status.HTTP_403_FORBIDDEN,
                     "No tiene permiso para predecir este escenario",
                 )
-        return _run_checked(
-            restoration_level=scenario.restoration_level,
-            sea_level_rise=scenario.sea_level_rise,
-            horizon_year=scenario.horizon_year,
-            baseline_area_ha=scenario.baseline_area_ha,
-            baseline_carbon_density=scenario.baseline_carbon_density,
-            params=params,
-            scenario_id=scenario.id,
-            scenario_name=scenario.name,
+        return (
+            _run_checked(
+                restoration_level=scenario.restoration_level,
+                sea_level_rise=scenario.sea_level_rise,
+                horizon_year=scenario.horizon_year,
+                baseline_area_ha=scenario.baseline_area_ha,
+                baseline_carbon_density=scenario.baseline_carbon_density,
+                params=params,
+                scenario_id=scenario.id,
+                scenario_name=scenario.name,
+            ),
+            params,
         )
 
     required = [
@@ -72,24 +77,28 @@ def _resolve_engine(db: Session, payload: MLPredictionRequest, user: User | None
             "Debe proveer scenario_id o todos los parámetros inline "
             "(restoration_level, sea_level_rise, horizon_year, baseline_area_ha, baseline_carbon_density)",
         )
-    return _run_checked(
-        restoration_level=payload.restoration_level,
-        sea_level_rise=payload.sea_level_rise,
-        horizon_year=payload.horizon_year,
-        baseline_area_ha=payload.baseline_area_ha,
-        baseline_carbon_density=payload.baseline_carbon_density,
-        params=params,
-        scenario_name=payload.scenario_name or "Escenario personalizado",
+    return (
+        _run_checked(
+            restoration_level=payload.restoration_level,
+            sea_level_rise=payload.sea_level_rise,
+            horizon_year=payload.horizon_year,
+            baseline_area_ha=payload.baseline_area_ha,
+            baseline_carbon_density=payload.baseline_carbon_density,
+            params=params,
+            scenario_name=payload.scenario_name or "Escenario personalizado",
+        ),
+        params,
     )
 
 
-def _build_result(engine: dict) -> MLPredictionResult:
+def _build_result(engine: dict, params: dict[str, float]) -> MLPredictionResult:
     ml = registry.predict(
         restoration_level=engine["restoration_level"],
         sea_level_rise=engine["sea_level_rise"],
         horizon_year=engine["horizon_year"],
         baseline_area_ha=engine["baseline_area_ha"],
         baseline_carbon_density=engine["baseline_carbon_density"],
+        start_year=int(params.get("start_year", 2025)),
     )
     return MLPredictionResult(
         scenario_id=engine.get("scenario_id"),
@@ -124,7 +133,8 @@ def predict(
     user: User | None = Depends(get_optional_user),
 ) -> MLPredictionResult:
     _ensure_enabled()
-    return _build_result(_resolve_engine(db, payload, user))
+    engine, params = _resolve_engine(db, payload, user)
+    return _build_result(engine, params)
 
 
 @router.get("/predict/{scenario_id}", response_model=MLPredictionResult)
@@ -134,6 +144,7 @@ def predict_for_scenario(
     user: User | None = Depends(get_optional_user),
 ) -> MLPredictionResult:
     _ensure_enabled()
-    return _build_result(
-        _resolve_engine(db, MLPredictionRequest(scenario_id=scenario_id), user)
+    engine, params = _resolve_engine(
+        db, MLPredictionRequest(scenario_id=scenario_id), user
     )
+    return _build_result(engine, params)

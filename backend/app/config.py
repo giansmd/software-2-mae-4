@@ -45,6 +45,9 @@ class Settings(BaseSettings):
     # the model is trained lazily on first use unless ML_TRAIN_ON_STARTUP warms it.
     ml_enabled: bool = True
     ml_train_on_startup: bool = False
+    # Weight of the deterministic engine in the "ensemble" prediction method
+    # (the ML surrogate gets 1 - ensemble_weight).
+    ensemble_weight: float = 0.5
 
     # Rate limiting (SEC-004): per-IP budgets for authentication endpoints.
     # In-memory and per-process; adjust when scaling beyond one worker.

@@ -50,9 +50,12 @@ export interface SeriesPoint {
   variation_pct: number;
 }
 
+export type PredictionMethod = "engine" | "ml" | "ensemble";
+
 export interface SimulationResult {
   scenario_id: number | null;
   scenario_name: string;
+  method: PredictionMethod;
   restoration_level: number;
   sea_level_rise: SeaLevelRise;
   horizon_year: number;
@@ -63,6 +66,12 @@ export interface SimulationResult {
   horizon_variation_pct: number;
   meets_hypothesis: boolean;
   hypothesis_threshold_pct: number;
+  engine_horizon_variation_pct: number;
+  engine_horizon_carbon: number;
+  engine_meets_hypothesis: boolean;
+  ml_horizon_variation_pct: number | null;
+  ml_horizon_carbon: number | null;
+  ml_meets_hypothesis: boolean | null;
   series: SeriesPoint[];
 }
 

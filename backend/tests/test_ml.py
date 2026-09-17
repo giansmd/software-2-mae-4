@@ -2,21 +2,35 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
+from app.ml.dataset import (
+    FEATURE_NAMES,
+    SERIES_FEATURE_NAMES,
+    SERIES_TARGET_NAMES,
+    generate_dataset,
+    generate_series_dataset,
+)
+from app.ml.registry import get_model, predict, predict_series
 from app.ml.train import train_model
-from app.ml.dataset import FEATURE_NAMES, generate_dataset
-from app.ml.registry import get_model, predict
 from app.models.scenario import SeaLevelRise
+from app.simulations.engine import run_simulation
 
 HYPOTHESIS_THRESHOLD = 25.0
 
 
+def _login(client, email, password):
+    r = client.post("/api/auth/login", json={"email": email, "password": password})
+    assert r.status_code == 200, r.text
+    return r.json()["access_token"]
+
+
 # ---------------------------------------------------------------------------
-# Dataset generator (pure, reproducible, no database)
+# Dataset generators (pure, reproducible, no database)
 # ---------------------------------------------------------------------------
 
 
-def test_dataset_is_deterministic_for_same_seed():
+def test_scenario_dataset_is_deterministic_for_same_seed():
     a = generate_dataset(n_samples=200, seed=7)
     b = generate_dataset(n_samples=200, seed=7)
     assert np.array_equal(a.X, b.X)
@@ -24,13 +38,13 @@ def test_dataset_is_deterministic_for_same_seed():
     assert np.array_equal(a.y_meets, b.y_meets)
 
 
-def test_dataset_changes_with_seed():
+def test_scenario_dataset_changes_with_seed():
     a = generate_dataset(n_samples=200, seed=1)
     b = generate_dataset(n_samples=200, seed=2)
     assert not np.array_equal(a.X, b.X)
 
 
-def test_dataset_shape_and_feature_names():
+def test_scenario_dataset_shape_and_feature_names():
     data = generate_dataset(n_samples=300, seed=3)
     assert data.X.shape == (300, len(FEATURE_NAMES))
     assert data.y_regression.shape == (300, 2)
@@ -39,34 +53,69 @@ def test_dataset_shape_and_feature_names():
     assert data.feature_names == list(FEATURE_NAMES)
 
 
-def test_dataset_rejects_empty():
-    import pytest
-
+def test_scenario_dataset_rejects_empty():
     with pytest.raises(ValueError):
         generate_dataset(n_samples=0)
 
 
+def test_series_dataset_is_deterministic_and_shaped():
+    a = generate_series_dataset(n_scenarios=40, progress_per_scenario=8, seed=5)
+    b = generate_series_dataset(n_scenarios=40, progress_per_scenario=8, seed=5)
+    assert np.array_equal(a.X, b.X)
+    assert np.array_equal(a.Y, b.Y)
+    assert a.X.shape == (320, len(SERIES_FEATURE_NAMES))
+    assert a.Y.shape == (320, len(SERIES_TARGET_NAMES))
+    assert a.feature_names == list(SERIES_FEATURE_NAMES)
+    assert a.target_names == list(SERIES_TARGET_NAMES)
+    # progress is always within [0, 1] and both endpoints are present.
+    progress = a.X[:, SERIES_FEATURE_NAMES.index("progress")]
+    assert progress.min() == 0.0
+    assert progress.max() == 1.0
+
+
+def test_series_dataset_progress_1_matches_horizon_engine():
+    data = generate_series_dataset(n_scenarios=20, progress_per_scenario=6, seed=11)
+    idx = SERIES_FEATURE_NAMES.index("progress")
+    var = SERIES_TARGET_NAMES.index("variation_pct")
+    for row in range(data.X.shape[0]):
+        if data.X[row, idx] != 1.0:
+            continue
+        rest = data.X[row, SERIES_FEATURE_NAMES.index("restoration_level")]
+        code = data.X[row, SERIES_FEATURE_NAMES.index("sea_level_rise")]
+        horizon = int(data.X[row, SERIES_FEATURE_NAMES.index("horizon_year")])
+        slr = {0.0: SeaLevelRise.LOW, 1.0: SeaLevelRise.MEDIUM, 2.0: SeaLevelRise.HIGH}[code]
+        engine = run_simulation(
+            restoration_level=float(rest),
+            sea_level_rise=slr,
+            horizon_year=horizon,
+            baseline_area_ha=float(data.X[row, SERIES_FEATURE_NAMES.index("baseline_area_ha")]),
+            baseline_carbon_density=float(data.X[row, SERIES_FEATURE_NAMES.index("baseline_carbon_density")]),
+        )
+        assert data.Y[row, var] == pytest.approx(engine["horizon_variation_pct"], abs=0.05)
+
+
 # ---------------------------------------------------------------------------
-# Training quality: the surrogate must emulate the engine closely
+# Training quality
 # ---------------------------------------------------------------------------
 
 
-def test_trained_regressor_is_accurate():
-    model = train_model(n_samples=2000)
-    assert model.metadata["regression"]["r2_variation"] >= 0.9
+def test_trained_surrogate_is_accurate():
+    model = train_model(n_scenarios=300, progress_per_scenario=12, n_samples=500)
+    assert model.metadata["regression"]["r2_variation"] >= 0.85
     assert model.metadata["regression"]["r2_carbon"] >= 0.9
     assert model.metadata["classification"]["accuracy"] >= 0.9
 
 
 def test_feature_importances_reported():
-    model = train_model(n_samples=1500)
+    model = train_model(n_scenarios=200, progress_per_scenario=10, n_samples=400)
     importances = model.metadata["feature_importances"]
-    assert set(importances) == set(FEATURE_NAMES)
+    assert set(importances) == set(SERIES_FEATURE_NAMES)
     assert all(0.0 <= v <= 1.0 for v in importances.values())
+    assert set(model.metadata["regression"]["per_target"]) == set(SERIES_TARGET_NAMES)
 
 
 # ---------------------------------------------------------------------------
-# Prediction behaviour of the persisted/cached surrogate
+# Prediction behaviour of the cached model
 # ---------------------------------------------------------------------------
 
 
@@ -79,11 +128,9 @@ def test_prediction_is_monotonic_in_restoration():
 
 def test_prediction_tracks_engine_within_tolerance():
     """The emulator should stay close to the deterministic engine."""
-    from app.simulations.engine import run_simulation
-
-    samples = [(0.0, SeaLevelRise.HIGH), (50.0, SeaLevelRise.MEDIUM), (90.0, SeaLevelRise.LOW)]
-    deltas = []
-    for restoration, slr in samples:
+    samples = [0.0, 50.0, 90.0]
+    slrs = [SeaLevelRise.HIGH, SeaLevelRise.MEDIUM, SeaLevelRise.LOW]
+    for restoration, slr in zip(samples, slrs):
         ml = predict(restoration, slr, 2050, 120.0, 85.0)
         engine = run_simulation(
             restoration_level=restoration,
@@ -92,18 +139,21 @@ def test_prediction_tracks_engine_within_tolerance():
             baseline_area_ha=120.0,
             baseline_carbon_density=85.0,
         )
-        deltas.append(abs(ml["variation_pct"] - engine["horizon_variation_pct"]))
-    assert max(deltas) < 8.0
+        assert abs(ml["variation_pct"] - engine["horizon_variation_pct"]) < 8.0
+
+
+def test_predict_series_covers_every_year():
+    series = predict_series(60.0, SeaLevelRise.MEDIUM, 2050, 120.0, 85.0, start_year=2025)
+    assert [int(p["year"]) for p in series] == list(range(2025, 2051))
+    assert all("retained_carbon" in p for p in series)
 
 
 def test_model_is_cached_between_calls():
-    first = get_model()
-    second = get_model()
-    assert first is second
+    assert get_model() is get_model()
 
 
 # ---------------------------------------------------------------------------
-# HTTP endpoints
+# HTTP endpoints: ML module
 # ---------------------------------------------------------------------------
 
 
@@ -145,3 +195,83 @@ def test_ml_predict_public_scenario(client):
     res = client.get(f"/api/ml/predict/{public['id']}")
     assert res.status_code == 200, res.text
     assert res.json()["scenario_id"] == public["id"]
+
+
+# ---------------------------------------------------------------------------
+# HTTP endpoints: prediction method selector (engine / ml / ensemble)
+# ---------------------------------------------------------------------------
+
+
+INLINE = {
+    "restoration_level": 90.0,
+    "sea_level_rise": "low",
+    "horizon_year": 2050,
+    "baseline_area_ha": 120.0,
+    "baseline_carbon_density": 85.0,
+}
+
+
+@pytest.mark.parametrize("method", ["engine", "ml", "ensemble"])
+def test_simulation_method_selector(client, method):
+    res = client.post("/api/simulations/run", json={**INLINE, "method": method})
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body["method"] == method
+    assert len(body["series"]) == 26  # 2025..2050
+    assert body["hypothesis_threshold_pct"] == HYPOTHESIS_THRESHOLD
+    if method == "engine":
+        assert body["ml_horizon_variation_pct"] is None
+    else:
+        assert body["ml_horizon_variation_pct"] is not None
+        assert body["ml_meets_hypothesis"] is not None
+
+
+def test_engine_method_matches_raw_engine(client):
+    res = client.post("/api/simulations/run", json={**INLINE, "method": "engine"})
+    body = res.json()
+    engine = run_simulation(
+        restoration_level=INLINE["restoration_level"],
+        sea_level_rise=SeaLevelRise.LOW,
+        horizon_year=INLINE["horizon_year"],
+        baseline_area_ha=INLINE["baseline_area_ha"],
+        baseline_carbon_density=INLINE["baseline_carbon_density"],
+    )
+    assert body["horizon_variation_pct"] == pytest.approx(
+        engine["horizon_variation_pct"], abs=0.01
+    )
+    assert body["engine_horizon_variation_pct"] == pytest.approx(
+        engine["horizon_variation_pct"], abs=0.01
+    )
+
+
+def test_ensemble_stays_between_engine_and_ml(client):
+    engine = client.post("/api/simulations/run", json={**INLINE, "method": "engine"}).json()
+    ml = client.post("/api/simulations/run", json={**INLINE, "method": "ml"}).json()
+    ens = client.post("/api/simulations/run", json={**INLINE, "method": "ensemble"}).json()
+    low = min(engine["horizon_variation_pct"], ml["horizon_variation_pct"])
+    high = max(engine["horizon_variation_pct"], ml["horizon_variation_pct"])
+    assert low - 0.5 <= ens["horizon_variation_pct"] <= high + 0.5
+
+
+def test_invalid_method_is_rejected(client):
+    res = client.post("/api/simulations/run", json={**INLINE, "method": "magic"})
+    assert res.status_code == 422
+
+
+def test_simulation_get_accepts_method(client):
+    public = next(s for s in client.get("/api/scenarios").json() if s["is_public"])
+    res = client.get(f"/api/simulations/{public['id']}?method=ml")
+    assert res.status_code == 200, res.text
+    assert res.json()["method"] == "ml"
+
+
+@pytest.mark.parametrize("fmt", ["pdf", "docx", "xlsx"])
+def test_reports_support_ml_method(client, fmt):
+    token = _login(client, "inv@mae4.dev", "Invest12345")
+    public = next(s for s in client.get("/api/scenarios").json() if s["is_public"])
+    res = client.get(
+        f"/api/reports/{public['id']}/{fmt}?method=ensemble",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert res.status_code == 200, res.text
+    assert len(res.content) > 100

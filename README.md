@@ -21,7 +21,7 @@ carbono **≥ +25 % a 2050**.
 | Frontend | Next.js 15.5 (App Router), React 19.2, TypeScript 5.7, Tailwind CSS 4.3.3, Recharts 3.10, Three.js 0.186 (react-three-fiber 9.7, drei 10.7) |
 | Gestor de paquetes | pnpm 11 (frontend), uv/pip (backend) |
 | Reportes | ReportLab 5.0 (PDF), python-docx 1.2 (Word), openpyxl 3.1 (Excel) |
-| Machine Learning | scikit-learn 1.9 (Random Forest, modelo *surrogate* del motor) |
+| Machine Learning | scikit-learn 1.9 (Extra Trees + Random Forest, modelo *surrogate* del motor) |
 
 ## Estructura
 
@@ -202,22 +202,27 @@ complejas, fuera del alcance de este prototipo.
 
 El módulo **Modelo de IA** entrena un modelo *real* de machine learning con
 `scikit-learn` que **emula** al motor determinista. No modifica la lógica
-científica: la aprende y la reproduce en milisegundos, y sirve como capa de
-predicción rápida para explorar escenarios.
+científica: la aprende y la reproduce en milisegundos. Además de la página
+`/ml`, el modelo está **integrado en la predicción** de toda la app mediante un
+selector de método (ver abajo).
 
 - **Datos de entrenamiento (ML-001):** **sintéticos**, generados por el propio
-  motor (`app/ml/dataset.py`). Se muestrean ~8 000 escenarios con una semilla
-  fija, y cada etiqueta es la salida de `run_simulation`. El conjunto es
-  reproducible y no depende de datos externos ni de la base de datos.
-  **No** se usan las mediciones de campo (siguen reservadas a calibración).
-- **Modelos:** un `RandomForestRegressor` multi-salida (predice la variación %
-  y el carbono retenido) y un `RandomForestClassifier` (¿cumple la hipótesis
-  ≥ +25 %?). Se separan en *train/test* (80/20) y se valida con CV (3 folds).
-- **Métricas** (expuestas en `/api/ml/metadata`): R², MAE y RMSE de regresión,
+  motor (`app/ml/dataset.py`) con una semilla fija; cada etiqueta es la salida
+  de `calculate_state`. Se muestrean ~2 000 escenarios × 16 posiciones
+  temporales (~32 000 filas). El conjunto es reproducible y no depende de datos
+  externos ni de la base de datos. **No** se usan las mediciones de campo
+  (siguen reservadas a calibración).
+- **Modelos:** un `ExtraTreesRegressor` multi-salida sobre la **curva anual**
+  (carbono retenido, superficie efectiva, cobertura vegetal y variación %) y un
+  `RandomForestClassifier` (¿cumple la hipótesis ≥ +25 %?). Se separan en
+  *train/test* (80/20) y se valida con CV (3 folds). Los escenarios se muestrean
+  con énfasis en los extremos de restauración (0 % y 100 %) para reducir el
+  sesgo de los árboles en los bordes del dominio.
+- **Métricas** (expuestas en `/api/ml/metadata`): R², MAE y RMSE por variable,
   accuracy y ROC-AUC de clasificación, además de la **importancia de variables**.
-  Con los parámetros por defecto el emulador supera R² ≈ 0.98.
+  Con los parámetros por defecto el emulador supera R² ≈ 0.99.
 - **Artefacto y ciclo de vida:** el modelo se entrena de forma perezosa en el
-  primer uso y se guarda en `app/ml/artifacts/carbon_model.joblib`
+  primer uso (~30-60 s) y se guarda en `app/ml/artifacts/carbon_model_v2.joblib`
   (ignorado por git; se regenera). `ML_ENABLED` (por defecto `true`) y
   `ML_TRAIN_ON_STARTUP` (por defecto `false`) controlan el módulo.
 - **API:** `GET /api/ml/metadata` y `POST /api/ml/predict` (acepta `scenario_id`
@@ -226,6 +231,23 @@ predicción rápida para explorar escenarios.
 - **Frontend:** página `/ml` con las métricas, la importancia de variables, una
   comparación ML vs motor por nivel de restauración y un formulario de
   predicción.
+
+### Método de predicción (motor / IA / ensemble)
+
+Los endpoints de simulación y de reportes aceptan `method`:
+
+| `method` | Predicción |
+|---|---|
+| `engine` (por defecto) | Motor determinista (sin cambios respecto a versiones previas) |
+| `ml` | Serie y horizonte generados por el modelo de IA |
+| `ensemble` | Promedio ponderado motor + IA (`ENSEMBLE_WEIGHT`, por defecto 0.5) |
+
+El dashboard y el detalle de escenario incorporan un **selector de método**; los
+reportes PDF/Word/Excel incluyen el método usado y la comparación motor vs IA.
+La respuesta `SimulationResult` siempre trae el titular del método elegido
+(`horizon_variation_pct`, `meets_hypothesis`) y, en paralelo,
+`engine_horizon_variation_pct` y `ml_horizon_variation_pct`. Si `method` requiere
+IA y `ML_ENABLED=false`, la API responde **503**.
 
 > Al ser un *surrogate* de datos sintéticos, la app etiqueta explícitamente su
 > origen (`synthetic`) para no confundirlo con mediciones de campo.
@@ -304,7 +326,8 @@ pytest
 Incluye tests del motor (restauración alta > baja; hipótesis ≥ +25 %; SLR reduce retención),
 tests de integración contra SQLite (auth, control de roles, CRUD, simulación y exportación
 de los tres formatos de reporte) y tests del modelo de IA (dataset reproducible, calidad de
-la regresión/clasificación, monotonía y endpoints `/api/ml`). **46 tests pasan.**
+la regresión/clasificación, monotonía, selector de método `engine`/`ml`/`ensemble` y endpoints
+`/api/ml`). **59 tests pasan.**
 
 Los tests siempre corren contra una base SQLite local hermética (`test_mae4.db`),
 ignorando cualquier `DATABASE_URL` presente en el entorno: nunca escriben sobre una

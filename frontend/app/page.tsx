@@ -18,13 +18,46 @@ import {
   runSimulation,
   errMessage,
 } from "@/lib/api";
-import type { Scenario, SimulationResult } from "@/lib/types";
+import type {
+  PredictionMethod,
+  Scenario,
+  SimulationResult,
+} from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
 const HYPOTHESIS_PCT = 25;
+const METHODS: PredictionMethod[] = ["engine", "ml", "ensemble"];
+
+function MethodSelector({
+  value,
+  onChange,
+}: {
+  value: PredictionMethod;
+  onChange: (m: PredictionMethod) => void;
+}) {
+  const { t } = useI18n();
+  return (
+    <div className="inline-flex overflow-hidden rounded-md border border-gray-300 dark:border-gray-700">
+      {METHODS.map((m) => (
+        <button
+          key={m}
+          type="button"
+          onClick={() => onChange(m)}
+          className={`px-3 py-1.5 text-sm transition-colors ${
+            value === m
+              ? "bg-brand-500 text-white"
+              : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+          }`}
+        >
+          {t(`method.${m}`)}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 function Kpi({
   label,
@@ -57,6 +90,7 @@ export default function DashboardPage() {
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [results, setResults] = useState<Record<number, SimulationResult>>({});
+  const [method, setMethod] = useState<PredictionMethod>("engine");
   const [loading, setLoading] = useState(true);
   const [simulating, setSimulating] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -80,11 +114,11 @@ export default function DashboardPage() {
       await Promise.all(
         ids.map(async (id) => {
           try {
-            map[id] = await getSimulation(id);
+            map[id] = await getSimulation(id, method);
           } catch {
             const sc = scenarios.find((s) => s.id === id);
             if (sc) {
-              map[id] = await runSimulation({ scenario_id: id });
+              map[id] = await runSimulation({ scenario_id: id, method });
             }
           }
         }),
@@ -100,7 +134,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (selected.length) simulate(selected);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected.join(",")]);
+  }, [selected.join(","), method]);
 
   const chartData = useMemo(() => {
     const allYears = new Set<number>();
@@ -151,6 +185,15 @@ export default function DashboardPage() {
         >
           {t("dash.openRealtime")}
         </Link>
+        <div className="mt-4 flex items-center gap-3">
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            {t("method.label")}
+          </span>
+          <MethodSelector value={method} onChange={setMethod} />
+          <Link href="/ml" className="text-sm text-brand-500 underline">
+            {t("nav.ml")}
+          </Link>
+        </div>
       </header>
 
       {error && (
@@ -201,6 +244,10 @@ export default function DashboardPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>{r.scenario_name}</CardTitle>
+                  <span className="flex items-center gap-2">
+                  <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                    {t(`method.${r.method}`)}
+                  </span>
                   <span
                     className={`flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium ${
                       r.meets_hypothesis
@@ -217,6 +264,7 @@ export default function DashboardPage() {
                       ? t("dash.meetsHypothesis", { pct: r.hypothesis_threshold_pct })
                       : t("dash.notMeets", { pct: r.hypothesis_threshold_pct })}
                   </span>
+                  </span>
                 </div>
               </CardHeader>
               <CardContent>
@@ -232,7 +280,14 @@ export default function DashboardPage() {
                   <Kpi
                     label={t("dash.variation")}
                     value={`${r.horizon_variation_pct > 0 ? "+" : ""}${r.horizon_variation_pct.toFixed(1)}%`}
-                    hint={t("dash.threshold", { pct: r.hypothesis_threshold_pct })}
+                    hint={
+                      r.ml_horizon_variation_pct !== null
+                        ? t("method.compare", {
+                            engine: r.engine_horizon_variation_pct.toFixed(1),
+                            ml: r.ml_horizon_variation_pct.toFixed(1),
+                          })
+                        : t("dash.threshold", { pct: r.hypothesis_threshold_pct })
+                    }
                   />
                   <Kpi
                     label={t("dash.effectiveArea")}

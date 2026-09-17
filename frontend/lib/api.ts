@@ -6,6 +6,7 @@ import type {
   SimulationResult,
   MLMetadata,
   MLPredictionResult,
+  PredictionMethod,
   ReportFormat,
 } from "./types";
 
@@ -222,12 +223,16 @@ export function runSimulation(params: {
   baseline_area_ha?: number;
   baseline_carbon_density?: number;
   scenario_name?: string;
+  method?: PredictionMethod;
 }): Promise<SimulationResult> {
   return post<SimulationResult>("/simulations/run", params);
 }
 
-export function getSimulation(scenarioId: number): Promise<SimulationResult> {
-  return get<SimulationResult>(`/simulations/${scenarioId}`);
+export function getSimulation(
+  scenarioId: number,
+  method: PredictionMethod = "engine",
+): Promise<SimulationResult> {
+  return get<SimulationResult>(`/simulations/${scenarioId}?method=${method}`);
 }
 
 // ---------- ML surrogate model ----------
@@ -250,10 +255,11 @@ export function predictML(params: {
 export async function downloadReport(
   scenarioId: number,
   fmt: ReportFormat,
+  method: PredictionMethod = "engine",
 ): Promise<void> {
   const token = getToken();
   const res = await fetch(
-    `${API_URL}/reports/${scenarioId}/${fmt}`,
+    `${API_URL}/reports/${scenarioId}/${fmt}?method=${method}`,
     token ? { headers: { Authorization: `Bearer ${token}` } } : {},
   );
   if (!res.ok) {

@@ -10,6 +10,12 @@ from app.schemas.simulation import SimulationRequest
 from app.simulations.engine import HYPOTHESIS_THRESHOLD
 
 
+class TargetMetrics(BaseModel):
+    r2: float
+    mae: float
+    rmse: float
+
+
 class RegressionMetrics(BaseModel):
     r2_variation: float
     mae_variation: float
@@ -19,6 +25,7 @@ class RegressionMetrics(BaseModel):
     rmse_carbon: float
     cv_r2_mean: float
     cv_r2_std: float
+    per_target: dict[str, TargetMetrics]
 
 
 class ClassificationMetrics(BaseModel):
@@ -32,6 +39,7 @@ class MLMetadata(BaseModel):
     data_source: str
     trained_at: str
     n_samples: int
+    n_scenarios: int
     n_train: int
     n_test: int
     feature_names: list[str]

@@ -17,7 +17,12 @@ import {
 } from "recharts";
 import { runSimulation, getScenario, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
-import type { Scenario, SeaLevelRise, SimulationResult } from "@/lib/types";
+import type {
+  PredictionMethod,
+  Scenario,
+  SeaLevelRise,
+  SimulationResult,
+} from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import {
@@ -55,6 +60,7 @@ export default function ScenarioPage() {
   const [horizon_year, setHorizonYear] = useState(2050);
   const [baseline_area_ha, setBaselineArea] = useState(100);
   const [baseline_carbon_density, setBaselineCarbon] = useState(50);
+  const [method, setMethod] = useState<PredictionMethod>("engine");
   const [result, setResult] = useState<SimulationResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [simulating, setSimulating] = useState(false);
@@ -99,6 +105,7 @@ export default function ScenarioPage() {
         baseline_area_ha,
         baseline_carbon_density,
         scenario_name: scenario?.name,
+        method,
       });
       setResult(r);
     } catch (e) {
@@ -197,6 +204,18 @@ export default function ScenarioPage() {
                 className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
               />
             </label>
+            <label className="block text-sm">
+              {t("method.label")}
+              <select
+                value={method}
+                onChange={(e) => setMethod(e.target.value as PredictionMethod)}
+                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              >
+                <option value="engine">{t("method.engine")}</option>
+                <option value="ml">{t("method.ml")}</option>
+                <option value="ensemble">{t("method.ensemble")}</option>
+              </select>
+            </label>
             <Button className="w-full" onClick={handleSimulate} disabled={simulating}>
               {simulating && <Loader2 className="h-4 w-4 animate-spin" />}
               Simular
@@ -223,6 +242,16 @@ export default function ScenarioPage() {
                   ? `Cumple la hipótesis: +${result.horizon_variation_pct.toFixed(1)}% (umbral ${result.hypothesis_threshold_pct}%)`
                   : `No cumple la hipótesis: ${result.horizon_variation_pct.toFixed(1)}% (umbral ${result.hypothesis_threshold_pct}%)`}
               </div>
+
+              {result.ml_horizon_variation_pct !== null && (
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {t(`method.${result.method}`)} ·{" "}
+                  {t("method.compare", {
+                    engine: result.engine_horizon_variation_pct.toFixed(1),
+                    ml: result.ml_horizon_variation_pct.toFixed(1),
+                  })}
+                </p>
+              )}
 
               <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
                 <Kpi label="Carbono base" value={`${result.baseline_carbon.toFixed(1)} t`} />

@@ -17,6 +17,7 @@ from reportlab.platypus import (
 )
 
 from app.schemas.simulation import SimulationResult
+from app.services.prediction import METHOD_LABELS
 
 
 def build_pdf_report(result: SimulationResult) -> bytes:
@@ -29,8 +30,10 @@ def build_pdf_report(result: SimulationResult) -> bytes:
     story.append(Paragraph(f"Escenario: {result.scenario_name}", styles["Heading2"]))
     story.append(Spacer(1, 8))
 
+    method_label = METHOD_LABELS.get(result.method, result.method)
     kpi_rows = [
         ["Parámetro", "Valor"],
+        ["Método de predicción", method_label],
         ["Nivel de restauración", f"{result.restoration_level:.0f}%"],
         ["Subida del nivel del mar", result.sea_level_rise.value],
         ["Año horizonte", str(result.horizon_year)],
@@ -39,6 +42,13 @@ def build_pdf_report(result: SimulationResult) -> bytes:
         ["Variación respecto a base", f"{result.horizon_variation_pct:.1f}%"],
         ["Hipótesis ≥ +25%", "SÍ" if result.meets_hypothesis else "NO"],
     ]
+    if result.ml_horizon_variation_pct is not None:
+        kpi_rows.extend(
+            [
+                ["Variación (motor)", f"{result.engine_horizon_variation_pct:.1f}%"],
+                ["Variación (modelo IA)", f"{result.ml_horizon_variation_pct:.1f}%"],
+            ]
+        )
     kpi = Table(kpi_rows, hAlign="LEFT")
     kpi.setStyle(
         TableStyle(

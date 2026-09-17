@@ -1,4 +1,8 @@
-"""Simulation endpoints: run the carbon retention engine for a scenario or inline params."""
+"""Simulation endpoints: run a prediction for a scenario or inline params.
+
+Supports three prediction methods (ML-002): the deterministic engine, the ML
+surrogate model, or an ensemble of both.
+"""
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -8,19 +12,22 @@ from app.database import get_db
 from app.dependencies import get_optional_user
 from app.models.scenario import Scenario
 from app.models.user import Role, User
-from app.schemas.simulation import SimulationRequest, SimulationResult
+from app.schemas.simulation import PredictionMethod, SimulationRequest, SimulationResult
 from app.services.params import load_model_params
-from app.simulations.engine import InvalidSimulationParamsError, run_simulation
+from app.services.prediction import PredictionUnavailableError, predict_scenario
+from app.simulations.engine import InvalidSimulationParamsError
 
 router = APIRouter(prefix="/simulations", tags=["simulations"])
 
 
-def _run_checked(**kwargs):
-    """Ejecuta el motor traduciendo parámetros inconsistentes a HTTP 400 (ENG-001)."""
+def _run_checked(**kwargs) -> dict:
+    """Ejecuta la predicción traduciendo errores a HTTP controlados."""
     try:
-        return run_simulation(**kwargs)
+        return predict_scenario(**kwargs)
     except InvalidSimulationParamsError as exc:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, str(exc)) from exc
+    except PredictionUnavailableError as exc:
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, str(exc)) from exc
 
 
 def _resolve(db: Session, payload: SimulationRequest, user: User | None) -> dict:
@@ -39,6 +46,7 @@ def _resolve(db: Session, payload: SimulationRequest, user: User | None) -> dict
             baseline_area_ha=scenario.baseline_area_ha,
             baseline_carbon_density=scenario.baseline_carbon_density,
             params=params,
+            method=payload.method,
             scenario_id=scenario.id,
             scenario_name=scenario.name,
         )
@@ -62,6 +70,7 @@ def _resolve(db: Session, payload: SimulationRequest, user: User | None) -> dict
         baseline_area_ha=payload.baseline_area_ha,
         baseline_carbon_density=payload.baseline_carbon_density,
         params=params,
+        method=payload.method,
         scenario_name=payload.scenario_name or "Escenario personalizado",
     )
 
@@ -74,7 +83,10 @@ def run(payload: SimulationRequest, db: Session = Depends(get_db), user: User | 
 @router.get("/{scenario_id}", response_model=SimulationResult)
 def run_for_scenario(
     scenario_id: int,
+    method: PredictionMethod = "engine",
     db: Session = Depends(get_db),
     user: User | None = Depends(get_optional_user),
 ) -> SimulationResult:
-    return SimulationResult(**_resolve(db, SimulationRequest(scenario_id=scenario_id), user))
+    return SimulationResult(
+        **_resolve(db, SimulationRequest(scenario_id=scenario_id, method=method), user)
+    )

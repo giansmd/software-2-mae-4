@@ -205,6 +205,12 @@ export const translations: Record<Lang, Record<string, string>> = {
     "ml.feature.horizon_year": "Año horizonte",
     "ml.feature.baseline_area_ha": "Área base",
     "ml.feature.baseline_carbon_density": "Densidad de carbono",
+    // Método de predicción
+    "method.label": "Método de predicción",
+    "method.engine": "Motor",
+    "method.ml": "IA",
+    "method.ensemble": "Ensemble",
+    "method.compare": "Motor {engine}% · IA {ml}%",
     // Errores / misc
     "common.edit": "Editar",
     "common.delete": "Eliminar",
@@ -403,6 +409,12 @@ export const translations: Record<Lang, Record<string, string>> = {
     "ml.feature.horizon_year": "Horizon year",
     "ml.feature.baseline_area_ha": "Baseline area",
     "ml.feature.baseline_carbon_density": "Carbon density",
+    // Prediction method
+    "method.label": "Prediction method",
+    "method.engine": "Engine",
+    "method.ml": "AI",
+    "method.ensemble": "Ensemble",
+    "method.compare": "Engine {engine}% · AI {ml}%",
     // Errores / misc
     "common.edit": "Edit",
     "common.delete": "Delete",
