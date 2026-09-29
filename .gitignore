@@ -34,3 +34,7 @@ backend/app/ml/artifacts/
 paper/GD.docx
 paper/__pycache__/
 **/__pycache__/
+
+# PDFs de referencia (162 MB)
+paper/references_pdf/
+paper/references_txt/

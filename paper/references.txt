@@ -1,131 +1,83 @@
-# Referencias
+# Bibliografía — 40 artículos provistos por el docente
+# Formato: clave|referencia APA 7
+# DOI extraído de la cabecera de cada PDF y validado contra Crossref.
 
-almeyda2023 | Dioses-Puelles, J. E., García-García, R., & Bermejo-Requena, L. A. (2023). Tipos de cobertura vegetal del Área Natural Protegida "Santuario Nacional Los Manglares de Tumbes", Tumbes, Perú. *Manglar*, 20(2), 177-183. https://doi.org/10.57188/manglar.2023.020
+aguzzi2025 | Aguzzi et al. (2025). A digital-twin strategy using robots for marine ecosystem monitoring. *Ecological Informatics*, 91, 103409. https://doi.org/10.1016/j.ecoinf.2025.103409
 
-consorcio2023 | Consorcio Manglares del Noroeste del Perú. (2023). *Estimación de la biomasa y carbono azul en los manglares de Tumbes*. Consorcio Manglares del Noroeste del Perú.
+alenezi2026 | Alenezi & Alabaiadly (2026). Digital twins and Edge AI for smallOff-Grid water systems A review. *IEEE Access*, 14, 39960-39978. https://doi.org/10.1109/ACCESS.2026.3669429
 
-bunting2022 | Bunting, P., Rosenqvist, A., Hilarides, L., Lucas, R. M., Thomas, N., Tadono, T., Worthington, T. A., Spalding, M., Murray, N. J., & Rebelo, L.-M. (2022). Global mangrove extent change 1996-2020: Global Mangrove Watch version 3.0. *Remote Sensing*, 14(15), 3657. https://doi.org/10.3390/rs14153657
+blair2021 | Blair, G. S. (2021). Digital twins of the natural environment. *Nature Climate Change*, 11(11), 828-829. https://doi.org/10.1038/s41558-021-00986-y
 
-ipcc2013 | Intergovernmental Panel on Climate Change. (2013). *2013 supplement to the 2006 IPCC guidelines for national greenhouse gas inventories: Wetlands*. IPCC.
+brown2019 | Brown & Williams (2019). The potential for citizen science to produce reliable and useful information in ecology. *Conservation Biology*, 33(3), 561-569. https://doi.org/10.1111/cobi.13223
 
-mcleod2011 | Mcleod, E., Chmura, G. L., Bouillon, S., Salm, R., Björk, M., Duarte, C. M., Lovelock, C. E., Schlesinger, W. H., & Silliman, B. R. (2011). A blueprint for blue carbon: Toward an improved understanding of the role of vegetated coastal habitats in sequestering CO2. *Frontiers in Ecology and the Environment*, 9(10), 552-560. https://doi.org/10.1890/110004
+buffington2021 | Buffington et al. (2021). Incorporation of uncertainty to improve projections of tidal wetland elevation and carbon accumulati. *PLOS ONE*, 16(10), e0256707. https://doi.org/10.1371/journal.pone.0256707
 
-donato2011 | Donato, D. C., Kauffman, J. B., Murdiyarso, D., Kurnianto, S., Stidham, M., & Kanninen, M. (2011). Mangroves among the most carbon-rich forests in the tropics. *Nature Geoscience*, 4(5), 293-297. https://doi.org/10.1038/ngeo1123
+cabrera2021 | Cabrera et al. (2021). The potential of a smartphone as an urban weather station—An exploratory analysis. *Frontiers in Environmental Science*, 9. https://doi.org/10.3389/fenvs.2021.673937
 
-kauffman2017 | Kauffman, J. B., Arifanti, V. B., Hernández Trejo, H., del Carmen Jesús García, M., Norfolk, J., Cifuentes, M., Hadriyanto, D., & Murdiyarso, D. (2017). The jumbo carbon footprint of a shrimp: Carbon losses from mangrove deforestation. *Frontiers in Ecology and the Environment*, 15(4), 183-188. https://doi.org/10.1002/fee.1482
+chen2025 | Chen, R., Yi, C., Zhou, F., Kang, J., Wu, Y., & Niyato, D. (2025). Federated digital twin construction via distributed sensing: A game-theoretic online optimization with overlapping coalitions. *arXiv preprint*. https://arxiv.org/abs/2502.16313
 
-zamboni2025 | Zamboni, N. S., et al. (2025). Impacts of land use change on mangrove blue carbon along the western South Atlantic coast. *Estuarine, Coastal and Shelf Science*, 315, 109063. https://doi.org/10.1016/j.ecss.2025.109063
+deKoning2023 | de Koning, K., Broekhuijsen, J., Kühn, I., Ovaskainen, O., Taubert, F., Endresen, D., Schigel, D., & Grimm, V. (2023). Digital twins: dynamic model-data fusion for ecology. *Trends in Ecology & Evolution*, 38(10), 916-926. https://doi.org/10.1016/j.tree.2023.04.010
 
-sadat2025 | Sadat-Noori, M., et al. (2025). Coastal wetland restoration effects on carbon dynamics: A review. *Reviews of Geophysics*, 63(3), e2025RG000895. https://doi.org/10.1029/2025RG000895
+devries2024 | DeVries, C. (2024). Governance framework for citizen digital twins in smart cities. *Intelligent & Human Futures*, 1(1), 1-14. Wisdom Academic Press.
 
-nature2026 | Priority questions for the next decade of blue carbon science. (2026). *Nature Ecology & Evolution*. https://doi.org/10.1038/s41559-026-03020-6
+dilip2024 | Dilip (2024). Thermal digital twins of asphalt pavements using physics-informed neural networks. *World Congress on Civil, Structural, and Environmental Engineering*. https://doi.org/10.11159/icgre24.157
 
-pradisty2025 | Pradisty, N. A., Schlund, M., Horstman, E. M., & Willemen, L. (2025). Estimating canopy height and aboveground biomass in tropical mangrove restoration areas through multisource remote sensing. *Ecological Informatics*, 92, 103522. https://doi.org/10.1016/j.ecoinf.2025.103522
+durden2025 | Durden (2025). Environmental management using a digital twin. *Environmental Science & Policy*, 164, 104018. https://doi.org/10.1016/j.envsci.2025.104018
 
-mcNulty2025 | McNulty, V. P., Perez, D., Simpson, S., Beneby, J., Joseph-Witzig, A., Jones, L., Smart, L., Moyer, R. P., Gibson, S., Musgrove, M., Cattafesta, C., & Schill, S. R. (2025). The Blue Carbon Explorer: A Google Earth Engine tool for mangrove restoration. *Frontiers in Environmental Science*, 13, 1641301. https://doi.org/10.3389/fenvs.2025.1641301
+durao2018 | Durão, L. F. C. S., Haag, S., Anderl, R., Schützer, K., & Zancul, E. (2018). Digital twin requirements in the context of Industry 4.0. *IFIP Advances in Information and Communication Technology*, 540, 204-214. https://doi.org/10.1007/978-3-030-01614-2_19
 
-wirth2000 | Wirth, R., & Hipp, J. (2000). CRISP-DM: Towards a standard process model for data mining. *Proceedings of the 4th International Conference on the Practical Applications of Knowledge Discovery and Data Mining*, 29-39.
+garske2024 | Garske et al. (2024). Digital twins in sustainable transition exploring the role of EU data governance. *Frontiers in Research Metrics and Analytics*, 9. https://doi.org/10.3389/frma.2024.1303024
 
-breiman2001 | Breiman, L. (2001). Random forests. *Machine Learning*, 45(1), 5-32. https://doi.org/10.1023/A:1010933404324
+guo2017 | Guo et al. (2017). A review of wetland remote sensing. *Sensors*, 17(4), 777. https://doi.org/10.3390/s17040777
 
-pedregosa2011 | Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, É. (2011). Scikit-learn: Machine learning in Python. *Journal of Machine Learning Research*, 12, 2825-2830.
+hananto2025 | Hananto & Veza (2025). Governance framework for intelligent digital Twin systems in battery storage aligning standards, Ma. *Computers*, 14(9), 365. https://doi.org/10.3390/computers14090365
 
-demšar2006 | Demšar, J. (2006). Statistical comparisons of classifiers over multiple data sets. *Journal of Machine Learning Research*, 7, 1-30.
+haraguchi2024 | Haraguchi et al. (2024). Assessing governance implications of city digital twin technology A maturity model approach. *Technological Forecasting and Social Change*, 204, 123409. https://doi.org/10.1016/j.techfore.2024.123409
 
-geurts2006 | Geurts, P., Ernst, D., & Wehenkel, L. (2006). Extremely randomized trees. *Machine Learning*, 63(1), 3-42. https://doi.org/10.1007/s10994-006-6226-1
+henriksen2023 | Henriksen et al. (2023). A New digital Twin for climate change adaptation, water management, and disaster Risk reduction (HIP. *Water*, 15(1), 25. https://doi.org/10.3390/w15010025
 
-friedman2001 | Friedman, J. H. (2001). Greedy function approximation: A gradient boosting machine. *The Annals of Statistics*, 29(5), 1189-1232. https://doi.org/10.1214/aos/1013203451
+jafarzadeh2022 | Jafarzadeh et al. (2022). Remote sensing and machine learning tools to support wetland monitoring A meta-Analysis of three De. *Remote Sensing*, 14(23), 6104. https://doi.org/10.3390/rs14236104
 
-hoerl1970 | Hoerl, A. E., & Kennard, R. W. (1970). Ridge regression: Biased estimation for nonorthogonal problems. *Technometrics*, 12(1), 55-67. https://doi.org/10.1080/00401706.1970.10488634
+jeffery2021 | Jeffery, K., Wittenburg, P., Lannom, L., Strawn, G., Biniossek, C., Betz, D., & Blanchi, C. (2021). Not ready for convergence in data infrastructures. *Data Intelligence*, 3(1), 116-135. https://doi.org/10.1162/dint_a_00084
 
-shapiro1965 | Shapiro, S. S., & Wilk, M. B. (1965). An analysis of variance test for normality (complete samples). *Biometrika*, 52(3-4), 591-611. https://doi.org/10.1093/biomet/52.3-4.591
+jiang2021 | Jiang, P., Meinert, N., Jordão, H., Weisser, C., Holgate, S., Lavin, A., Lütjens, B., Newman, D., Wainwright, H., Walker, C., & Barnard, P. (2021). Digital Twin Earth — coasts: developing a fast and physics-informed surrogate model for coastal floods via neural operators. *arXiv preprint*. https://arxiv.org/abs/2110.07100
 
-efron1993 | Efron, B., & Tibshirani, R. J. (1993). *An introduction to the bootstrap*. Chapman & Hall/CRC.
+khan2025 | Khan et al. (2025). TwinEco A unified framework for dynamic data-driven digital twins in ecology. *Ecological Informatics*, 91, 103407. https://doi.org/10.1016/j.ecoinf.2025.103407
 
-wilcoxon1945 | Wilcoxon, F. (1945). Individual comparisons by ranking methods. *Biometrics Bulletin*, 1(6), 80-83. https://doi.org/10.2307/3001968
+lei2023 | Lei et al. (2023). Challenges of urban digital twins A systematic review and a delphi expert survey. *Automation in Construction*, 147, 104716. https://doi.org/10.1016/j.autcon.2022.104716
 
-student1908 | Student. (1908). The probable error of a mean. *Biometrika*, 6(1), 1-25. https://doi.org/10.1093/biomet/6.1.1
+lu2026 | Lu et al. (2026). Exploring the concept of digital twins of wetlands for supporting ecosystem monitoring and management. *Big Earth Data*, 10(1), 37-67. https://doi.org/10.1080/20964471.2025.2480446
 
-strobl2007 | Strobl, C., Boulesteix, A.-L., Zeileis, A., & Hothorn, T. (2007). Bias in random forest variable importance measures: Illustrations, sources and a solution. *BMC Bioinformatics*, 8, 25. https://doi.org/10.1186/1471-2105-8-25
+meyer2015 | Meyer et al. (2015). Global priorities for an effective information basis of biodiversity distributions. *Nature Communications*, 6(1). https://doi.org/10.1038/ncomms9221
 
-hooker2019 | Hooker, G., Mentch, L., & Zhou, S. (2019). Unrestricted permutation forces extrapolation: Variable importance requires at least one more model, or there is no free variable importance. *Statistics and Computing*, 31, 82. https://doi.org/10.1007/s11222-021-10057-z
+meyer2016 | Meyer et al. (2016). Multidimensional biases, gaps and uncertainties in global plant occurrence information. *Ecology Letters*, 19(8), 992-1006. https://doi.org/10.1111/ele.12624
 
-molnar2022 | Molnár, C., König, G., Herbinger, J., Freiesleben, T., Dandl, S., Scholbeck, C. A., Casalicchio, G., Grosse-Wentrup, M., & Bischl, B. (2022). General pitfalls of model-agnostic interpretation methods for machine learning models. *Lecture Notes in Computer Science*, 13200, 39-68. https://doi.org/10.1007/978-3-031-04083-2_4
+mollenhauer2018 | Mollenhauer et al. (2018). Long-term environmental monitoring infrastructures in europe observations, measurements, scales, an. *Science of The Total Environment*, 624, 968-978. https://doi.org/10.1016/j.scitotenv.2017.12.095
 
-lundberg2017 | Lundberg, S. M., & Lee, S.-I. (2017). A unified approach to interpreting model predictions. *Advances in Neural Information Processing Systems*, 30, 4765-4774.
+nativi2021 | Nativi et al. (2021). Digital ecosystems for developing digital twins of the Earth The Destination Earth Case. *Remote Sensing*, 13(11), 2119. https://doi.org/10.3390/rs13112119
 
-ribeiro2016 | Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). "Why should I trust you?": Explaining the predictions of any classifier. *Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 1135-1144. https://doi.org/10.1145/2939672.2939778
+picone2023 | Picone et al. (2023). A flexible and modular architecture for Edge digital Twin implementation and evaluation. *ACM Transactions on Internet of Things*, 4(1), 1-32. https://doi.org/10.1145/3573206
 
-hastie2009 | Hastie, T., Tibshirani, R., & Friedman, J. (2009). *The elements of statistical learning: Data mining, inference, and prediction* (2nd ed.). Springer. https://doi.org/10.1007/978-0-387-84858-7
+qamsane2021 | Qamsane et al. (2021). A methodology to develop and implement digital Twin solutions for manufacturing systems. *IEEE Access*, 9, 44247-44265. https://doi.org/10.1109/ACCESS.2021.3065971
 
-james2013 | James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An introduction to statistical learning with applications in R*. Springer. https://doi.org/10.1007/978-1-4614-7138-7
+raes2022 | Raes et al. (2022). DUET A framework for building interoperable and trusted digital twins of smart cities. *IEEE Internet Computing*, 26(3), 43-50. https://doi.org/10.1109/MIC.2021.3060962
 
-reichstein2019 | Reichstein, M., Camps-Valls, G., Stevens, B., Jung, M., Denzler, J., Carvalhais, N., & Prabhat. (2019). Deep learning and process understanding for data-driven Earth system science. *Nature*, 566(7743), 195-204. https://doi.org/10.1038/s41586-019-0912-1
+rasheed2020 | Rasheed et al. (2020). Digital Twin values, challenges and enablers From a modeling perspective. *IEEE Access*, 8, 21980-22012. https://doi.org/10.1109/ACCESS.2020.2970143
 
-camps2018 | Camps-Valls, G., Martino, L., Munoz-Mari, J., Laparra, V., Campos-Taberner, M., & Luengo, D. (2018). A perspective on Gaussian processes for Earth observation. *National Science Review*, 6(4), 616-618. https://doi.org/10.1093/nsr/nwz028
+reichstein2019 | Reichstein et al. (2019). Deep learning and process understanding for data-driven Earth system science. *Nature*, 566(7743), 195-204. https://doi.org/10.1038/s41586-019-0912-1
 
-huntingford2019 | Huntingford, C., Jeffers, E. S., Bonsall, M. B., Christensen, H. M., Lees, T., & Yang, H. (2019). Machine learning and artificial intelligence to aid climate change research and preparedness. *Environmental Research Letters*, 14(12), 124007. https://doi.org/10.1088/1748-9326/ab4e55
+rodriguez2024 | Rodríguez-Alonso, C., Pena-Regueiro, I., & García, Ó. (2024). Digital twin platform for water treatment plants using microservices architecture. *Sensors*, 24(5), 1568. https://doi.org/10.3390/s24051568
 
-ham2019 | Ham, Y.-G., Kim, J.-H., & Luo, J.-J. (2019). Deep learning for multi-year ENSO forecasts. *Nature*, 573(7775), 568-572. https://doi.org/10.1038/s41586-019-1559-7
+twomey2024 | Twomey et al. (2024). Planning hydrological restoration of coastal wetlands Key model considerations and solutions. *Science of The Total Environment*, 915, 169881. https://doi.org/10.1016/j.scitotenv.2024.169881
 
-ravan2009 | Ravan, S., & Roy, P. S. (2009). Satellite remote sensing for ecological analysis of forest landscape. In *Landscape ecological applications in man-influenced areas* (pp. 225-243). Springer. https://doi.org/10.1007/1-4020-4483-9_10
+tzachor2023 | Tzachor et al. (2023). Digital twins a stepping stone to achieve ocean sustainability. *npj Ocean Sustainability*, 2(1). https://doi.org/10.1038/s44183-023-00023-9
 
-giri2011 | Giri, C., Ochieng, E., Tieszen, L. L., Zhu, Z., Singh, A., Loveland, T., Masek, J., & Duke, N. (2011). Status and distribution of mangrove forests of the world using earth observation satellite data. *Global Ecology and Biogeography*, 20(1), 154-159. https://doi.org/10.1111/j.1466-8238.2010.00584.x
+verdouw2021 | Verdouw et al. (2021). Digital twins in smart farming. *Agricultural Systems*, 189, 103046. https://doi.org/10.1016/j.agsy.2020.103046
 
-spalding2010 | Spalding, M., Kainuma, M., & Collins, L. (2010). *World atlas of mangroves*. Earthscan. https://doi.org/10.4324/9781849776608
+weil2023 | Weil et al. (2023). Urban digital Twin challenges A systematic review and perspectives for sustainable smart cities. *Sustainable Cities and Society*, 99, 104862. https://doi.org/10.1016/j.scs.2023.104862
 
-fao2007 | Food and Agriculture Organization of the United Nations. (2007). *The world's mangroves 1980-2005* (FAO Forestry Paper No. 153). FAO.
+wright2020 | Wright & Davidson (2020). How to tell the difference between a model and a digital twin. *Advanced Modeling and Simulation in Engineering Sciences*, 7(1). https://doi.org/10.1186/s40323-020-00147-4
 
-murray2011 | Murray, B. C., Pendleton, L., Jenkins, W. A., & Sifleet, S. (2011). *Green payments for blue carbon: Economic incentives for protecting threatened coastal habitats*. Nicholas Institute for Environmental Policy Solutions.
+yang2024 | Yang, S., Kim, H., Hong, Y., Yee, K., & Kang, N. (2024). Data-driven physics-informed neural networks: A digital twin perspective. *arXiv preprint*. https://arxiv.org/abs/2311.10387
 
-pendleton2012 | Pendleton, L., Donato, D. C., Murray, B. C., Crooks, S., Jenkins, W. A., Sifleet, S., Craft, C., Fourqurean, J. W., Kauffman, J. B., Marbà, N., Megonigal, P., Pidgeon, E., Herr, D., Gordon, D., & Baldera, A. (2012). Estimating global "blue carbon" emissions from conversion and degradation of vegetated coastal ecosystems. *PLoS ONE*, 7(9), e43542. https://doi.org/10.1371/journal.pone.0043542
-
-sifleet2011 | Sifleet, S., Pendleton, L., & Murray, B. C. (2011). *State of the science on coastal blue carbon: A summary for policy makers*. Nicholas Institute for Environmental Policy Solutions.
-
-lovelock2017 | Lovelock, C. E., Fourqurean, J. W., & Morris, J. T. (2017). Modeled CO2 emissions from coastal wetland transitions to other land uses: Tidal marshes, mangrove forests, and seagrass beds. *Frontiers in Marine Science*, 4, 143. https://doi.org/10.3389/fmars.2017.00143
-
-duarte2013 | Duarte, C. M., Losada, I. J., Hendriks, I. E., Mazarrasa, I., & Marbà, N. (2013). The role of coastal plant communities for climate change mitigation and adaptation. *Nature Climate Change*, 3(11), 961-968. https://doi.org/10.1038/nclimate1970
-
-marbà2013 | Marbà, N., Krause-Jensen, D., Alcoverro, T., Birkeland, M. J., Pedersen, M. F., Neto, J. M., Steen, H., Silliman, B., Viejo, R., Lavery, P., Verduin, J., Curt, D., & Duarte, C. M. (2013). Diversity of European seagrass indicators: Patterns within and across regions. *Hydrobiologia*, 704(1), 265-278. https://doi.org/10.1007/s10750-012-1403-7
-
-fourqurean2012 | Fourqurean, J. W., Duarte, C. M., Kennedy, H., Marbà, N., Holmer, M., Mateo, M. A., Apostolaki, E. T., Kendrick, G. A., Krause-Jensen, D., McGlathery, K. J., & Serrano, O. (2012). Seagrass ecosystems as a globally significant carbon stock. *Nature Geoscience*, 5(7), 505-509. https://doi.org/10.1038/ngeo1477
-
-howard2017 | Howard, J., Sutton-Grier, A., Herr, D., Kleypas, J., Landis, E., McLeod, E., Pidgeon, E., & Simpson, S. (2017). Clarifying the role of coastal and marine systems in climate mitigation. *Frontiers in Ecology and the Environment*, 15(1), 42-50. https://doi.org/10.1002/fee.1451
-
-thomas2017 | Thomas, N., Lucas, R., Bunting, P., Hardy, A., Rosenqvist, A., & Simard, M. (2017). Distribution and drivers of global mangrove forest change, 1996-2010. *PLoS ONE*, 12(6), e0179302. https://doi.org/10.1371/journal.pone.0179302
-
-goldberg2020 | Goldberg, L., Lagomasino, D., Thomas, N., & Fatoyinbo, T. (2020). Global declines in human-driven mangrove loss. *Global Change Biology*, 26(10), 5844-5855. https://doi.org/10.1111/gcb.15275
-
-worthington2020 | Worthington, T. A., zu Ermgassen, P. S. E., Friess, D. A., Krauss, K. W., Lovelock, C. E., Thorley, J., Tingey, R., Woodroffe, C. D., Bunting, P., Cormier, N., Lagomasino, D., Lucas, R., Murray, N. J., Sutherland, W. J., & Spalding, M. (2020). A global biophysical typology of mangroves and its relevance for ecosystem structure and deforestation. *Scientific Reports*, 10, 14652. https://doi.org/10.1038/s41598-020-71194-5
-
-taillardat2018 | Taillardat, P., Friess, D. A., & Lupascu, M. (2018). Mangrove blue carbon strategies for climate change mitigation are most effective at the national scale. *Biology Letters*, 14(10), 20180251. https://doi.org/10.1098/rsbl.2018.0251
-
-krauss2014 | Krauss, K. W., McKee, K. L., Lovelock, C. E., Cahoon, D. R., Saintilan, N., Reef, R., & Chen, L. (2014). How mangrove forests adjust to rising sea level. *New Phytologist*, 202(1), 19-34. https://doi.org/10.1111/nph.12605
-
-lovelock2015 | Lovelock, C. E., Cahoon, D. R., Friess, D. A., Guntenspergen, G. R., Krauss, K. W., Reef, R., Rogers, K., Saunders, M. L., Sidik, F., Swales, A., Saintilan, N., Thuyen, L. X., & Triet, T. (2015). The vulnerability of Indo-Pacific mangrove forests to sea-level rise. *Nature*, 526(7574), 559-563. https://doi.org/10.1038/nature15538
-
-woodroffe2016 | Woodroffe, C. D., Rogers, K., McKee, K. L., Lovelock, C. E., Mendelssohn, I. A., & Saintilan, N. (2016). Mangrove sedimentation and response to relative sea-level rise. *Annual Review of Marine Science*, 8, 243-266. https://doi.org/10.1146/annurev-marine-122414-034025
-
-rogers2019 | Rogers, K., Saintilan, N., Mazumder, D., & Kelleway, J. J. (2019). Mangrove dynamics and blue carbon sequestration. *Biology Letters*, 15(3), 20180471. https://doi.org/10.1098/rsbl.2018.0471
-
-macreadie2019 | Macreadie, P. I., Anton, A., Raven, J. A., Beaumont, N., Connolly, R. M., Friess, D. A., Kelleway, J. J., Kennedy, H., Kuwae, T., Lavery, P. S., Lovelock, C. E., Smale, D. A., Apostolaki, E. T., Atwood, T. B., Baldock, J., Bianchi, T. S., Chmura, G. L., Eyre, B. D., Fourqurean, J. W., ... Duarte, C. M. (2019). The future of blue carbon science. *Nature Communications*, 10, 3998. https://doi.org/10.1038/s41467-019-11693-w
-
-lee2025 | Lee, H., Kim, H., Park, E., et al. (2025). Beyond carbon: A systematic review of multiple ecosystem services of mangroves. *Journal of Coastal Conservation*, 29, 58. https://doi.org/10.1007/s11852-025-01148-4
-
-yang2026 | Yang, C., Yang, L., Wang, J., Li, X., Zhang, L., & Cui, W. (2026). Spatio-temporal patterns and environmental controls of soil organic carbon stocks in global tidal wetlands since 2009. *Nature Communications*. https://doi.org/10.1038/s41467-026-76092-4
-
-bunting2018 | Bunting, P., Rosenqvist, A., Lucas, R., Rebelo, L.-M., Hilarides, L., Thomas, N., Hardy, A., Itoh, T., Shimada, M., & Finlayson, C. M. (2018). The Global Mangrove Watch: A new 2010 global baseline of mangrove extent. *Remote Sensing*, 10(10), 1669. https://doi.org/10.3390/rs10101669
-
-hiraishi2014 | Hiraishi, T., Krug, T., Tanabe, K., Srivastava, N., Baasansuren, J., Fukuda, M., & Troxler, T. G. (Eds.). (2014). *2013 supplement to the 2006 IPCC guidelines for national greenhouse gas inventories: Wetlands*. IPCC.
-
-strand2022 | Strand, G.-H., & Sundby, S. (2022). *Statistical analysis of environmental data*. Springer.
-
-waskom2021 | Waskom, M. L. (2021). seaborn: Statistical data visualization. *Journal of Open Source Software*, 6(60), 3021. https://doi.org/10.21105/joss.03021
-
-hunter2007 | Hunter, J. D. (2007). Matplotlib: A 2D graphics environment. *Computing in Science & Engineering*, 9(3), 90-95. https://doi.org/10.1109/MCSE.2007.55
-
-harris2020 | Harris, C. R., Millman, K. J., van der Walt, S. J., Gommers, R., Virtanen, P., Cournapeau, D., Wieser, E., Taylor, J., Berg, S., Smith, N. J., Kern, R., Picus, M., Hoyer, S., van Kerkwijk, M. H., Brett, M., Haldane, A., del Río, J. F., Wiebe, M., Peterson, P., ... Oliphant, T. E. (2020). Array programming with NumPy. *Nature*, 585(7825), 357-362. https://doi.org/10.1038/s41586-020-2649-2
-
-mckinney2010 | McKinney, W. (2010). Data structures for statistical computing in Python. *Proceedings of the 9th Python in Science Conference*, 56-61. https://doi.org/10.25080/Majora-92bf1922-00a
-
-virtanen2020 | Virtanen, P., Gommers, R., Oliphant, T. E., Haberland, M., Reddy, T., Cournapeau, D., Burovski, E., Peterson, P., Weckesser, W., Bright, J., van der Walt, S. J., Brett, M., Wilson, J., Millman, K. J., Mayorov, N., Nelson, A. R. J., Jones, E., Kern, R., Larson, E., ... Vázquez-Baeza, Y. (2020). SciPy 1.0: Fundamental algorithms for scientific computing in Python. *Nature Methods*, 17(3), 261-272. https://doi.org/10.1038/s41592-019-0686-2
+zia2025 | Zia et al. (2025). Physics encoded blocks in residual neural network architectures for digital twin models. *Machine Learning*, 114(8). https://doi.org/10.1007/s10994-025-06808-y

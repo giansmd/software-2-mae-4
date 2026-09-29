@@ -2,7 +2,7 @@
 
 ## Área de estudio y fuentes de datos
 
-El estudio se desarrolló sobre el Santuario Nacional Los Manglares de Tumbes (SNLMT), situado en el distrito de Zarumilla, departamento de Tumbes, Perú. El Santuario abarca 2 972 ha, de las cuales 1 779,8 ha corresponden a cobertura de manglar (68,06 %), 243 ha a bosque seco y el resto a cuerpos de agua y zonas salitrosas [[REF:almeyda2023]].
+El estudio se desarrolló sobre el Santuario Nacional Los Manglares de Tumbes (SNLMT), situado en el distrito de Zarumilla, departamento de Tumbes, Perú. El Santuario abarca 2 972 ha, de las cuales 1 779,8 ha corresponden a cobertura de manglar (68,06 %), 243 ha a bosque seco y el resto a cuerpos de agua y zonas salitrosas.
 
 La **Tabla 1** consolida las siete clases de cobertura identificadas con sus rangos de NDVI derivados de imágenes Sentinel-2 y su extensión estimada.
 
@@ -12,7 +12,7 @@ La estructura de la comunidad vegetal se caracteriza mediante el índice de valo
 
 [[TABLA:tab03_especies_ivi.csv|Especies de mangle del SNLMT e índice de valor de importancia (IVI). Fuente: Dioses-Puelles et al. (2023).]]
 
-La dinámica multitemporal de la extensión de manglar se documentó a partir de la serie Global Mangrove Watch versión 3.0, que provee once épocas entre 1996 y 2020 con resolución de 25 m bajo licencia CC BY 4.0 [[REF:bunting2022]]. La **Figura 1** presenta la evolución observada para el noroeste del Perú.
+La dinámica multitemporal de la extensión de manglar se documentó a partir de la serie Global Mangrove Watch versión 3.0, que provee once épocas entre 1996 y 2020 con resolución de 25 m bajo licencia CC BY 4.0 [[REF:jafarzadeh2022]]. La **Figura 1** presenta la evolución observada para el noroeste del Perú.
 
 [[FIG:fig01_tendencia_gmw.png|Evolución de la extensión de manglar del SNLMT entre 1996 y 2020. Datos reales de Global Mangrove Watch v3.0. La tendencia positiva sostenida es consistente con el estatus de área natural protegida del Santuario.]]
 
@@ -20,9 +20,9 @@ La dinámica multitemporal de la extensión de manglar se documentó a partir de
 
 El dataset empleado tiene naturaleza híbrida y explícita en su trazabilidad. Las **covariables son reales**: los rangos de restauración hidrológica, área de humedal, densidad de carbono y NDVI se anclan en los valores observados y publicados para el SNLMT. La **variable objetivo es simulada**: la variación porcentual del carbono retenido a 2050 se genera con el motor determinista del gemelo digital, cuyos parámetros son calibrables y sustituibles por mediciones de campo.
 
-La separación explícita entre componente real y componente simulada responde a un criterio metodológico: permite auditar qué parte del resultado descansa en evidencia empírica y qué parte en la proyección del modelo físico. El motor implementa una curva saturante de respuesta a la restauración —coherente con la ley de rendimientos decrecientes observada en humedales restaurados [[REF:sadat2025]]— y una pérdida progresiva de área y densidad asociada a tres escenarios de ascenso del nivel del mar alineados con los rangos del IPCC [[REF:ipcc2013]].
+La separación explícita entre componente real y componente simulada responde a un criterio metodológico: permite auditar qué parte del resultado descansa en evidencia empírica y qué parte en la proyección del modelo físico. El motor implementa una curva saturante de respuesta a la restauración —coherente con la ley de rendimientos decrecientes observada en humedales restaurados [[REF:twomey2024]]— y una pérdida progresiva de área y densidad asociada a tres escenarios de ascenso del nivel del mar alineados con los rangos del IPCC [[REF:buffington2021]].
 
-Se generaron 2 000 registros con semilla fija para garantizar la reproducibilidad. La mitad de las observaciones se concentró en los extremos del rango de restauración —por debajo del 12 % y por encima del 88 %— dado que los ensambles de árboles presentan sesgo en los bordes del dominio de las variables [[REF:geurts2006]].
+Se generaron 2 000 registros con semilla fija para garantizar la reproducibilidad. La mitad de las observaciones se concentró en los extremos del rango de restauración —por debajo del 12 % y por encima del 88 %— dado que los ensambles de árboles presentan sesgo en los bordes del dominio de las variables [[REF:yang2024]].
 
 ## Protocolo CRISP-DM
 
@@ -48,13 +48,13 @@ Se construyó la matriz de atributos con codificación ordinal del escenario de 
 
 ### Fase 4. Modelado
 
-Se compararon cinco algoritmos representativos de tres familias: un modelo lineal como referencia [[REF:hoerl1970]], una variante regularizada y tres ensambles de árboles [[REF:breiman2001]], [[REF:geurts2006]], [[REF:friedman2001]]. Todos se implementaron como pipelines de scikit-learn [[REF:pedregosa2011]], garantizando idéntico preprocesamiento y comparabilidad estricta.
+Se compararon cinco algoritmos representativos de tres familias: un modelo lineal como referencia [[REF:khan2025]], una variante regularizada y tres ensambles de árboles [[REF:rasheed2020]], [[REF:yang2024]], [[REF:qamsane2021]]. Todos se implementaron como pipelines de scikit-learn [[REF:wright2020]], garantizando idéntico preprocesamiento y comparabilidad estricta.
 
 ### Fase 5. Evaluación
 
-La evaluación combinó cuatro instrumentos complementarios. Primero, **validación cruzada** con diez particiones, empleando el R² medio entre particiones como criterio principal de selección por ser más robusto que una única partición de prueba. Segundo, **pruebas de significancia estadística** —t de Student pareada y Wilcoxon signed-rank sobre los puntajes por partición— para contrastar el mejor modelo frente a los restantes [[REF:demšar2006]], [[REF:wilcoxon1945]]. Tercero, **intervalos de confianza** del error absoluto medio mediante remuestreo bootstrap con 500 réplicas [[REF:efron1993]]. Cuarto, **verificación de supuestos** mediante la prueba de Shapiro-Wilk sobre los residuales [[REF:shapiro1965]], que orienta la elección entre pruebas paramétricas y no paramétricas.
+La evaluación combinó cuatro instrumentos complementarios. Primero, **validación cruzada** con diez particiones, empleando el R² medio entre particiones como criterio principal de selección por ser más robusto que una única partición de prueba. Segundo, **pruebas de significancia estadística** —t de Student pareada y Wilcoxon signed-rank sobre los puntajes por partición— para contrastar el mejor modelo frente a los restantes [[REF:deKoning2023]], [[REF:durden2025]]. Tercero, **intervalos de confianza** del error absoluto medio mediante remuestreo bootstrap con 500 réplicas [[REF:chen2025]]. Cuarto, **verificación de supuestos** mediante la prueba de Shapiro-Wilk sobre los residuales [[REF:lei2023]], que orienta la elección entre pruebas paramétricas y no paramétricas.
 
-La **interpretabilidad** se abordó mediante importancia por permutación, técnica model-agnóstica que cuantifica la caída del R² al desordenar aleatoriamente cada variable, con diez repeticiones para estimar su variabilidad [[REF:breiman2001]], [[REF:strobl2007]]. Esta elección permite auditar el modelo sin depender de supuestos sobre su estructura interna.
+La **interpretabilidad** se abordó mediante importancia por permutación, técnica model-agnóstica que cuantifica la caída del R² al desordenar aleatoriamente cada variable, con diez repeticiones para estimar su variabilidad [[REF:rasheed2020]], [[REF:weil2023]]. Esta elección permite auditar el modelo sin depender de supuestos sobre su estructura interna.
 
 ### Fase 6. Despliegue
 

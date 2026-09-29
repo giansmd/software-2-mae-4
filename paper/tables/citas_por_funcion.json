@@ -1,0 +1,720 @@
+[
+  {
+    "clave": "aguzzi2025",
+    "referencia": "Aguzzi et al. (2025). A digital-twin strategy using robots for marine ecosystem monitoring. *Ecological Informatics*, 91, 103409. https://doi.org/10.1016/j.ecoinf.2025.103409",
+    "archivo": "Aguzzi et al. - 2025 - A digital-twin strategy using robots for marine ecosystem monitoring.pdf",
+    "funciones": {
+      "brecha": {
+        "score": 1.6,
+        "texto": "Current robotic platforms, such as those we  describe, can generate high-resolution data, however, challenges remain  in achieving adequate spatial coverage, temporal continuity, and  ecological representativeness."
+      },
+      "arquitectura": {
+        "score": 2.5,
+        "texto": "Despite its conceptual  robustness, the proposed framework faces weaknesses as practical lim­ itations regarding the heterogeneity and interoperability of data from  diverse platforms, particularly in areas with low infrastructure or  inconsistent monitoring protocols."
+      },
+      "datos": {
+        "score": 2.1,
+        "texto": "Here, we propose a  general architecture for a DTO centred on real-time data collection from local networks on fixed and mobile  platforms, such as the physical twin observers (PTO), which is synergistically merged with platforms operating at  large geographic scales."
+      }
+    }
+  },
+  {
+    "clave": "alenezi2026",
+    "referencia": "Alenezi & Alabaiadly (2026). Digital twins and Edge AI for smallOff-Grid water systems A review. *IEEE Access*, 14, 39960-39978. https://doi.org/10.1109/ACCESS.2026.3669429",
+    "archivo": "Alenezi and Alabaiadly - 2026 - Digital Twins and Edge AI for SmallOff-Grid Water Systems A Review.pdf",
+    "funciones": {}
+  },
+  {
+    "clave": "blair2021",
+    "referencia": "Blair, G. S. (2021). Digital twins of the natural environment. *Nature Climate Change*, 11(11), 828-829. https://doi.org/10.1038/s41558-021-00986-y",
+    "archivo": "Blair - 2021 - Digital twins of the natural environment.pdf",
+    "funciones": {}
+  },
+  {
+    "clave": "brown2019",
+    "referencia": "Brown & Williams (2019). The potential for citizen science to produce reliable and useful information in ecology. *Conservation Biology*, 33(3), 561-569. https://doi.org/10.1111/cobi.13223",
+    "archivo": "Brown and Williams - 2019 - The potential for citizen science to produce reliable and useful information in ecology.pdf",
+    "funciones": {
+      "brecha": {
+        "score": 1.6,
+        "texto": "We emphasize that testing of ecological hypotheses in the confirmatory paradigm is entirely possible with large-scale, internet-based citizen science projects if they are specifically designed for that purpose, although such projects are rare."
+      },
+      "gobernanza": {
+        "score": 1.85,
+        "texto": "That said, we focused on projects with a linkage to both scientific process and public engagement."
+      }
+    }
+  },
+  {
+    "clave": "buffington2021",
+    "referencia": "Buffington et al. (2021). Incorporation of uncertainty to improve projections of tidal wetland elevation and carbon accumulati. *PLOS ONE*, 16(10), e0256707. https://doi.org/10.1371/journal.pone.0256707",
+    "archivo": "Buffington et al. - 2021 - Incorporation of uncertainty to improve projections of tidal wetland elevation and carbon accumulati.pdf",
+    "funciones": {
+      "datos": {
+        "score": 1.6,
+        "texto": "Calibration To characterize physical and biological differences in accretion and plant communities among the sites, we used a combination of published data sources, modeled data, and field sampling."
+      },
+      "modelado": {
+        "score": 1.6,
+        "texto": "Instead, bulk density of each cohort was calculated from an ideal mixing model for organic and mineral sediments [59], where: ρs ¼ 1 o k1 þ 1\u0000 o k2 ð14Þ We calibrated the mixing model using the interval soil core data and estimated k1 and k2 as 0.0823 and 1.876, respectively."
+      },
+      "incertidumbre": {
+        "score": 1.6,
+        "texto": "WARMER-2 model description We modified WARMER [39], a 0-D soil cohort model for tidal wetlands, to compare several organic productivity functions and incorporate a productivity response to changing salinity, while also propagating parameter uncertainty into projections of wetland elevation with accelerating SLR."
+      },
+      "humedales": {
+        "score": 2.6,
+        "texto": "Using an enhanced and more flexible modeling framework of an ecosystem model (WARMER-2), we explored sea-level rise (SLR) impacts on wetland elevations and carbon sequestration rates through 2100 by considering plant community transitions, salinity effects on productivity, and changes in sediment availability."
+      },
+      "carbono": {
+        "score": 2.6,
+        "texto": "Finally, we examined how a key ecosystem service–carbon sequestration–is projected to change across a salinity gradient in the San Francisco Bay Estuary (SFBE) under different SLR, sediment, and salinity scenarios."
+      },
+      "gobernanza": {
+        "score": 1.6,
+        "texto": "In building a modeling approach that incorporates multiple drivers, we can better understand uncertainty and inform decision makers working to preserve and successfully restore wetlands over the coming decades."
+      }
+    }
+  },
+  {
+    "clave": "cabrera2021",
+    "referencia": "Cabrera et al. (2021). The potential of a smartphone as an urban weather station—An exploratory analysis. *Frontiers in Environmental Science*, 9. https://doi.org/10.3389/fenvs.2021.673937",
+    "archivo": "Cabrera et al. - 2021 - The Potential of a Smartphone as an Urban Weather Station—An Exploratory Analysis.pdf",
+    "funciones": {
+      "incertidumbre": {
+        "score": 1.85,
+        "texto": "This study aims to verify and assess one of the main non-traditional data sources, i.e. smartphones."
+      }
+    }
+  },
+  {
+    "clave": "chen2025",
+    "referencia": "Chen, R., Yi, C., Zhou, F., Kang, J., Wu, Y., & Niyato, D. (2025). Federated digital twin construction via distributed sensing: A game-theoretic online optimization with overlapping coalitions. *arXiv preprint*. https://arxiv.org/abs/2502.16313",
+    "archivo": "Chen et al. - 2025 - Federated Digital Twin Construction via Distributed Sensing A Game-Theoretic Online Optimization wi.pdf",
+    "funciones": {
+      "brecha": {
+        "score": 2.25,
+        "texto": "However, since the number of sensors that can be associated with each ES is limited, the cumulative cost is constrained."
+      },
+      "arquitectura": {
+        "score": 3.1,
+        "texto": "In this paper, to fill the gap in the literature, we propose a novel federated DT construction framework with the support of edge-cloud collaboration."
+      },
+      "datos": {
+        "score": 1.5,
+        "texto": "Consequently, the proposed federated DT construction procedure should evolve over the time, in which all partial-DTs has to be continuously recreated and updated by time-increasing data collected from sensors in real time."
+      },
+      "modelado": {
+        "score": 1.6,
+        "texto": "(38) Based on the above formulation, we next elaborate the DMO approach in terms of its agent structure, training workflow, and network parameter updates."
+      },
+      "gobernanza": {
+        "score": 2.1,
+        "texto": "Second, since the formulated MDPs are inherently coupled, we further propose a hierarchical training process in DRL, where the interaction among all agents adhere to the decision-making sequence in GH."
+      }
+    }
+  },
+  {
+    "clave": "deKoning2023",
+    "referencia": "de Koning, K., Broekhuijsen, J., Kühn, I., Ovaskainen, O., Taubert, F., Endresen, D., Schigel, D., & Grimm, V. (2023). Digital twins: dynamic model-data fusion for ecology. *Trends in Ecology & Evolution*, 38(10), 916-926. https://doi.org/10.1016/j.tree.2023.04.010",
+    "archivo": "De Koning et al. - 2023 - Digital twins dynamic model-data fusion for ecology.pdf",
+    "funciones": {
+      "datos": {
+        "score": 1.75,
+        "texto": "(2017) The digital twin: demonstrating the potential of real time data acquisition in production systems."
+      },
+      "incertidumbre": {
+        "score": 1.5,
+        "texto": "Ideally, DTs aim to integrate all elements (B,C,D,E) to mimic the behaviour of (A) as much as possible by continuously updating models and input data, while at the same time highlighting the uncertainties that are produced through model simpliﬁcations, incomplete data and knowledge, and observational biases."
+      },
+      "gobernanza": {
+        "score": 1.6,
+        "texto": "We suggest that researchers and stakeholders exercise caution in DT development, keeping in mind that many of the strengths and challenges of computational modelling in ecology also apply to DTs."
+      }
+    }
+  },
+  {
+    "clave": "devries2024",
+    "referencia": "DeVries, C. (2024). Governance framework for citizen digital twins in smart cities. *Intelligent & Human Futures*, 1(1), 1-14. Wisdom Academic Press.",
+    "archivo": "DeVries - 2024 - Governance Framework for Citizen Digital Twins in Smart Cities.pdf",
+    "funciones": {
+      "arquitectura": {
+        "score": 1.6,
+        "texto": "This paper aims to contribute to filling this gap by developing a governance framework that addresses the unique challenges of citizen digital twins. 3 The Citizen Digital Twin Challenge This research employed a mixed-methods approach combining systematic literature review, expert consultations, stakeholder workshops, and framework development."
+      },
+      "datos": {
+        "score": 1.75,
+        "texto": "Temporal conflation combines past and current data to create representations that blurs past and present selves."
+      },
+      "gobernanza": {
+        "score": 2.1,
+        "texto": "We propose a new \"Dynamic Authorization Data Sandbox\" (DADS) governance model that combines fine-grained consent frameworks, context-aware identity management, and segregated data processing environments."
+      }
+    }
+  },
+  {
+    "clave": "dilip2024",
+    "referencia": "Dilip (2024). Thermal digital twins of asphalt pavements using physics-informed neural networks. *World Congress on Civil, Structural, and Environmental Engineering*. https://doi.org/10.11159/icgre24.157",
+    "archivo": "Dilip - 2024 - Thermal Digital Twins of Asphalt Pavements using Physics-informed Neural Networks.pdf",
+    "funciones": {
+      "datos": {
+        "score": 1.85,
+        "texto": "Methodology    As stated earlier, the goal of this study is to estimate the thermal diffusivity of the asphalt layer using the inverse- PINN model."
+      },
+      "modelado": {
+        "score": 3.1,
+        "texto": "Using the weather  data of Dubai, this study has shown the feasibility of adopting Physics-informed Neural Networks (PINNs) to predict the temperature  within the pavement layer, despite the complex mixed boundary conditions."
+      }
+    }
+  },
+  {
+    "clave": "durden2025",
+    "referencia": "Durden (2025). Environmental management using a digital twin. *Environmental Science & Policy*, 164, 104018. https://doi.org/10.1016/j.envsci.2025.104018",
+    "archivo": "Durden - 2025 - Environmental management using a digital twin.pdf",
+    "funciones": {
+      "gobernanza": {
+        "score": 2.0,
+        "texto": "The main aims of these users (and their detailed needs; see below) may be determined through active engagement (e.g., meetings, workshops, surveys, etc) with them, or from consulting regulatory, legal or governance documents produced or provided by them."
+      }
+    }
+  },
+  {
+    "clave": "durao2018",
+    "referencia": "Durão, L. F. C. S., Haag, S., Anderl, R., Schützer, K., & Zancul, E. (2018). Digital twin requirements in the context of Industry 4.0. *IFIP Advances in Information and Communication Technology*, 540, 204-214. https://doi.org/10.1007/978-3-030-01614-2_19",
+    "archivo": "Durão et al. - 2018 - Digital Twin Requirements in the Context of Industry 4.0.pdf",
+    "funciones": {
+      "definicion": {
+        "score": 1.75,
+        "texto": "In  Section 3, the requirements brought by literature to the Digital Twin concept are  presented."
+      },
+      "datos": {
+        "score": 1.75,
+        "texto": "The results  show that DT requirements are related to real-time data, integration, and fidelity."
+      }
+    }
+  },
+  {
+    "clave": "garske2024",
+    "referencia": "Garske et al. (2024). Digital twins in sustainable transition exploring the role of EU data governance. *Frontiers in Research Metrics and Analytics*, 9. https://doi.org/10.3389/frma.2024.1303024",
+    "archivo": "Garske et al. - 2024 - Digital twins in sustainable transition exploring the role of EU data governance.pdf",
+    "funciones": {
+      "arquitectura": {
+        "score": 1.5,
+        "texto": "Frontiers in Research Metrics and Analytics 07 frontiersin.org Garske et al. 10.3389/frma.2024.1303024 3.2.2.2 Subject of regulation–interoperability and “access by design” Like the DGA, the proposed DA is based on a horizontal approach (Art. 1 DA Proposal) (Specht-Riemenschneider, 2022)."
+      },
+      "gobernanza": {
+        "score": 2.25,
+        "texto": "Convention on Access to Information, Public Participation in Decision-Making and Access to Justice in Environmental Matters. 2161 UNTS 447."
+      }
+    }
+  },
+  {
+    "clave": "guo2017",
+    "referencia": "Guo et al. (2017). A review of wetland remote sensing. *Sensors*, 17(4), 777. https://doi.org/10.3390/s17040777",
+    "archivo": "Guo et al. - 2017 - A Review of Wetland Remote Sensing.pdf",
+    "funciones": {
+      "datos": {
+        "score": 2.25,
+        "texto": "The combination of these three types of remote sensing data was also assessed for different wetland types."
+      },
+      "modelado": {
+        "score": 1.75,
+        "texto": "A neural network model that uses Landsat reﬂectance data were proposed by Chebud et al. [141] to quantify water quality parameters."
+      },
+      "humedales": {
+        "score": 3.6,
+        "texto": "Wetland research themes reviewed in this paper include wetland classiﬁcation, habitat or biodiversity, biomass estimation, plant leaf chemistry, water quality, mangrove forest, and sea level rise."
+      }
+    }
+  },
+  {
+    "clave": "hananto2025",
+    "referencia": "Hananto & Veza (2025). Governance framework for intelligent digital Twin systems in battery storage aligning standards, Ma. *Computers*, 14(9), 365. https://doi.org/10.3390/computers14090365",
+    "archivo": "Hananto and Veza - 2025 - Governance Framework for Intelligent Digital Twin Systems in Battery Storage Aligning Standards, Ma.pdf",
+    "funciones": {
+      "arquitectura": {
+        "score": 2.35,
+        "texto": "We turn next to examining these governance gaps in detail, as a prelude to our proposed framework. 3."
+      },
+      "datos": {
+        "score": 1.5,
+        "texto": "By fusing sensor inputs with advanced models (electrochemical, thermal, and even AIdriven prognostics), the digital twin provides an up-to-date, high-fidelity representation of the battery’s past, present, and predicted future states."
+      },
+      "gobernanza": {
+        "score": 2.35,
+        "texto": "We turn next to examining these governance gaps in detail, as a prelude to our proposed framework. 3."
+      }
+    }
+  },
+  {
+    "clave": "haraguchi2024",
+    "referencia": "Haraguchi et al. (2024). Assessing governance implications of city digital twin technology A maturity model approach. *Technological Forecasting and Social Change*, 204, 123409. https://doi.org/10.1016/j.techfore.2024.123409",
+    "archivo": "Haraguchi et al. - 2024 - Assessing governance implications of city digital twin technology A maturity model approach.pdf",
+    "funciones": {
+      "brecha": {
+        "score": 1.6,
+        "texto": "In this section, we examine  both the benefits and limitations of CDT regarding smart city develop­ ment, exploring specific areas where CDT can effectively support smart  city initiatives and areas where its impact is limited."
+      },
+      "arquitectura": {
+        "score": 2.35,
+        "texto": "Rather, we aim to propose a conceptual  framework of a maturity model for a CDT and discuss the CDT's impli­ cation for urban governance.  4."
+      },
+      "datos": {
+        "score": 2.5,
+        "texto": "Both projects can be  classified as Stage 6 in our framework, presenting the capabilities to  derive optimal solutions through real-time analysis using dynamic  and integrated data.  • Stage 7: Autonomous Decision-making Stage."
+      },
+      "gobernanza": {
+        "score": 2.6,
+        "texto": "Upon examining existing CDT projects, we identify two types of  citizen participation: one is in designing CDT projects, and the other is in  implementing and using CDTs for decision-making for urban planning."
+      }
+    }
+  },
+  {
+    "clave": "henriksen2023",
+    "referencia": "Henriksen et al. (2023). A New digital Twin for climate change adaptation, water management, and disaster Risk reduction (HIP. *Water*, 15(1), 25. https://doi.org/10.3390/w15010025",
+    "archivo": "Henriksen et al. - 2023 - A New Digital Twin for Climate Change Adaptation, Water Management, and Disaster Risk Reduction (HIP.pdf",
+    "funciones": {
+      "definicion": {
+        "score": 1.75,
+        "texto": "Instruments such as digital twins are key here to boosting risk knowledge based on past, present, and future climate impacts [1]."
+      },
+      "datos": {
+        "score": 2.25,
+        "texto": "Integrating remote sensing data in optimization of a national water resources modelt o improve the spatial pattern performance of evapotranspiration."
+      },
+      "modelado": {
+        "score": 2.0,
+        "texto": "A Physics-Informed, Machine Learning Emulator of a 2D Surface Water Model: What Temporal Networks and Simulation-Based Inference Can Help Us Learn about Hydrologic Processes."
+      },
+      "gobernanza": {
+        "score": 2.0,
+        "texto": "SDFI will take care of making the real-time data publicly available on the HIP portal, and facilitating the stakeholder engagement process as part of the design of the portal."
+      }
+    }
+  },
+  {
+    "clave": "jafarzadeh2022",
+    "referencia": "Jafarzadeh et al. (2022). Remote sensing and machine learning tools to support wetland monitoring A meta-Analysis of three De. *Remote Sensing*, 14(23), 6104. https://doi.org/10.3390/rs14236104",
+    "archivo": "Jafarzadeh et al. - 2022 - Remote Sensing and Machine Learning Tools to Support Wetland Monitoring A Meta-Analysis of Three De.pdf",
+    "funciones": {
+      "datos": {
+        "score": 2.25,
+        "texto": "Construction of a New Classiﬁer Integrated Multiple Sources and Multi-Temporal Remote Sensing Data for Wetlands."
+      },
+      "humedales": {
+        "score": 2.6,
+        "texto": "The synthesized ﬁndings of this paper are essential to determining best practices for environmental management, restoration, and conservation of wetlands."
+      }
+    }
+  },
+  {
+    "clave": "jeffery2021",
+    "referencia": "Jeffery, K., Wittenburg, P., Lannom, L., Strawn, G., Biniossek, C., Betz, D., & Blanchi, C. (2021). Not ready for convergence in data infrastructures. *Data Intelligence*, 3(1), 116-135. https://doi.org/10.1162/dint_a_00084",
+    "archivo": "Jeffery et al. - 2021 - Not Ready for Convergence in Data Infrastructures.pdf",
+    "funciones": {}
+  },
+  {
+    "clave": "jiang2021",
+    "referencia": "Jiang, P., Meinert, N., Jordão, H., Weisser, C., Holgate, S., Lavin, A., Lütjens, B., Newman, D., Wainwright, H., Walker, C., & Barnard, P. (2021). Digital Twin Earth — coasts: developing a fast and physics-informed surrogate model for coastal floods via neural operators. *arXiv preprint*. https://arxiv.org/abs/2110.07100",
+    "archivo": "Jiang et al. - 2021 - Digital Twin Earth -- Coasts Developing a fast and physics-informed surrogate model for coastal flo.pdf",
+    "funciones": {
+      "modelado": {
+        "score": 2.1,
+        "texto": "Here, we propose the ﬁrst “coastal digital twin”, an emulator built on state-of-art physics-informed ML techniques to produce computationally lightweight surrogate models that provide fast and accurate predictions of sea surface heights in coastal regions."
+      }
+    }
+  },
+  {
+    "clave": "khan2025",
+    "referencia": "Khan et al. (2025). TwinEco A unified framework for dynamic data-driven digital twins in ecology. *Ecological Informatics*, 91, 103407. https://doi.org/10.1016/j.ecoinf.2025.103407",
+    "archivo": "Khan et al. - 2025 - TwinEco A unified framework for dynamic data-driven digital twins in ecology.pdf",
+    "funciones": {
+      "arquitectura": {
+        "score": 2.1,
+        "texto": "In addressing the aforementioned challenges and opportunities we  propose a comprehensive design framework, called TwinEco, for dy­ namic data-driven DTs in ecology."
+      },
+      "datos": {
+        "score": 2.0,
+        "texto": "This flexibility of TwinEco in implementation ensures  that DT environments can be customised to meet the diverse re­ quirements of different ecological applications, whether they involve  complex simulations, real-time data integration, or iterative model ad­ justments."
+      },
+      "carbono": {
+        "score": 1.5,
+        "texto": "For instance, in urban  ecosystems, where rapid anthropogenic changes impact biodiversity,  DTs built following the design principles presented in TwinEco could  integrate data from urban sensors to monitor air and water quality,  providing insights into how urban expansion affects local species and  ecosystem services."
+      }
+    }
+  },
+  {
+    "clave": "lei2023",
+    "referencia": "Lei et al. (2023). Challenges of urban digital twins A systematic review and a delphi expert survey. *Automation in Construction*, 147, 104716. https://doi.org/10.1016/j.autcon.2022.104716",
+    "archivo": "Lei et al. - 2023 - Challenges of urban digital twins A systematic review and a Delphi expert survey.pdf",
+    "funciones": {
+      "definicion": {
+        "score": 1.75,
+        "texto": "Since research on digital twins is rather in its infancy, the present discourse is predominantly technology-driven."
+      },
+      "brecha": {
+        "score": 2.25,
+        "texto": "However, a comprehensive security guarantee mechanism is lacking to define the data security hierarchy [1]."
+      },
+      "arquitectura": {
+        "score": 1.5,
+        "texto": "It groups characteristics discussed in the corpus (e.g. sanitation, safety and inequality) and maps them into the proposed framework, delivering a cohesive and multi-faceted overview to a range of stakeholders."
+      },
+      "datos": {
+        "score": 1.5,
+        "texto": "The role of urban digital twins is highlighted as an integrated and promising approach to data-based infrastructure management and urban sustainability endeavours [15]."
+      },
+      "gobernanza": {
+        "score": 1.75,
+        "texto": "From the social perspective, public engagement is highlighted, e.g. reflecting feedback on the digital models."
+      }
+    }
+  },
+  {
+    "clave": "lu2026",
+    "referencia": "Lu et al. (2026). Exploring the concept of digital twins of wetlands for supporting ecosystem monitoring and management. *Big Earth Data*, 10(1), 37-67. https://doi.org/10.1080/20964471.2025.2480446",
+    "archivo": "Lu et al. - 2026 - Exploring the concept of digital twins of wetlands for supporting ecosystem monitoring and management.pdf",
+    "funciones": {
+      "datos": {
+        "score": 2.25,
+        "texto": "Wetland ecosystem health assessment through  integrating remote sensing and inventory data with an assessment model for the Hangzhou Bay,  China."
+      },
+      "humedales": {
+        "score": 2.5,
+        "texto": "Corresponding  management recommendations will then be proposed.The ecosystem status and  BIG EARTH DATA 55 dynamics in future scenarios are essential for stakeholders toperform proactive  wetland management to conserve the ecosystems effectively and supportthe  restoration planning in more strategic ways."
+      },
+      "gobernanza": {
+        "score": 2.0,
+        "texto": "Besides the stakeholders directly involved in wetland monitoring and management, the  engagement can also expand to the fields of citizen science and social media."
+      }
+    }
+  },
+  {
+    "clave": "meyer2015",
+    "referencia": "Meyer et al. (2015). Global priorities for an effective information basis of biodiversity distributions. *Nature Communications*, 6(1). https://doi.org/10.1038/ncomms9221",
+    "archivo": "Meyer et al. - 2015 - Global priorities for an effective information basis of biodiversity distributions.pdf",
+    "funciones": {
+      "datos": {
+        "score": 1.5,
+        "texto": "Our results highlight the urgent need for integrating non-Western data sources and intensifying cooperation to more effectively address societal biodiversity information needs."
+      },
+      "gobernanza": {
+        "score": 1.6,
+        "texto": "(ii) We tested for effects of political commitment to data sharing using the proportion of the land area within each grid cell that falls within GBIF-participating countries."
+      }
+    }
+  },
+  {
+    "clave": "meyer2016",
+    "referencia": "Meyer et al. (2016). Multidimensional biases, gaps and uncertainties in global plant occurrence information. *Ecology Letters*, 19(8), 992-1006. https://doi.org/10.1111/ele.12624",
+    "archivo": "Meyer et al. - 2016 - Multidimensional biases, gaps and uncertainties in global plant occurrence information.pdf",
+    "funciones": {
+      "brecha": {
+        "score": 2.0,
+        "texto": "However, broader application is limited by gaps, uncertainties and biases in each of the three basic dimensions taxonomy, space and time (Nelson et al. 1990; Sober\u0001on & Peterson 2004; Boakes et al. 2010; Schmidt-Lebuhn et al. 2013)."
+      },
+      "arquitectura": {
+        "score": 2.1,
+        "texto": "In this synthesis, we propose a conceptual framework for analysing gaps in information coverage, information uncertainties and biases in these metrics along taxonomic, geographical and temporal dimensions, and apply it to all c. 370 000 species of land plants."
+      },
+      "datos": {
+        "score": 1.85,
+        "texto": "To this end, we integrated 120 million point-occurrence records with independent databases on plant taxonomy, distributions and conservation status."
+      },
+      "incertidumbre": {
+        "score": 2.1,
+        "texto": "In this synthesis, we propose a conceptual framework for analysing gaps in information coverage, information uncertainties and biases in these metrics along taxonomic, geographical and temporal dimensions, and apply it to all c. 370 000 species of land plants."
+      }
+    }
+  },
+  {
+    "clave": "mollenhauer2018",
+    "referencia": "Mollenhauer et al. (2018). Long-term environmental monitoring infrastructures in europe observations, measurements, scales, an. *Science of The Total Environment*, 624, 968-978. https://doi.org/10.1016/j.scitotenv.2017.12.095",
+    "archivo": "Mollenhauer et al. - 2018 - Long-term environmental monitoring infrastructures in Europe observations, measurements, scales, an.pdf",
+    "funciones": {
+      "brecha": {
+        "score": 1.5,
+        "texto": "The present study focused on the evaluation of the geographical representativeness and the observational design of LTER in Europe as a basis for ﬁlling a critical gap in the European research infrastructures landscape."
+      },
+      "arquitectura": {
+        "score": 1.5,
+        "texto": "In the present study, the current state of infrastructural development of the LTER-Europe sites was compared with the LTER framework of standard observations."
+      }
+    }
+  },
+  {
+    "clave": "nativi2021",
+    "referencia": "Nativi et al. (2021). Digital ecosystems for developing digital twins of the Earth The Destination Earth Case. *Remote Sensing*, 13(11), 2119. https://doi.org/10.3390/rs13112119",
+    "archivo": "Nativi et al. - 2021 - Digital Ecosystems for Developing Digital Twins of the Earth The Destination Earth Case.pdf",
+    "funciones": {
+      "brecha": {
+        "score": 2.1,
+        "texto": "The comprehensive discussion of the multiple dimensions and challenges of digital ecosystems presented in this paper ﬁlls an important gap in the current knowledge and marks the path for future developments and implementations. 1.2."
+      },
+      "arquitectura": {
+        "score": 1.6,
+        "texto": "In this paper, we introduced the concept of a digital ecosystem as a new approach to harness the characteristics of the digital transformation and develop the required knowledge framework for Global Change and SDG agenda implementation."
+      },
+      "gobernanza": {
+        "score": 2.25,
+        "texto": "This process had broad participation from major groups and other civil society stakeholders."
+      }
+    }
+  },
+  {
+    "clave": "picone2023",
+    "referencia": "Picone et al. (2023). A flexible and modular architecture for Edge digital Twin implementation and evaluation. *ACM Transactions on Internet of Things*, 4(1), 1-32. https://doi.org/10.1145/3573206",
+    "archivo": "Picone et al. - 2023 - A Flexible and Modular Architecture for Edge Digital Twin Implementation and Evaluation.pdf",
+    "funciones": {
+      "arquitectura": {
+        "score": 2.35,
+        "texto": "Relying on the proposed modeling, we designed a reference architecture and built its first implementation through the definition of a software stack."
+      },
+      "datos": {
+        "score": 1.6,
+        "texto": "For the experiments we considered both IoT devices and external consumer applications directly integrated with Ditto’s SDK in order to send and receive data."
+      },
+      "gobernanza": {
+        "score": 1.5,
+        "texto": "Works presented in [55] and [71] propose to build DTs of real organisations and adopt agents to structure systems as an autonomous, behaviour-centred perspective encapsulating decision making and intelligence capabilities."
+      }
+    }
+  },
+  {
+    "clave": "qamsane2021",
+    "referencia": "Qamsane et al. (2021). A methodology to develop and implement digital Twin solutions for manufacturing systems. *IEEE Access*, 9, 44247-44265. https://doi.org/10.1109/ACCESS.2021.3065971",
+    "archivo": "Qamsane et al. - 2021 - A Methodology to Develop and Implement Digital Twin Solutions for Manufacturing Systems.pdf",
+    "funciones": {
+      "arquitectura": {
+        "score": 2.35,
+        "texto": "This paper presents a systematic methodology for extending the baseline framework of [8] to realize practical and implementable DT solutions."
+      }
+    }
+  },
+  {
+    "clave": "raes2022",
+    "referencia": "Raes et al. (2022). DUET A framework for building interoperable and trusted digital twins of smart cities. *IEEE Internet Computing*, 26(3), 43-50. https://doi.org/10.1109/MIC.2021.3060962",
+    "archivo": "Raes et al. - 2022 - DUET A Framework for Building Interoperable and Trusted Digital Twins of Smart Cities.pdf",
+    "funciones": {
+      "definicion": {
+        "score": 1.75,
+        "texto": "Today, digital twins are presented as strategic trends with a wide reaching disruption potential."
+      },
+      "arquitectura": {
+        "score": 2.1,
+        "texto": "To ﬁll this gap, we propose a framework for digital city twins that is currently being tested by the DUET project,13 which is still in development and is a focal point of this article."
+      },
+      "datos": {
+        "score": 1.6,
+        "texto": "Although we do not plan to use any biometric data in DUET, some pilots will integrate data from citizen scientists to provide a better coverage of air quality and trafﬁc in a city."
+      }
+    }
+  },
+  {
+    "clave": "rasheed2020",
+    "referencia": "Rasheed et al. (2020). Digital Twin values, challenges and enablers From a modeling perspective. *IEEE Access*, 8, 21980-22012. https://doi.org/10.1109/ACCESS.2020.2970143",
+    "archivo": "Rasheed et al. - 2020 - Digital Twin Values, Challenges and Enablers From a Modeling Perspective.pdf",
+    "funciones": {
+      "definicion": {
+        "score": 3.1,
+        "texto": "CONCLUSIONS AND RECOMMENDATIONS Based on our literature survey we present the following deﬁnition of digital twin: A digital twin is deﬁned as a virtual representation of a physical asset enabled through data and simulators for real-time prediction, optimization, monitoring, controlling, and improved decision making."
+      },
+      "brecha": {
+        "score": 1.5,
+        "texto": "The growing gap between industry and academia has been highlighted in [57], where the authors drew attention to tremendous opportunities from a data science perspective."
+      },
+      "arquitectura": {
+        "score": 1.75,
+        "texto": "Mukherjee and DebRoy [38] and Knapp et al. [39] proposed a conceptual framework of a digital twin for 3D printing."
+      },
+      "datos": {
+        "score": 2.1,
+        "texto": "CONCLUSIONS AND RECOMMENDATIONS Based on our literature survey we present the following deﬁnition of digital twin: A digital twin is deﬁned as a virtual representation of a physical asset enabled through data and simulators for real-time prediction, optimization, monitoring, controlling, and improved decision making."
+      },
+      "modelado": {
+        "score": 2.25,
+        "texto": "Xiao, ‘‘Physics-informed machine learning approach for reconstructing reynolds stress modeling discrepancies based on DNS data,’’ Phys."
+      },
+      "gobernanza": {
+        "score": 2.1,
+        "texto": "CONCLUSIONS AND RECOMMENDATIONS Based on our literature survey we present the following deﬁnition of digital twin: A digital twin is deﬁned as a virtual representation of a physical asset enabled through data and simulators for real-time prediction, optimization, monitoring, controlling, and improved decision making."
+      }
+    }
+  },
+  {
+    "clave": "reichstein2019",
+    "referencia": "Reichstein et al. (2019). Deep learning and process understanding for data-driven Earth system science. *Nature*, 566(7743), 195-204. https://doi.org/10.1038/s41586-019-0912-1",
+    "archivo": "Reichstein et al. - 2019 - Deep learning and process understanding for data-driven Earth system science.pdf",
+    "funciones": {
+      "datos": {
+        "score": 1.85,
+        "texto": "We further lay out the most  78  promising but also challenging approaches in combining machine learning with physical  79  modelling.  80  2."
+      },
+      "modelado": {
+        "score": 1.85,
+        "texto": "We further lay out the most  78  promising but also challenging approaches in combining machine learning with physical  79  modelling.  80  2."
+      }
+    }
+  },
+  {
+    "clave": "twomey2024",
+    "referencia": "Twomey et al. (2024). Planning hydrological restoration of coastal wetlands Key model considerations and solutions. *Science of The Total Environment*, 915, 169881. https://doi.org/10.1016/j.scitotenv.2024.169881",
+    "archivo": "Twomey et al. - 2024 - Planning hydrological restoration of coastal wetlands Key model considerations and solutions.pdf",
+    "funciones": {
+      "brecha": {
+        "score": 2.0,
+        "texto": "However, they may not be transferable to other  sites, and their predictive capabilities are limited to the specific condi­ tions of the data used in the model.  3.4.3."
+      },
+      "humedales": {
+        "score": 3.25,
+        "texto": "Determining hydrological flow paths to  enhance restoration in impaired mangrove wetlands."
+      },
+      "carbono": {
+        "score": 2.0,
+        "texto": "Ecosystem functions  and processes directly or indirectly influenced by the hydrological  regime influence the ecosystem services provided by coastal wetlands,  such as habitat provision, improved water quality, carbon sequestration  and coastal protection."
+      },
+      "gobernanza": {
+        "score": 2.0,
+        "texto": "The approach for restoration follows  stakeholder engagement, development of overall goals and specific ob­ jectives, identification of reference ecosystems and other components,  that occur before project implementation."
+      }
+    }
+  },
+  {
+    "clave": "tzachor2023",
+    "referencia": "Tzachor et al. (2023). Digital twins a stepping stone to achieve ocean sustainability. *npj Ocean Sustainability*, 2(1). https://doi.org/10.1038/s44183-023-00023-9",
+    "archivo": "Tzachor et al. - 2023 - Digital twins a stepping stone to achieve ocean sustainability.pdf",
+    "funciones": {
+      "incertidumbre": {
+        "score": 1.6,
+        "texto": "Beyond these immediate techno-economic limitations, we expect various ethical concerns and uncertainties to arise in the development of oceanic DTs, and the digital representation of marine ecosystem services."
+      },
+      "carbono": {
+        "score": 1.6,
+        "texto": "Beyond these immediate techno-economic limitations, we expect various ethical concerns and uncertainties to arise in the development of oceanic DTs, and the digital representation of marine ecosystem services."
+      },
+      "gobernanza": {
+        "score": 2.25,
+        "texto": "Finally, developing a comprehensive, cross-sector, stakeholder engagement strategy is crucial for all these measures."
+      }
+    }
+  },
+  {
+    "clave": "verdouw2021",
+    "referencia": "Verdouw et al. (2021). Digital twins in smart farming. *Agricultural Systems*, 189, 103046. https://doi.org/10.1016/j.agsy.2020.103046",
+    "archivo": "Verdouw et al. - 2021 - Digital twins in smart farming.pdf",
+    "funciones": {
+      "definicion": {
+        "score": 1.6,
+        "texto": "In this paper we combine both  perspectives and use the following definition: “A Digital Twin is a dy­ namic representation of a real-life object that mirrors its states and  behaviour across its lifecycle and that can be used to monitor, analyze  and simulate current and future states of and interventions on these  Fig. 3."
+      },
+      "brecha": {
+        "score": 1.5,
+        "texto": "Finally, Sreedevi and Santosh Kumar (2020) argue that there are  relatively few studies about Digital Twins in agriculture compared to  other domains."
+      },
+      "arquitectura": {
+        "score": 2.1,
+        "texto": "In  the present paper we adopted the IoT-A reference architecture because it  most explicitly addresses virtual entities as a core element of the ar­ chitecture."
+      },
+      "datos": {
+        "score": 1.75,
+        "texto": "The integrated control model especially adds different types of  the representation, i.e. imaginary, present, future and past digital ob­ jects."
+      },
+      "gobernanza": {
+        "score": 1.75,
+        "texto": "Agricultural Systems 189 (2021) 103046 8 discriminator, decision maker, and effector are present (de Leeuw, 1997;  Int Veld, 2002)."
+      }
+    }
+  },
+  {
+    "clave": "weil2023",
+    "referencia": "Weil et al. (2023). Urban digital Twin challenges A systematic review and perspectives for sustainable smart cities. *Sustainable Cities and Society*, 99, 104862. https://doi.org/10.1016/j.scs.2023.104862",
+    "archivo": "Weil et al. - 2023 - Urban Digital Twin Challenges A Systematic Review and Perspectives for Sustainable Smart Cities.pdf",
+    "funciones": {
+      "datos": {
+        "score": 2.25,
+        "texto": "Improving Model Predictions—Integration of Real-Time Sensor  Data into a Running Simulation of an Agent-Based Model."
+      },
+      "gobernanza": {
+        "score": 2.25,
+        "texto": "Participatory Sensing and Digital Twin City: Updating Virtual  City Models for Enhanced Risk-Informed Decision-Making."
+      }
+    }
+  },
+  {
+    "clave": "wright2020",
+    "referencia": "Wright & Davidson (2020). How to tell the difference between a model and a digital twin. *Advanced Modeling and Simulation in Engineering Sciences*, 7(1). https://doi.org/10.1186/s40323-020-00147-4",
+    "archivo": "Wright and Davidson - 2020 - How to tell the difference between a model and a digital twin.pdf",
+    "funciones": {
+      "definicion": {
+        "score": 1.6,
+        "texto": "The key  features of a model within a digital twin are discussed in more detail in “What sort of  model should a digital twin use?” section of this paper."
+      },
+      "modelado": {
+        "score": 1.75,
+        "texto": "The left hand plot shows a training data set (black  points) and the values predicted by the associated metamodel (coloured surface)."
+      },
+      "incertidumbre": {
+        "score": 2.0,
+        "texto": "This requirement means that model  inputs, and hence model outputs, and validation data all have associated uncertainties, and so comparison of data with model results should generate an estimate of the  probability that the values are consistent rather than using a “5% error is good enough”  approach."
+      }
+    }
+  },
+  {
+    "clave": "yang2024",
+    "referencia": "Yang, S., Kim, H., Hong, Y., Yee, K., & Kang, N. (2024). Data-driven physics-informed neural networks: A digital twin perspective. *arXiv preprint*. https://arxiv.org/abs/2311.10387",
+    "archivo": "Yang et al. - 2024 - Data-Driven Physics-Informed Neural Networks A Digital Twin Perspective.pdf",
+    "funciones": {
+      "brecha": {
+        "score": 2.0,
+        "texto": "Nevertheless, they still limited their scope to using only sparse guide data (from 1% to 10% grid points of the entire flow fields obtained by CFD), which can be considered as an inefficient approach as it does not fully exploit the obtained CFD results."
+      },
+      "arquitectura": {
+        "score": 1.75,
+        "texto": "However, as Re increased to 1,000 and 3,200, data-free PINNs failed to predict realistic flow fields, while the proposed DD-PINN framework succeeded."
+      },
+      "datos": {
+        "score": 1.6,
+        "texto": "Second, given that the DT environment is continuously updated with collected data [6], this study scrutinizes a DD-PINN framework that can fully exploit the dataset assumed to be obtained from the numerical simulation."
+      },
+      "modelado": {
+        "score": 2.25,
+        "texto": "Physics-informed neural network-based surrogate model for a virtual thermal sensor with real-time simulation."
+      },
+      "incertidumbre": {
+        "score": 2.35,
+        "texto": "In a similar context, we visualized the loss landscapes to verify the failure of the data-free PINNs at Re = 3200, as shown in Fig. 6a."
+      }
+    }
+  },
+  {
+    "clave": "zia2025",
+    "referencia": "Zia et al. (2025). Physics encoded blocks in residual neural network architectures for digital twin models. *Machine Learning*, 114(8). https://doi.org/10.1007/s10994-025-06808-y",
+    "archivo": "Zia et al. - 2025 - Physics encoded blocks in residual neural network architectures for digital twin models.pdf",
+    "funciones": {
+      "brecha": {
+        "score": 1.5,
+        "texto": "However, the dataset also presents common challenges  such as missing values caused by power shortages, sensor malfunctions, or adverse weather  conditions."
+      },
+      "arquitectura": {
+        "score": 2.35,
+        "texto": "In the PINN model,  we present a branched architecture following similar structure to the learning blocks in  PERNN."
+      },
+      "datos": {
+        "score": 2.1,
+        "texto": "This paper presents  a generic approach based on a novel physics-encoded residual neural network (PERNN)  architecture that seamlessly combines data-driven and physics-based analytical models to  overcome these limitations."
+      },
+      "modelado": {
+        "score": 3.25,
+        "texto": "Approaches like Physics-Informed Neural Networks (PINNs)  encode analytical equations as loss terms to constrain deep learning models."
+      },
+      "incertidumbre": {
+        "score": 1.5,
+        "texto": "This forms decoupled  targets for the model to learn, which is depicted in the graph to the right of the distribution showing the validation dataset loss values failing to converge anywhere close to the  other methods."
+      },
+      "gobernanza": {
+        "score": 1.6,
+        "texto": "We analyse the distribution of these variables  Machine Learning (2025) 114:180  Page 27 of 40  180 for a set of road scenarios to analyse the agent’s decision-making based on the PERNN  model predictions."
+      }
+    }
+  }
+]

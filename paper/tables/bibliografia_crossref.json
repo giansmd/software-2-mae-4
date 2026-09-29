@@ -1,0 +1,876 @@
+[
+  {
+    "slug": "alenezi-and-alabaiadly-2026-digital-twins-and-edge-ai-for-smalloff-grid-water-sy",
+    "archivo": "Alenezi and Alabaiadly - 2026 - Digital Twins and Edge AI for SmallOff-Grid Water Systems A Review.pdf",
+    "titulo_archivo": "Digital Twins and Edge AI for SmallOff-Grid Water Systems A Review",
+    "crossref": {
+      "doi": "10.1109/access.2026.3669429",
+      "title": "Digital Twins and Edge AI for Small/Off-Grid Water Systems: A Review",
+      "authors": [
+        "Alenezi, A.",
+        "Alabaiadly, Y."
+      ],
+      "year": "2026",
+      "journal": "IEEE Access",
+      "volume": "14",
+      "issue": "",
+      "page": "39960-39978",
+      "type": "journal-article",
+      "score": 1.067
+    },
+    "apa": "Alenezi, A., & Alabaiadly, Y. (2026). Digital Twins and Edge AI for Small/Off-Grid Water Systems: A Review. *IEEE Access*, 14, 39960-39978. https://doi.org/10.1109/access.2026.3669429"
+  },
+  {
+    "slug": "blair-2021-digital-twins-of-the-natural-environment",
+    "archivo": "Blair - 2021 - Digital twins of the natural environment.pdf",
+    "titulo_archivo": "Digital twins of the natural environment",
+    "crossref": {
+      "doi": "10.1016/j.patter.2021.100359",
+      "title": "Digital twins of the natural environment",
+      "authors": [
+        "Blair, G. S."
+      ],
+      "year": "2021",
+      "journal": "Patterns",
+      "volume": "2",
+      "issue": "10",
+      "page": "100359",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Blair, G. S. (2021). Digital twins of the natural environment. *Patterns*, 2(10), 100359. https://doi.org/10.1016/j.patter.2021.100359"
+  },
+  {
+    "slug": "brown-and-williams-2019-the-potential-for-citizen-science-to-produce-reliable-an",
+    "archivo": "Brown and Williams - 2019 - The potential for citizen science to produce reliable and useful information in ecology.pdf",
+    "titulo_archivo": "The potential for citizen science to produce reliable and useful information in ecology",
+    "crossref": {
+      "doi": "10.1111/cobi.13223",
+      "title": "The potential for citizen science to produce reliable and useful information in ecology",
+      "authors": [
+        "Brown, E. D.",
+        "Williams, B. K."
+      ],
+      "year": "2018",
+      "journal": "Conservation Biology",
+      "volume": "33",
+      "issue": "3",
+      "page": "561-569",
+      "type": "journal-article",
+      "score": 1.0
+    },
+    "apa": "Brown, E. D., & Williams, B. K. (2018). The potential for citizen science to produce reliable and useful information in ecology. *Conservation Biology*, 33(3), 561-569. https://doi.org/10.1111/cobi.13223"
+  },
+  {
+    "slug": "buffington-et-al-2021-incorporation-of-uncertainty-to-improve-projections-of-tid",
+    "archivo": "Buffington et al. - 2021 - Incorporation of uncertainty to improve projections of tidal wetland elevation and carbon accumulati.pdf",
+    "titulo_archivo": "Incorporation of uncertainty to improve projections of tidal wetland elevation and carbon accumulati",
+    "crossref": {
+      "doi": "10.1371/journal.pone.0256707",
+      "title": "Incorporation of uncertainty to improve projections of tidal wetland elevation and carbon accumulation with sea-level rise",
+      "authors": [
+        "Buffington, K. J.",
+        "Janousek, C. N.",
+        "Dugger, B. D.",
+        "Callaway, J. C.",
+        "Schile-Beers, L. M.",
+        "Borgnis Sloane, E.",
+        "Thorne, K. M."
+      ],
+      "year": "2021",
+      "journal": "PLOS ONE",
+      "volume": "16",
+      "issue": "10",
+      "page": "e0256707",
+      "type": "journal-article",
+      "score": 1.067
+    },
+    "apa": "Buffington, K. J., Janousek, C. N., Dugger, B. D., Callaway, J. C., Schile-Beers, L. M., Borgnis Sloane, E., & Thorne, K. M. (2021). Incorporation of uncertainty to improve projections of tidal wetland elevation and carbon accumulation with sea-level rise. *PLOS ONE*, 16(10), e0256707. https://doi.org/10.1371/journal.pone.0256707"
+  },
+  {
+    "slug": "cabrera-et-al-2021-the-potential-of-a-smartphone-as-an-urban-weather-stationan-e",
+    "archivo": "Cabrera et al. - 2021 - The Potential of a Smartphone as an Urban Weather Station—An Exploratory Analysis.pdf",
+    "titulo_archivo": "The Potential of a Smartphone as an Urban Weather Station—An Exploratory Analysis",
+    "crossref": {
+      "doi": "10.3389/fenvs.2021.673937",
+      "title": "The Potential of a Smartphone as an Urban Weather Station—An Exploratory Analysis",
+      "authors": [
+        "Cabrera, A. N.",
+        "Droste, A.",
+        "Heusinkveld, B. G.",
+        "Steeneveld, G. J."
+      ],
+      "year": "2021",
+      "journal": "Frontiers in Environmental Science",
+      "volume": "9",
+      "issue": "",
+      "page": "",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Cabrera, A. N., Droste, A., Heusinkveld, B. G., & Steeneveld, G. J. (2021). The Potential of a Smartphone as an Urban Weather Station—An Exploratory Analysis. *Frontiers in Environmental Science*, 9. https://doi.org/10.3389/fenvs.2021.673937"
+  },
+  {
+    "slug": "chen-et-al-2025-federated-digital-twin-construction-via-distributed-sensing-a-ga",
+    "archivo": "Chen et al. - 2025 - Federated Digital Twin Construction via Distributed Sensing A Game-Theoretic Online Optimization wi.pdf",
+    "titulo_archivo": "Federated Digital Twin Construction via Distributed Sensing A Game-Theoretic Online Optimization wi",
+    "crossref": {
+      "doi": "10.1109/tmc.2025.3582755",
+      "title": "Federated Digital Twin Construction via Distributed Sensing: A Game-Theoretic Online Optimization With Overlapping Coalitions",
+      "authors": [
+        "Chen, R.",
+        "Yi, C.",
+        "Zhou, F.",
+        "Kang, J.",
+        "Wu, Y.",
+        "Niyato, D."
+      ],
+      "year": "2025",
+      "journal": "IEEE Transactions on Mobile Computing",
+      "volume": "24",
+      "issue": "11",
+      "page": "12221-12238",
+      "type": "journal-article",
+      "score": 1.073
+    },
+    "apa": "Chen, R., Yi, C., Zhou, F., Kang, J., Wu, Y., & Niyato, D. (2025). Federated Digital Twin Construction via Distributed Sensing: A Game-Theoretic Online Optimization With Overlapping Coalitions. *IEEE Transactions on Mobile Computing*, 24(11), 12221-12238. https://doi.org/10.1109/tmc.2025.3582755"
+  },
+  {
+    "slug": "de-koning-et-al-2023-digital-twins-dynamic-model-data-fusion-for-ecology",
+    "archivo": "De Koning et al. - 2023 - Digital twins dynamic model-data fusion for ecology.pdf",
+    "titulo_archivo": "Digital twins dynamic model-data fusion for ecology",
+    "crossref": {
+      "doi": "10.1016/j.tree.2023.04.010",
+      "title": "Digital twins: dynamic model-data fusion for ecology",
+      "authors": [
+        "de Koning, K.",
+        "Broekhuijsen, J.",
+        "Kühn, I.",
+        "Ovaskainen, O.",
+        "Taubert, F.",
+        "Endresen, D.",
+        "Schigel, D.",
+        "Grimm, V."
+      ],
+      "year": "2023",
+      "journal": "Trends in Ecology &amp; Evolution",
+      "volume": "38",
+      "issue": "10",
+      "page": "916-926",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "de Koning, K., Broekhuijsen, J., Kühn, I., Ovaskainen, O., Taubert, F., Endresen, D., Schigel, D., & Grimm, V. (2023). Digital twins: dynamic model-data fusion for ecology. *Trends in Ecology &amp; Evolution*, 38(10), 916-926. https://doi.org/10.1016/j.tree.2023.04.010"
+  },
+  {
+    "slug": "devries-2024-governance-framework-for-citizen-digital-twins-in-smart-cities",
+    "archivo": "DeVries - 2024 - Governance Framework for Citizen Digital Twins in Smart Cities.pdf",
+    "titulo_archivo": "Governance Framework for Citizen Digital Twins in Smart Cities",
+    "crossref": {
+      "doi": "10.63808/ihf.v1i1.32",
+      "title": "Governance Framework for Citizen Digital Twins in Smart Cities",
+      "authors": [
+        "DeVries, C."
+      ],
+      "year": "2025",
+      "journal": "Intelligent &amp; Human Futures",
+      "volume": "1",
+      "issue": "1",
+      "page": "",
+      "type": "journal-article",
+      "score": 1.0
+    },
+    "apa": "DeVries, C. (2025). Governance Framework for Citizen Digital Twins in Smart Cities. *Intelligent &amp; Human Futures*, 1(1). https://doi.org/10.63808/ihf.v1i1.32"
+  },
+  {
+    "slug": "dilip-2024-thermal-digital-twins-of-asphalt-pavements-using-physics-informed-neu",
+    "archivo": "Dilip - 2024 - Thermal Digital Twins of Asphalt Pavements using Physics-informed Neural Networks.pdf",
+    "titulo_archivo": "Thermal Digital Twins of Asphalt Pavements using Physics-informed Neural Networks",
+    "crossref": {
+      "doi": "10.11159/icgre24.157",
+      "title": "Thermal Digital Twins of Asphalt Pavements using Physics-informed Neural Networks",
+      "authors": [
+        "Dilip, D. M."
+      ],
+      "year": "2024",
+      "journal": "World Congress on Civil, Structural, and Environmental Engineering",
+      "volume": "",
+      "issue": "",
+      "page": "",
+      "type": "proceedings-article",
+      "score": 1.15
+    },
+    "apa": "Dilip, D. M. (2024). Thermal Digital Twins of Asphalt Pavements using Physics-informed Neural Networks. *World Congress on Civil, Structural, and Environmental Engineering*. https://doi.org/10.11159/icgre24.157"
+  },
+  {
+    "slug": "durden-2025-environmental-management-using-a-digital-twin",
+    "archivo": "Durden - 2025 - Environmental management using a digital twin.pdf",
+    "titulo_archivo": "Environmental management using a digital twin",
+    "crossref": {
+      "doi": "10.1016/j.envsci.2025.104018",
+      "title": "Environmental management using a digital twin",
+      "authors": [
+        "Durden, J. M."
+      ],
+      "year": "2025",
+      "journal": "Environmental Science &amp; Policy",
+      "volume": "164",
+      "issue": "",
+      "page": "104018",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Durden, J. M. (2025). Environmental management using a digital twin. *Environmental Science &amp; Policy*, 164, 104018. https://doi.org/10.1016/j.envsci.2025.104018"
+  },
+  {
+    "slug": "durao-et-al-2018-digital-twin-requirements-in-the-context-of-industry-4-0",
+    "archivo": "Durão et al. - 2018 - Digital Twin Requirements in the Context of Industry 4.0.pdf",
+    "titulo_archivo": "Digital Twin Requirements in the Context of Industry 4.0",
+    "crossref": {
+      "doi": "10.3390/su15139874",
+      "title": "Digital Twin: An Added Value for Digital CONWIP in the Context of Industry 4.0",
+      "authors": [
+        "Benhamou, L.",
+        "Lamouri, S.",
+        "Burlat, P.",
+        "Giard, V."
+      ],
+      "year": "2023",
+      "journal": "Sustainability",
+      "volume": "15",
+      "issue": "13",
+      "page": "9874",
+      "type": "journal-article",
+      "score": 0.9
+    },
+    "apa": "Benhamou, L., Lamouri, S., Burlat, P., & Giard, V. (2023). Digital Twin: An Added Value for Digital CONWIP in the Context of Industry 4.0. *Sustainability*, 15(13), 9874. https://doi.org/10.3390/su15139874"
+  },
+  {
+    "slug": "garske-et-al-2024-digital-twins-in-sustainable-transition-exploring-the-role-of-",
+    "archivo": "Garske et al. - 2024 - Digital twins in sustainable transition exploring the role of EU data governance.pdf",
+    "titulo_archivo": "Digital twins in sustainable transition exploring the role of EU data governance",
+    "crossref": {
+      "doi": "10.3389/frma.2024.1303024",
+      "title": "Digital twins in sustainable transition: exploring the role of EU data governance",
+      "authors": [
+        "Garske, B.",
+        "Holz, W.",
+        "Ekardt, F."
+      ],
+      "year": "2024",
+      "journal": "Frontiers in Research Metrics and Analytics",
+      "volume": "9",
+      "issue": "",
+      "page": "",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Garske, B., Holz, W., & Ekardt, F. (2024). Digital twins in sustainable transition: exploring the role of EU data governance. *Frontiers in Research Metrics and Analytics*, 9. https://doi.org/10.3389/frma.2024.1303024"
+  },
+  {
+    "slug": "guo-et-al-2017-a-review-of-wetland-remote-sensing",
+    "archivo": "Guo et al. - 2017 - A Review of Wetland Remote Sensing.pdf",
+    "titulo_archivo": "A Review of Wetland Remote Sensing",
+    "crossref": {
+      "doi": "10.3389/frsen.2026.1852249",
+      "title": "Remote sensing-based detailed wetland classification: a review of advances from 2020 to 2025",
+      "authors": [
+        "He, Y.",
+        "Li, M.",
+        "Tang, X.",
+        "Ren, P."
+      ],
+      "year": "2026",
+      "journal": "Frontiers in Remote Sensing",
+      "volume": "7",
+      "issue": "",
+      "page": "",
+      "type": "journal-article",
+      "score": 1.0
+    },
+    "apa": "He, Y., Li, M., Tang, X., & Ren, P. (2026). Remote sensing-based detailed wetland classification: a review of advances from 2020 to 2025. *Frontiers in Remote Sensing*, 7. https://doi.org/10.3389/frsen.2026.1852249"
+  },
+  {
+    "slug": "hananto-and-veza-2025-governance-framework-for-intelligent-digital-twin-systems-",
+    "archivo": "Hananto and Veza - 2025 - Governance Framework for Intelligent Digital Twin Systems in Battery Storage Aligning Standards, Ma.pdf",
+    "titulo_archivo": "Governance Framework for Intelligent Digital Twin Systems in Battery Storage Aligning Standards, Ma",
+    "crossref": {
+      "doi": "10.3390/computers14090365",
+      "title": "Governance Framework for Intelligent Digital Twin Systems in Battery Storage: Aligning Standards, Market Incentives, and Cybersecurity for Decision Support of Digital Twin in BESS",
+      "authors": [
+        "Hananto, A. L.",
+        "Veza, I."
+      ],
+      "year": "2025",
+      "journal": "Computers",
+      "volume": "14",
+      "issue": "9",
+      "page": "365",
+      "type": "journal-article",
+      "score": 1.073
+    },
+    "apa": "Hananto, A. L., & Veza, I. (2025). Governance Framework for Intelligent Digital Twin Systems in Battery Storage: Aligning Standards, Market Incentives, and Cybersecurity for Decision Support of Digital Twin in BESS. *Computers*, 14(9), 365. https://doi.org/10.3390/computers14090365"
+  },
+  {
+    "slug": "haraguchi-et-al-2024-assessing-governance-implications-of-city-digital-twin-tech",
+    "archivo": "Haraguchi et al. - 2024 - Assessing governance implications of city digital twin technology A maturity model approach.pdf",
+    "titulo_archivo": "Assessing governance implications of city digital twin technology A maturity model approach",
+    "crossref": {
+      "doi": "10.1016/j.techfore.2024.123409",
+      "title": "Assessing governance implications of city digital twin technology: A maturity model approach",
+      "authors": [
+        "Haraguchi, M.",
+        "Funahashi, T.",
+        "Biljecki, F."
+      ],
+      "year": "2024",
+      "journal": "Technological Forecasting and Social Change",
+      "volume": "204",
+      "issue": "",
+      "page": "123409",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Haraguchi, M., Funahashi, T., & Biljecki, F. (2024). Assessing governance implications of city digital twin technology: A maturity model approach. *Technological Forecasting and Social Change*, 204, 123409. https://doi.org/10.1016/j.techfore.2024.123409"
+  },
+  {
+    "slug": "henriksen-et-al-2023-a-new-digital-twin-for-climate-change-adaptation-water-mana",
+    "archivo": "Henriksen et al. - 2023 - A New Digital Twin for Climate Change Adaptation, Water Management, and Disaster Risk Reduction (HIP.pdf",
+    "titulo_archivo": "A New Digital Twin for Climate Change Adaptation, Water Management, and Disaster Risk Reduction (HIP",
+    "crossref": {
+      "doi": "10.3390/w15010025",
+      "title": "A New Digital Twin for Climate Change Adaptation, Water Management, and Disaster Risk Reduction (HIP Digital Twin)",
+      "authors": [
+        "Henriksen, H.",
+        "Schneider, R.",
+        "Koch, J.",
+        "Ondracek, M.",
+        "Troldborg, L.",
+        "Seidenfaden, I.",
+        "Kragh, S.",
+        "Bøgh, E.",
+        "Stisen, S."
+      ],
+      "year": "2022",
+      "journal": "Water",
+      "volume": "15",
+      "issue": "1",
+      "page": "25",
+      "type": "journal-article",
+      "score": 1.0
+    },
+    "apa": "Henriksen, H., Schneider, R., Koch, J., Ondracek, M., Troldborg, L., Seidenfaden, I., Kragh, S., Bøgh, E., & Stisen, S. (2022). A New Digital Twin for Climate Change Adaptation, Water Management, and Disaster Risk Reduction (HIP Digital Twin). *Water*, 15(1), 25. https://doi.org/10.3390/w15010025"
+  },
+  {
+    "slug": "jafarzadeh-et-al-2022-remote-sensing-and-machine-learning-tools-to-support-wetla",
+    "archivo": "Jafarzadeh et al. - 2022 - Remote Sensing and Machine Learning Tools to Support Wetland Monitoring A Meta-Analysis of Three De.pdf",
+    "titulo_archivo": "Remote Sensing and Machine Learning Tools to Support Wetland Monitoring A Meta-Analysis of Three De",
+    "crossref": {
+      "doi": "10.3390/rs14236104",
+      "title": "Remote Sensing and Machine Learning Tools to Support Wetland Monitoring: A Meta-Analysis of Three Decades of Research",
+      "authors": [
+        "Jafarzadeh, H.",
+        "Mahdianpari, M.",
+        "Gill, E. W.",
+        "Brisco, B.",
+        "Mohammadimanesh, F."
+      ],
+      "year": "2022",
+      "journal": "Remote Sensing",
+      "volume": "14",
+      "issue": "23",
+      "page": "6104",
+      "type": "journal-article",
+      "score": 1.087
+    },
+    "apa": "Jafarzadeh, H., Mahdianpari, M., Gill, E. W., Brisco, B., & Mohammadimanesh, F. (2022). Remote Sensing and Machine Learning Tools to Support Wetland Monitoring: A Meta-Analysis of Three Decades of Research. *Remote Sensing*, 14(23), 6104. https://doi.org/10.3390/rs14236104"
+  },
+  {
+    "slug": "jeffery-et-al-2021-not-ready-for-convergence-in-data-infrastructures",
+    "archivo": "Jeffery et al. - 2021 - Not Ready for Convergence in Data Infrastructures.pdf",
+    "titulo_archivo": "Not Ready for Convergence in Data Infrastructures",
+    "crossref": {
+      "doi": "10.1162/dint_a_00084",
+      "title": "Not Ready for Convergence in Data Infrastructures",
+      "authors": [
+        "Jeffery, K.",
+        "Wittenburg, P.",
+        "Lannom, L.",
+        "Strawn, G.",
+        "Biniossek, C.",
+        "Betz, D.",
+        "Blanchi, C."
+      ],
+      "year": "2021",
+      "journal": "Data Intelligence",
+      "volume": "3",
+      "issue": "1",
+      "page": "116-135",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Jeffery, K., Wittenburg, P., Lannom, L., Strawn, G., Biniossek, C., Betz, D., & Blanchi, C. (2021). Not Ready for Convergence in Data Infrastructures. *Data Intelligence*, 3(1), 116-135. https://doi.org/10.1162/dint_a_00084"
+  },
+  {
+    "slug": "khan-et-al-2025-twineco-a-unified-framework-for-dynamic-data-driven-digital-twin",
+    "archivo": "Khan et al. - 2025 - TwinEco A unified framework for dynamic data-driven digital twins in ecology.pdf",
+    "titulo_archivo": "TwinEco A unified framework for dynamic data-driven digital twins in ecology",
+    "crossref": {
+      "doi": "10.1016/j.ecoinf.2025.103407",
+      "title": "TwinEco: A unified framework for dynamic data-driven digital twins in ecology",
+      "authors": [
+        "Khan, T.",
+        "de Koning, K.",
+        "Endresen, D.",
+        "Chala, D.",
+        "Kusch, E."
+      ],
+      "year": "2025",
+      "journal": "Ecological Informatics",
+      "volume": "91",
+      "issue": "",
+      "page": "103407",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Khan, T., de Koning, K., Endresen, D., Chala, D., & Kusch, E. (2025). TwinEco: A unified framework for dynamic data-driven digital twins in ecology. *Ecological Informatics*, 91, 103407. https://doi.org/10.1016/j.ecoinf.2025.103407"
+  },
+  {
+    "slug": "lei-et-al-2023-challenges-of-urban-digital-twins-a-systematic-review-and-a-delph",
+    "archivo": "Lei et al. - 2023 - Challenges of urban digital twins A systematic review and a Delphi expert survey.pdf",
+    "titulo_archivo": "Challenges of urban digital twins A systematic review and a Delphi expert survey",
+    "crossref": {
+      "doi": "10.1016/j.autcon.2022.104716",
+      "title": "Challenges of urban digital twins: A systematic review and a Delphi expert survey",
+      "authors": [
+        "Lei, B.",
+        "Janssen, P.",
+        "Stoter, J.",
+        "Biljecki, F."
+      ],
+      "year": "2023",
+      "journal": "Automation in Construction",
+      "volume": "147",
+      "issue": "",
+      "page": "104716",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Lei, B., Janssen, P., Stoter, J., & Biljecki, F. (2023). Challenges of urban digital twins: A systematic review and a Delphi expert survey. *Automation in Construction*, 147, 104716. https://doi.org/10.1016/j.autcon.2022.104716"
+  },
+  {
+    "slug": "lu-et-al-2026-exploring-the-concept-of-digital-twins-of-wetlands-for-supporting-",
+    "archivo": "Lu et al. - 2026 - Exploring the concept of digital twins of wetlands for supporting ecosystem monitoring and management.pdf",
+    "titulo_archivo": "Exploring the concept of digital twins of wetlands for supporting ecosystem monitoring and management",
+    "crossref": {
+      "doi": "10.1080/20964471.2025.2480446",
+      "title": "Exploring the concept of digital twins of wetlands for supporting ecosystem monitoring and management",
+      "authors": [
+        "Lu, B.",
+        "Francescutto, L.",
+        "Howie, S.",
+        "Lin, H.",
+        "Wu, Q.",
+        "Hedley, N.",
+        "Jamali, A.",
+        "McDonald, I."
+      ],
+      "year": "2025",
+      "journal": "Big Earth Data",
+      "volume": "10",
+      "issue": "1",
+      "page": "37-67",
+      "type": "journal-article",
+      "score": 1.0
+    },
+    "apa": "Lu, B., Francescutto, L., Howie, S., Lin, H., Wu, Q., Hedley, N., Jamali, A., & McDonald, I. (2025). Exploring the concept of digital twins of wetlands for supporting ecosystem monitoring and management. *Big Earth Data*, 10(1), 37-67. https://doi.org/10.1080/20964471.2025.2480446"
+  },
+  {
+    "slug": "meyer-et-al-2015-global-priorities-for-an-effective-information-basis-of-biodive",
+    "archivo": "Meyer et al. - 2015 - Global priorities for an effective information basis of biodiversity distributions.pdf",
+    "titulo_archivo": "Global priorities for an effective information basis of biodiversity distributions",
+    "crossref": {
+      "doi": "10.7287/peerj.preprints.856v1",
+      "title": "Global priorities for an effective information basis of biodiversity distributions",
+      "authors": [
+        "Meyer, C.",
+        "Kreft, H.",
+        "Guralnick, R. P.",
+        "Jetz, W."
+      ],
+      "year": "2015",
+      "journal": "",
+      "volume": "",
+      "issue": "",
+      "page": "",
+      "type": "posted-content",
+      "score": 1.15
+    },
+    "apa": "Meyer, C., Kreft, H., Guralnick, R. P., & Jetz, W. (2015). Global priorities for an effective information basis of biodiversity distributions. https://doi.org/10.7287/peerj.preprints.856v1"
+  },
+  {
+    "slug": "meyer-et-al-2016-multidimensional-biases-gaps-and-uncertainties-in-global-plant-",
+    "archivo": "Meyer et al. - 2016 - Multidimensional biases, gaps and uncertainties in global plant occurrence information.pdf",
+    "titulo_archivo": "Multidimensional biases, gaps and uncertainties in global plant occurrence information",
+    "crossref": {
+      "doi": "10.1111/ele.12624",
+      "title": "Multidimensional biases, gaps and uncertainties in global plant occurrence information",
+      "authors": [
+        "Meyer, C.",
+        "Weigelt, P.",
+        "Kreft, H."
+      ],
+      "year": "2016",
+      "journal": "Ecology Letters",
+      "volume": "19",
+      "issue": "8",
+      "page": "992-1006",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Meyer, C., Weigelt, P., & Kreft, H. (2016). Multidimensional biases, gaps and uncertainties in global plant occurrence information. *Ecology Letters*, 19(8), 992-1006. https://doi.org/10.1111/ele.12624"
+  },
+  {
+    "slug": "mollenhauer-et-al-2018-long-term-environmental-monitoring-infrastructures-in-eur",
+    "archivo": "Mollenhauer et al. - 2018 - Long-term environmental monitoring infrastructures in Europe observations, measurements, scales, an.pdf",
+    "titulo_archivo": "Long-term environmental monitoring infrastructures in Europe observations, measurements, scales, an",
+    "crossref": {
+      "doi": "10.1016/j.scitotenv.2017.12.095",
+      "title": "Long-term environmental monitoring infrastructures in Europe: observations, measurements, scales, and socio-ecological representativeness",
+      "authors": [
+        "Mollenhauer, H.",
+        "Kasner, M.",
+        "Haase, P.",
+        "Peterseil, J.",
+        "Wohner, C.",
+        "Frenzel, M.",
+        "Mirtl, M.",
+        "Schima, R.",
+        "Bumberger, J.",
+        "Zacharias, S."
+      ],
+      "year": "2018",
+      "journal": "Science of The Total Environment",
+      "volume": "624",
+      "issue": "",
+      "page": "968-978",
+      "type": "journal-article",
+      "score": 1.059
+    },
+    "apa": "Mollenhauer, H., Kasner, M., Haase, P., Peterseil, J., Wohner, C., Frenzel, M., Mirtl, M., Schima, R., Bumberger, J., & Zacharias, S. (2018). Long-term environmental monitoring infrastructures in Europe: observations, measurements, scales, and socio-ecological representativeness. *Science of The Total Environment*, 624, 968-978. https://doi.org/10.1016/j.scitotenv.2017.12.095"
+  },
+  {
+    "slug": "nativi-et-al-2021-digital-ecosystems-for-developing-digital-twins-of-the-earth-t",
+    "archivo": "Nativi et al. - 2021 - Digital Ecosystems for Developing Digital Twins of the Earth The Destination Earth Case.pdf",
+    "titulo_archivo": "Digital Ecosystems for Developing Digital Twins of the Earth The Destination Earth Case",
+    "crossref": {
+      "doi": "10.3390/rs13112119",
+      "title": "Digital Ecosystems for Developing Digital Twins of the Earth: The Destination Earth Case",
+      "authors": [
+        "Nativi, S.",
+        "Mazzetti, P.",
+        "Craglia, M."
+      ],
+      "year": "2021",
+      "journal": "Remote Sensing",
+      "volume": "13",
+      "issue": "11",
+      "page": "2119",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Nativi, S., Mazzetti, P., & Craglia, M. (2021). Digital Ecosystems for Developing Digital Twins of the Earth: The Destination Earth Case. *Remote Sensing*, 13(11), 2119. https://doi.org/10.3390/rs13112119"
+  },
+  {
+    "slug": "picone-et-al-2023-a-flexible-and-modular-architecture-for-edge-digital-twin-impl",
+    "archivo": "Picone et al. - 2023 - A Flexible and Modular Architecture for Edge Digital Twin Implementation and Evaluation.pdf",
+    "titulo_archivo": "A Flexible and Modular Architecture for Edge Digital Twin Implementation and Evaluation",
+    "crossref": {
+      "doi": "10.1145/3573206",
+      "title": "A Flexible and Modular Architecture for Edge Digital Twin: Implementation and Evaluation",
+      "authors": [
+        "Picone, M.",
+        "Mamei, M.",
+        "Zambonelli, F."
+      ],
+      "year": "2023",
+      "journal": "ACM Transactions on Internet of Things",
+      "volume": "4",
+      "issue": "1",
+      "page": "1-32",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Picone, M., Mamei, M., & Zambonelli, F. (2023). A Flexible and Modular Architecture for Edge Digital Twin: Implementation and Evaluation. *ACM Transactions on Internet of Things*, 4(1), 1-32. https://doi.org/10.1145/3573206"
+  },
+  {
+    "slug": "qamsane-et-al-2021-a-methodology-to-develop-and-implement-digital-twin-solutions",
+    "archivo": "Qamsane et al. - 2021 - A Methodology to Develop and Implement Digital Twin Solutions for Manufacturing Systems.pdf",
+    "titulo_archivo": "A Methodology to Develop and Implement Digital Twin Solutions for Manufacturing Systems",
+    "crossref": {
+      "doi": "10.1109/access.2021.3065971",
+      "title": "A Methodology to Develop and Implement Digital Twin Solutions for Manufacturing Systems",
+      "authors": [
+        "Qamsane, Y.",
+        "Moyne, J.",
+        "Toothman, M.",
+        "Kovalenko, I.",
+        "Balta, E. C.",
+        "Faris, J.",
+        "Tilbury, D. M.",
+        "Barton, K."
+      ],
+      "year": "2021",
+      "journal": "IEEE Access",
+      "volume": "9",
+      "issue": "",
+      "page": "44247-44265",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Qamsane, Y., Moyne, J., Toothman, M., Kovalenko, I., Balta, E. C., Faris, J., Tilbury, D. M., & Barton, K. (2021). A Methodology to Develop and Implement Digital Twin Solutions for Manufacturing Systems. *IEEE Access*, 9, 44247-44265. https://doi.org/10.1109/access.2021.3065971"
+  },
+  {
+    "slug": "raes-et-al-2022-duet-a-framework-for-building-interoperable-and-trusted-digital-",
+    "archivo": "Raes et al. - 2022 - DUET A Framework for Building Interoperable and Trusted Digital Twins of Smart Cities.pdf",
+    "titulo_archivo": "DUET A Framework for Building Interoperable and Trusted Digital Twins of Smart Cities",
+    "crossref": {
+      "doi": "10.1109/mic.2021.3060962",
+      "title": "DUET: A Framework for Building Interoperable and Trusted Digital Twins of Smart Cities",
+      "authors": [
+        "Raes, L.",
+        "Michiels, P.",
+        "Adolphi, T.",
+        "Tampere, C.",
+        "Dalianis, A.",
+        "McAleer, S.",
+        "Kogut, P."
+      ],
+      "year": "2022",
+      "journal": "IEEE Internet Computing",
+      "volume": "26",
+      "issue": "3",
+      "page": "43-50",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Raes, L., Michiels, P., Adolphi, T., Tampere, C., Dalianis, A., McAleer, S., & Kogut, P. (2022). DUET: A Framework for Building Interoperable and Trusted Digital Twins of Smart Cities. *IEEE Internet Computing*, 26(3), 43-50. https://doi.org/10.1109/mic.2021.3060962"
+  },
+  {
+    "slug": "rasheed-et-al-2020-digital-twin-values-challenges-and-enablers-from-a-modeling-p",
+    "archivo": "Rasheed et al. - 2020 - Digital Twin Values, Challenges and Enablers From a Modeling Perspective.pdf",
+    "titulo_archivo": "Digital Twin Values, Challenges and Enablers From a Modeling Perspective",
+    "crossref": {
+      "doi": "10.1109/access.2020.2970143",
+      "title": "Digital Twin: Values, Challenges and Enablers From a Modeling Perspective",
+      "authors": [
+        "Rasheed, A.",
+        "San, O.",
+        "Kvamsdal, T."
+      ],
+      "year": "2020",
+      "journal": "IEEE Access",
+      "volume": "8",
+      "issue": "",
+      "page": "21980-22012",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Rasheed, A., San, O., & Kvamsdal, T. (2020). Digital Twin: Values, Challenges and Enablers From a Modeling Perspective. *IEEE Access*, 8, 21980-22012. https://doi.org/10.1109/access.2020.2970143"
+  },
+  {
+    "slug": "reichstein-et-al-2019-deep-learning-and-process-understanding-for-data-driven-ea",
+    "archivo": "Reichstein et al. - 2019 - Deep learning and process understanding for data-driven Earth system science.pdf",
+    "titulo_archivo": "Deep learning and process understanding for data-driven Earth system science",
+    "crossref": {
+      "doi": "10.1038/s41586-019-0912-1",
+      "title": "Deep learning and process understanding for data-driven Earth system science",
+      "authors": [
+        "Reichstein, M.",
+        "Camps-Valls, G.",
+        "Stevens, B.",
+        "Jung, M.",
+        "Denzler, J.",
+        "Carvalhais, N.",
+        "Prabhat"
+      ],
+      "year": "2019",
+      "journal": "Nature",
+      "volume": "566",
+      "issue": "7743",
+      "page": "195-204",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Reichstein, M., Camps-Valls, G., Stevens, B., Jung, M., Denzler, J., Carvalhais, N., & Prabhat (2019). Deep learning and process understanding for data-driven Earth system science. *Nature*, 566(7743), 195-204. https://doi.org/10.1038/s41586-019-0912-1"
+  },
+  {
+    "slug": "twomey-et-al-2024-planning-hydrological-restoration-of-coastal-wetlands-key-mode",
+    "archivo": "Twomey et al. - 2024 - Planning hydrological restoration of coastal wetlands Key model considerations and solutions.pdf",
+    "titulo_archivo": "Planning hydrological restoration of coastal wetlands Key model considerations and solutions",
+    "crossref": {
+      "doi": "10.1016/j.scitotenv.2024.169881",
+      "title": "Planning hydrological restoration of coastal wetlands: Key model considerations and solutions",
+      "authors": [
+        "Twomey, A. J.",
+        "Nunez, K.",
+        "Carr, J. A.",
+        "Crooks, S.",
+        "Friess, D. A.",
+        "Glamore, W.",
+        "Orr, M.",
+        "Reef, R.",
+        "Rogers, K.",
+        "Waltham, N. J.",
+        "Lovelock, C. E."
+      ],
+      "year": "2024",
+      "journal": "Science of The Total Environment",
+      "volume": "915",
+      "issue": "",
+      "page": "169881",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Twomey, A. J., Nunez, K., Carr, J. A., Crooks, S., Friess, D. A., Glamore, W., Orr, M., Reef, R., Rogers, K., Waltham, N. J., & Lovelock, C. E. (2024). Planning hydrological restoration of coastal wetlands: Key model considerations and solutions. *Science of The Total Environment*, 915, 169881. https://doi.org/10.1016/j.scitotenv.2024.169881"
+  },
+  {
+    "slug": "tzachor-et-al-2023-digital-twins-a-stepping-stone-to-achieve-ocean-sustainabilit",
+    "archivo": "Tzachor et al. - 2023 - Digital twins a stepping stone to achieve ocean sustainability.pdf",
+    "titulo_archivo": "Digital twins a stepping stone to achieve ocean sustainability",
+    "crossref": {
+      "doi": "10.1038/s44183-023-00023-9",
+      "title": "Digital twins: a stepping stone to achieve ocean sustainability?",
+      "authors": [
+        "Tzachor, A.",
+        "Hendel, O.",
+        "Richards, C. E."
+      ],
+      "year": "2023",
+      "journal": "npj Ocean Sustainability",
+      "volume": "2",
+      "issue": "1",
+      "page": "",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Tzachor, A., Hendel, O., & Richards, C. E. (2023). Digital twins: a stepping stone to achieve ocean sustainability?. *npj Ocean Sustainability*, 2(1). https://doi.org/10.1038/s44183-023-00023-9"
+  },
+  {
+    "slug": "verdouw-et-al-2021-digital-twins-in-smart-farming",
+    "archivo": "Verdouw et al. - 2021 - Digital twins in smart farming.pdf",
+    "titulo_archivo": "Digital twins in smart farming",
+    "crossref": {
+      "doi": "10.1016/b978-0-443-28884-5.00020-8",
+      "title": "Digital Twins-enabled model for Smart Farming",
+      "authors": [
+        "Chauhan, D.",
+        "Bahad, P.",
+        "Jain, R."
+      ],
+      "year": "2025",
+      "journal": "Digital Twins for Smart Cities and Villages",
+      "volume": "",
+      "issue": "",
+      "page": "465-487",
+      "type": "book-chapter",
+      "score": 0.8
+    },
+    "apa": "Chauhan, D., Bahad, P., & Jain, R. (2025). Digital Twins-enabled model for Smart Farming. *Digital Twins for Smart Cities and Villages*, 465-487. https://doi.org/10.1016/b978-0-443-28884-5.00020-8"
+  },
+  {
+    "slug": "weil-et-al-2023-urban-digital-twin-challenges-a-systematic-review-and-perspectiv",
+    "archivo": "Weil et al. - 2023 - Urban Digital Twin Challenges A Systematic Review and Perspectives for Sustainable Smart Cities.pdf",
+    "titulo_archivo": "Urban Digital Twin Challenges A Systematic Review and Perspectives for Sustainable Smart Cities",
+    "crossref": {
+      "doi": "10.1016/j.scs.2023.104862",
+      "title": "Urban Digital Twin Challenges: A Systematic Review and Perspectives for Sustainable Smart Cities",
+      "authors": [
+        "Weil, C.",
+        "Bibri, S. E.",
+        "Longchamp, R.",
+        "Golay, F.",
+        "Alahi, A."
+      ],
+      "year": "2023",
+      "journal": "Sustainable Cities and Society",
+      "volume": "99",
+      "issue": "",
+      "page": "104862",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Weil, C., Bibri, S. E., Longchamp, R., Golay, F., & Alahi, A. (2023). Urban Digital Twin Challenges: A Systematic Review and Perspectives for Sustainable Smart Cities. *Sustainable Cities and Society*, 99, 104862. https://doi.org/10.1016/j.scs.2023.104862"
+  },
+  {
+    "slug": "wright-and-davidson-2020-how-to-tell-the-difference-between-a-model-and-a-digita",
+    "archivo": "Wright and Davidson - 2020 - How to tell the difference between a model and a digital twin.pdf",
+    "titulo_archivo": "How to tell the difference between a model and a digital twin",
+    "crossref": {
+      "doi": "10.1186/s40323-020-00147-4",
+      "title": "How to tell the difference between a model and a digital twin",
+      "authors": [
+        "Wright, L.",
+        "Davidson, S."
+      ],
+      "year": "2020",
+      "journal": "Advanced Modeling and Simulation in Engineering Sciences",
+      "volume": "7",
+      "issue": "1",
+      "page": "",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Wright, L., & Davidson, S. (2020). How to tell the difference between a model and a digital twin. *Advanced Modeling and Simulation in Engineering Sciences*, 7(1). https://doi.org/10.1186/s40323-020-00147-4"
+  },
+  {
+    "slug": "yang-et-al-2024-data-driven-physics-informed-neural-networks-a-digital-twin-pers",
+    "archivo": "Yang et al. - 2024 - Data-Driven Physics-Informed Neural Networks A Digital Twin Perspective.pdf",
+    "titulo_archivo": "Data-Driven Physics-Informed Neural Networks A Digital Twin Perspective",
+    "crossref": {
+      "doi": "10.1016/j.cma.2024.117075",
+      "title": "Data-driven physics-informed neural networks: A digital twin perspective",
+      "authors": [
+        "Yang, S.",
+        "Kim, H.",
+        "Hong, Y.",
+        "Yee, K.",
+        "Maulik, R.",
+        "Kang, N."
+      ],
+      "year": "2024",
+      "journal": "Computer Methods in Applied Mechanics and Engineering",
+      "volume": "428",
+      "issue": "",
+      "page": "117075",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Yang, S., Kim, H., Hong, Y., Yee, K., Maulik, R., & Kang, N. (2024). Data-driven physics-informed neural networks: A digital twin perspective. *Computer Methods in Applied Mechanics and Engineering*, 428, 117075. https://doi.org/10.1016/j.cma.2024.117075"
+  },
+  {
+    "slug": "zia-et-al-2025-physics-encoded-blocks-in-residual-neural-network-architectures-f",
+    "archivo": "Zia et al. - 2025 - Physics encoded blocks in residual neural network architectures for digital twin models.pdf",
+    "titulo_archivo": "Physics encoded blocks in residual neural network architectures for digital twin models",
+    "crossref": {
+      "doi": "10.1007/s10994-025-06808-y",
+      "title": "Physics encoded blocks in residual neural network architectures for digital twin models",
+      "authors": [
+        "Zia, M. S.",
+        "Houpert, C.",
+        "Anjum, A.",
+        "Liu, L.",
+        "Conway, A.",
+        "Peña-Rios, A."
+      ],
+      "year": "2025",
+      "journal": "Machine Learning",
+      "volume": "114",
+      "issue": "8",
+      "page": "",
+      "type": "journal-article",
+      "score": 1.15
+    },
+    "apa": "Zia, M. S., Houpert, C., Anjum, A., Liu, L., Conway, A., & Peña-Rios, A. (2025). Physics encoded blocks in residual neural network architectures for digital twin models. *Machine Learning*, 114(8). https://doi.org/10.1007/s10994-025-06808-y"
+  }
+]
