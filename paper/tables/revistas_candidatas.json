@@ -1,0 +1,26 @@
+{
+  "candidata_principal": {
+    "nombre": "Manglar",
+    "editorial": "Universidad Nacional de Tumbes (Perú)",
+    "url": "https://revistas.untumbes.edu.pe/index.php/manglar",
+    "APC": "NO cobra APC (gratuita) — confirmado en /about y /submissions",
+    "periodicidad": "trimestral (4 números/año)",
+    "acceso": "abierto",
+    "alcance_relevante": [
+      "Biodiversidad y servicios ecosistémicos",
+      "Uso sostenible de bosques",
+      "Ciencia y tecnología ambiental"
+    ],
+    "idioma": "ES/EN",
+    "tipos": [
+      "artículo de investigación",
+      "artículo de revisión"
+    ],
+    "requisito": "MANGLAR solo publica artículos originales y de revisión; usar referencias Scopus/WoS",
+    "por_que_encaja": "Es la revista peruana especializada en manglar, editada por la propia UNTumbes usando el SNLMT como caso; el paper cae en alcance directo y sin costo.",
+    "verificacion_pendiente": "Confirmar cuartil exacto (Q3/Q4) en Scimago — el buscador falló, verificar manualmente"
+  },
+  "alternativas": {
+    "nota": "Buscar Q3 abiertas sin APC en temática: carbono azul, teledetección de manglares, servicios ecosistémicos"
+  }
+}

@@ -1,0 +1,6 @@
+modelo,r2_test,mae_test,rmse_test,cv_r2_media,cv_r2_desv
+Random Forest,1.0,0.048,0.092,1.0,0.0
+Extra Trees,1.0,0.014,0.026,1.0,0.0
+Gradient Boosting,0.9996,0.205,0.373,0.9997,0.0001
+Regresión lineal (base),0.9629,3.024,3.798,0.9624,0.0029
+Ridge (regularizado),0.9629,3.024,3.799,0.9624,0.0029

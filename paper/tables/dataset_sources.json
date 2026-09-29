@@ -1,0 +1,48 @@
+{
+  "dataset_objetivo": "Manglar de Tumbes (SNLMT) — carbono azul",
+  "fuente_primaria_peruana": {
+    "estudio": "Dioses-Puelles, García-García & Bermejo-Requena (2023). Tipos de cobertura vegetal del ANP Santuario Nacional Los Manglares de Tumbes. Manglar, 20(2), 177-183.",
+    "doi": "10.57188/manglar.2023.020",
+    "acceso": "abierto",
+    "datos_clave": {
+      "extension_snlmt_ha": 2972,
+      "cobertura_vegetal_ha": 2022.8,
+      "bosque_manglar_ha": 1779.8,
+      "pct_manglar": 68.06,
+      "bosque_seco_ha": 243,
+      "tipos_cobertura": 7,
+      "especies_mangle": [
+        "Rhizophora mangle",
+        "Rhizophora harrisonii",
+        "Avicennia germinans",
+        "Laguncularia racemosa",
+        "Conocarpus erectus"
+      ],
+      "ndvi_rangos": {
+        "agua": "-0.471 a 0.003",
+        "salitrosas": "0.003-0.270",
+        "bosque_seco_semidenso": "0.270-0.371",
+        "bosque_seco_denso": "0.371-0.487",
+        "manglar_franja_baja": "0.487-0.728",
+        "manglar_franja_media": "0.728-0.808",
+        "manglar_franja_alta": "0.808-0.888"
+      },
+      "ivi": {
+        "Rhizophora mangle (franja alta)": 86.92,
+        "Rhizophora harrisonii": 13.03
+      }
+    }
+  },
+  "fuente_carbono": {
+    "estudio": "Estimación de biomasa y carbono azul en los manglares de Tumbes (2023), Consorcio Manglares del Noroeste del Perú",
+    "valor_clave": "~450 MgC/ha (biomasa + 1 m de profundidad de suelo) en el SNLMT",
+    "contexto": "proceso de certificación con Estándar Plan Vivo; PIN aprobado nov-2023"
+  },
+  "fuente_serie_temporal": {
+    "dataset": "Global Mangrove Watch v3.0 (1996-2020), 11 épocas, 25 m/pixel",
+    "doi": "10.5281/zenodo.6894273",
+    "licencia": "CC BY 4.0",
+    "peso": "37.8 MB (subset 1996-2008) — hay subsets por época; evita el global de 15.3 TB",
+    "nota": "descarga con registro de email en JAXA, o directo desde Zenodo"
+  }
+}

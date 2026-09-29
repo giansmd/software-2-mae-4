@@ -1,0 +1,8 @@
+clase_cobertura,ndvi_min,ndvi_max,ndvi_medio,area_ha,es_manglar
+cuerpos_agua,-0.471,0.003,-0.234,497.22,False
+salitrosas_banco_arena,0.003,0.27,0.1365,452.34,False
+bosque_seco_semidenso,0.27,0.371,0.3205,121.5,False
+bosque_seco_denso,0.371,0.487,0.429,121.5,False
+manglar_franja_baja,0.487,0.728,0.6075,598.9,True
+manglar_franja_media,0.728,0.808,0.768,1052.22,True
+manglar_franja_alta,0.808,0.888,0.848,128.68,True

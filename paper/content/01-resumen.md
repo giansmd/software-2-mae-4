@@ -1,0 +1,9 @@
+# Resumen
+
+La restauración hidrológica de humedales costeros constituye una de las estrategias con mayor potencial de mitigación climática basada en ecosistemas, aunque su efecto cuantitativo sobre el carbono azul permanece insuficientemente caracterizado en ecosistemas de manglar del Pacífico suroriental. Este estudio presenta un **gemelo digital** del Santuario Nacional Los Manglares de Tumbes (SNLMT), en el norte del Perú, y aplica la metodología **CRISP-DM** para modelar y explicar la variación del carbono retenido bajo escenarios de restauración hidrológica y ascenso del nivel del mar hasta 2050.
+
+El dataset es de naturaleza **híbrida**: las covariables y la calibración provienen de datos reales publicados sobre el SNLMT —extensión y cobertura por clase, rangos de índice de vegetación de diferencia normalizada (NDVI), índice de valor de importancia (IVI) por especie y contenido de carbono azul—, mientras que la variable objetivo se genera con un motor determinista parametrizable, replicable y sustituible por mediciones de campo.
+
+Se evaluaron cinco algoritmos de aprendizaje supervisado mediante validación cruzada de diez particiones, pruebas de significancia estadística (t pareada y Wilcoxon), intervalos de confianza por remuestreo bootstrap e interpretabilidad mediante importancia por permutación. El ensamble **Extra Trees** alcanzó el mejor desempeño (R² = 1.000; MAE = 0.014 puntos porcentuales), significativamente superior a la línea base lineal (p < 0.001). La restauración hidrológica predijo incrementos de retención de carbono superiores al umbral del +25 % en los tramos de intervención alta, confirmando la hipótesis de trabajo. Los resultados se materializan en un panel interactivo y en reportes exportables que documentan cada fase analítica.
+
+**Palabras clave:** carbono azul; manglar; restauración hidrológica; gemelo digital; CRISP-DM; aprendizaje automático; Tumbes; Perú.

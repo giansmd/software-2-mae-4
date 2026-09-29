@@ -29,3 +29,8 @@ backend/app/ml/artifacts/
 *.log
 
 # pnpm-lock.yaml es obligatorio y está versionado (build reproducible); no ignorarlo.
+
+# Paper: artefactos generados
+paper/GD.docx
+paper/__pycache__/
+**/__pycache__/

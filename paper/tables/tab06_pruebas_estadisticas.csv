@@ -1,0 +1,5 @@
+comparacion,t_pareada,p_t,wilcoxon_stat,p_wilcoxon,significativo_0.05
+Extra Trees vs Regresión lineal (base),25.9138,0.0,0.0,0.0625,True
+Extra Trees vs Ridge (regularizado),25.8727,0.0,0.0,0.0625,True
+Extra Trees vs Random Forest,5.2255,0.0064,0.0,0.0625,True
+Extra Trees vs Gradient Boosting,7.4934,0.0017,0.0,0.0625,True

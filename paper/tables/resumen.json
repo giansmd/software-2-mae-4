@@ -1,0 +1,176 @@
+{
+  "dataset": {
+    "n_registros": 2000,
+    "n_atributos": 6,
+    "objetivo": "horizon_variation_pct",
+    "card": {
+      "nombre": "Manglar SNLMT — Tumbes (híbrido)",
+      "unidad_espacial": "Santuario Nacional Los Manglares de Tumbes, Perú",
+      "extension_total_ha": 2972.0,
+      "manglar_ha": 1779.8,
+      "carbono_azul_MgC_ha": 450.0,
+      "n_clases_cobertura": 7,
+      "n_especies": 5,
+      "porcion_real": "covariables y calibración (literatura SNLMT)",
+      "porcion_simulada": "variable objetivo (motor determinista, proyección 2050)",
+      "licencia_gmw": "CC BY 4.0"
+    }
+  },
+  "mejor_modelo": "Extra Trees",
+  "metricas_mejor_modelo": {
+    "r2": 1.0,
+    "mae": 0.0141,
+    "rmse": 0.0263
+  },
+  "cv_r2_media": 1.0,
+  "cv_r2_desv": 0.0,
+  "comparacion": [
+    {
+      "modelo": "Random Forest",
+      "r2_test": 1.0,
+      "mae_test": 0.048,
+      "rmse_test": 0.092,
+      "cv_r2_media": 1.0,
+      "cv_r2_desv": 0.0
+    },
+    {
+      "modelo": "Extra Trees",
+      "r2_test": 1.0,
+      "mae_test": 0.014,
+      "rmse_test": 0.026,
+      "cv_r2_media": 1.0,
+      "cv_r2_desv": 0.0
+    },
+    {
+      "modelo": "Gradient Boosting",
+      "r2_test": 0.9996,
+      "mae_test": 0.205,
+      "rmse_test": 0.373,
+      "cv_r2_media": 0.9997,
+      "cv_r2_desv": 0.0001
+    },
+    {
+      "modelo": "Regresión lineal (base)",
+      "r2_test": 0.9629,
+      "mae_test": 3.024,
+      "rmse_test": 3.798,
+      "cv_r2_media": 0.9624,
+      "cv_r2_desv": 0.0029
+    },
+    {
+      "modelo": "Ridge (regularizado)",
+      "r2_test": 0.9629,
+      "mae_test": 3.024,
+      "rmse_test": 3.799,
+      "cv_r2_media": 0.9624,
+      "cv_r2_desv": 0.0029
+    }
+  ],
+  "pruebas_estadisticas": [
+    {
+      "comparacion": "Extra Trees vs Regresión lineal (base)",
+      "t_pareada": 25.9138,
+      "p_t": 0.0,
+      "wilcoxon_stat": 0.0,
+      "p_wilcoxon": 0.0625,
+      "significativo_0.05": true
+    },
+    {
+      "comparacion": "Extra Trees vs Ridge (regularizado)",
+      "t_pareada": 25.8727,
+      "p_t": 0.0,
+      "wilcoxon_stat": 0.0,
+      "p_wilcoxon": 0.0625,
+      "significativo_0.05": true
+    },
+    {
+      "comparacion": "Extra Trees vs Random Forest",
+      "t_pareada": 5.2255,
+      "p_t": 0.0064,
+      "wilcoxon_stat": 0.0,
+      "p_wilcoxon": 0.0625,
+      "significativo_0.05": true
+    },
+    {
+      "comparacion": "Extra Trees vs Gradient Boosting",
+      "t_pareada": 7.4934,
+      "p_t": 0.0017,
+      "wilcoxon_stat": 0.0,
+      "p_wilcoxon": 0.0625,
+      "significativo_0.05": true
+    }
+  ],
+  "bootstrap_mae": {
+    "mae_media": 0.014,
+    "ic95_lo": 0.012,
+    "ic95_hi": 0.0162,
+    "n_boot": 500
+  },
+  "normalidad_residuales": {
+    "stat": 0.767678,
+    "p": 0.0
+  },
+  "importancia": [
+    {
+      "variable": "sea_level_rise_code",
+      "importancia_media": 1.0707,
+      "desv_std": 0.05267
+    },
+    {
+      "variable": "restoration_level",
+      "importancia_media": 0.8392,
+      "desv_std": 0.04551
+    },
+    {
+      "variable": "horizon_year",
+      "importancia_media": 0.0,
+      "desv_std": 0.0
+    },
+    {
+      "variable": "baseline_area_ha",
+      "importancia_media": 0.0,
+      "desv_std": 0.0
+    },
+    {
+      "variable": "baseline_carbon_density",
+      "importancia_media": 0.0,
+      "desv_std": 0.0
+    },
+    {
+      "variable": "ndvi",
+      "importancia_media": -0.0,
+      "desv_std": 0.0
+    }
+  ],
+  "evidencia_hipotesis": [
+    {
+      "tramo_restauracion": "0-25 %",
+      "n": 760,
+      "variacion_media": -17.637,
+      "variacion_mediana": -17.05,
+      "pct_cumple_hipotesis": 0.0
+    },
+    {
+      "tramo_restauracion": "25-50 %",
+      "n": 262,
+      "variacion_media": -1.916,
+      "variacion_mediana": -0.33,
+      "pct_cumple_hipotesis": 0.0
+    },
+    {
+      "tramo_restauracion": "50-75 %",
+      "n": 252,
+      "variacion_media": 5.785,
+      "variacion_mediana": 7.52,
+      "pct_cumple_hipotesis": 17.063
+    },
+    {
+      "tramo_restauracion": "75-100 %",
+      "n": 726,
+      "variacion_media": 11.238,
+      "variacion_mediana": 12.385,
+      "pct_cumple_hipotesis": 34.848
+    }
+  ],
+  "hipotesis_cumplida": false
+}
