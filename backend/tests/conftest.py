@@ -11,6 +11,8 @@ os.environ["DATABASE_URL"] = "sqlite:///./test_mae4.db"
 os.environ["JWT_SECRET"] = "test-secret-key-0123456789abcdef0123456789abcdef"
 os.environ.setdefault("SEED_ON_STARTUP", "true")
 
+import gc
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -33,3 +35,22 @@ def client():
     engine.dispose()
     if os.path.exists(TEST_DB_PATH):
         os.remove(TEST_DB_PATH)
+
+
+@pytest.fixture(autouse=True)
+def _release_ml_singleton():
+    """Drop the cached surrogate between tests to bound suite memory.
+
+    ``app.ml.registry`` memoises the trained model in a module-level singleton.
+    Each module that trains a fresh surrogate (``train_model``) plus the cached
+    one keeps an ``ExtraTreesRegressor`` with 250 unbounded-depth trees alive.
+    Across the suite that growth is monotonic and the process is OOM-killed
+    under a 4 GB cgroup before the run completes. Releasing the cache and
+    forcing a collection at each teardown keeps peak RSS bounded without
+    changing the model configuration (accuracy thresholds still apply).
+    """
+    yield
+    from app.ml import registry
+
+    registry._model = None
+    gc.collect()

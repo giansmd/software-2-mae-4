@@ -14,6 +14,7 @@ the API can expose them and the UI can show how the model behaves.
 from __future__ import annotations
 
 import datetime
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional, Union
@@ -54,6 +55,24 @@ TEST_SIZE = 0.2
 CV_FOLDS = 3
 CV_MAX_ROWS = 8000
 CV_ESTIMATORS = 100
+
+
+def _n_jobs() -> int:
+    """Bounded worker count for the tree fits.
+
+    ``n_jobs=-1`` spawns one joblib worker per visible core, and ``joblib``'s
+    loky pool is not shared between the fits inside ``train_model`` (regressor,
+    classifier, cross-validation). On a container with a modest memory cgroup
+    each worker holds its own copy of the training matrix, so the peak grows
+    with the core count and the process is OOM-killed before the suite ends.
+    ``SUITE_N_JOBS`` keeps that ceiling explicit and tunable per environment;
+    the default stays low because tree fitting here is seconds, not minutes,
+    and the memory headroom matters more than the extra cores.
+    """
+    raw = os.environ.get("SUITE_N_JOBS", "")
+    if raw.isdigit() and int(raw) > 0:
+        return int(raw)
+    return max(1, min(2, os.cpu_count() or 1))
 
 
 @dataclass
@@ -100,7 +119,7 @@ def train_model(
         max_depth=MAX_DEPTH,
         min_samples_leaf=MIN_SAMPLES_LEAF,
         random_state=RANDOM_STATE,
-        n_jobs=-1,
+        n_jobs=_n_jobs(),
     )
     series_regressor.fit(X_train, Y_train)
     Y_pred = series_regressor.predict(X_test)
@@ -110,7 +129,7 @@ def train_model(
         max_depth=MAX_DEPTH,
         min_samples_leaf=MIN_SAMPLES_LEAF,
         random_state=RANDOM_STATE,
-        n_jobs=-1,
+        n_jobs=_n_jobs(),
         class_weight="balanced",
     )
     (
@@ -141,13 +160,13 @@ def train_model(
             max_depth=MAX_DEPTH,
             min_samples_leaf=MIN_SAMPLES_LEAF,
             random_state=RANDOM_STATE,
-            n_jobs=-1,
+            n_jobs=_n_jobs(),
         ),
         cv_X,
         cv_Y,
         cv=CV_FOLDS,
         scoring="r2",
-        n_jobs=-1,
+        n_jobs=_n_jobs(),
     )
 
     per_target = {
