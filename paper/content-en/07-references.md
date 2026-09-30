@@ -1,0 +1,81 @@
+# References
+
+[1] Rasheed et al. (2020). Digital Twin values, challenges and enablers From a modeling perspective. *IEEE Access*, 8, 21980-22012. https://doi.org/10.1109/ACCESS.2020.2970143
+
+[2] Verdouw et al. (2021). Digital twins in smart farming. *Agricultural Systems*, 189, 103046. https://doi.org/10.1016/j.agsy.2020.103046
+
+[3] Wright & Davidson (2020). How to tell the difference between a model and a digital twin. *Advanced Modeling and Simulation in Engineering Sciences*, 7(1). https://doi.org/10.1186/s40323-020-00147-4
+
+[4] Blair, G. S. (2021). Digital twins of the natural environment. *Nature Climate Change*, 11(11), 828-829. https://doi.org/10.1038/s41558-021-00986-y
+
+[5] de Koning, K., Broekhuijsen, J., Kühn, I., Ovaskainen, O., Taubert, F., Endresen, D., Schigel, D., & Grimm, V. (2023). Digital twins: dynamic model-data fusion for ecology. *Trends in Ecology & Evolution*, 38(10), 916-926. https://doi.org/10.1016/j.tree.2023.04.010
+
+[6] Jiang, P., Meinert, N., Jordão, H., Weisser, C., Holgate, S., Lavin, A., Lütjens, B., Newman, D., Wainwright, H., Walker, C., & Barnard, P. (2021). Digital Twin Earth — coasts: developing a fast and physics-informed surrogate model for coastal floods via neural operators. *arXiv preprint*. https://arxiv.org/abs/2110.07100
+
+[7] Tzachor et al. (2023). Digital twins a stepping stone to achieve ocean sustainability. *npj Ocean Sustainability*, 2(1). https://doi.org/10.1038/s44183-023-00023-9
+
+[8] Aguzzi et al. (2025). A digital-twin strategy using robots for marine ecosystem monitoring. *Ecological Informatics*, 91, 103409. https://doi.org/10.1016/j.ecoinf.2025.103409
+
+[9] Lu et al. (2026). Exploring the concept of digital twins of wetlands for supporting ecosystem monitoring and management. *Big Earth Data*, 10(1), 37-67. https://doi.org/10.1080/20964471.2025.2480446
+
+[10] Twomey et al. (2024). Planning hydrological restoration of coastal wetlands Key model considerations and solutions. *Science of The Total Environment*, 915, 169881. https://doi.org/10.1016/j.scitotenv.2024.169881
+
+[11] Guo et al. (2017). A review of wetland remote sensing. *Sensors*, 17(4), 777. https://doi.org/10.3390/s17040777
+
+[12] Jafarzadeh et al. (2022). Remote sensing and machine learning tools to support wetland monitoring A meta-Analysis of three De. *Remote Sensing*, 14(23), 6104. https://doi.org/10.3390/rs14236104
+
+[13] Meyer et al. (2016). Multidimensional biases, gaps and uncertainties in global plant occurrence information. *Ecology Letters*, 19(8), 992-1006. https://doi.org/10.1111/ele.12624
+
+[14] Mollenhauer et al. (2018). Long-term environmental monitoring infrastructures in europe observations, measurements, scales, an. *Science of The Total Environment*, 624, 968-978. https://doi.org/10.1016/j.scitotenv.2017.12.095
+
+[15] Buffington et al. (2021). Incorporation of uncertainty to improve projections of tidal wetland elevation and carbon accumulati. *PLOS ONE*, 16(10), e0256707. https://doi.org/10.1371/journal.pone.0256707
+
+[16] Qamsane et al. (2021). A methodology to develop and implement digital Twin solutions for manufacturing systems. *IEEE Access*, 9, 44247-44265. https://doi.org/10.1109/ACCESS.2021.3065971
+
+[17] Durden (2025). Environmental management using a digital twin. *Environmental Science & Policy*, 164, 104018. https://doi.org/10.1016/j.envsci.2025.104018
+
+[18] Durão, L. F. C. S., Haag, S., Anderl, R., Schützer, K., & Zancul, E. (2018). Digital twin requirements in the context of Industry 4.0. *IFIP Advances in Information and Communication Technology*, 540, 204-214. https://doi.org/10.1007/978-3-030-01614-2_19
+
+[19] Nativi et al. (2021). Digital ecosystems for developing digital twins of the Earth The Destination Earth Case. *Remote Sensing*, 13(11), 2119. https://doi.org/10.3390/rs13112119
+
+[20] Picone et al. (2023). A flexible and modular architecture for Edge digital Twin implementation and evaluation. *ACM Transactions on Internet of Things*, 4(1), 1-32. https://doi.org/10.1145/3573206
+
+[21] Raes et al. (2022). DUET A framework for building interoperable and trusted digital twins of smart cities. *IEEE Internet Computing*, 26(3), 43-50. https://doi.org/10.1109/MIC.2021.3060962
+
+[22] Chen, R., Yi, C., Zhou, F., Kang, J., Wu, Y., & Niyato, D. (2025). Federated digital twin construction via distributed sensing: A game-theoretic online optimization with overlapping coalitions. *arXiv preprint*. https://arxiv.org/abs/2502.16313
+
+[23] Khan et al. (2025). TwinEco A unified framework for dynamic data-driven digital twins in ecology. *Ecological Informatics*, 91, 103407. https://doi.org/10.1016/j.ecoinf.2025.103407
+
+[24] Yang, S., Kim, H., Hong, Y., Yee, K., & Kang, N. (2024). Data-driven physics-informed neural networks: A digital twin perspective. *arXiv preprint*. https://arxiv.org/abs/2311.10387
+
+[25] Zia et al. (2025). Physics encoded blocks in residual neural network architectures for digital twin models. *Machine Learning*, 114(8). https://doi.org/10.1007/s10994-025-06808-y
+
+[26] Dilip (2024). Thermal digital twins of asphalt pavements using physics-informed neural networks. *World Congress on Civil, Structural, and Environmental Engineering*. https://doi.org/10.11159/icgre24.157
+
+[27] Reichstein et al. (2019). Deep learning and process understanding for data-driven Earth system science. *Nature*, 566(7743), 195-204. https://doi.org/10.1038/s41586-019-0912-1
+
+[28] Meyer et al. (2015). Global priorities for an effective information basis of biodiversity distributions. *Nature Communications*, 6(1). https://doi.org/10.1038/ncomms9221
+
+[29] Jeffery, K., Wittenburg, P., Lannom, L., Strawn, G., Biniossek, C., Betz, D., & Blanchi, C. (2021). Not ready for convergence in data infrastructures. *Data Intelligence*, 3(1), 116-135. https://doi.org/10.1162/dint_a_00084
+
+[30] Cabrera et al. (2021). The potential of a smartphone as an urban weather station—An exploratory analysis. *Frontiers in Environmental Science*, 9. https://doi.org/10.3389/fenvs.2021.673937
+
+[31] Brown & Williams (2019). The potential for citizen science to produce reliable and useful information in ecology. *Conservation Biology*, 33(3), 561-569. https://doi.org/10.1111/cobi.13223
+
+[32] Haraguchi et al. (2024). Assessing governance implications of city digital twin technology A maturity model approach. *Technological Forecasting and Social Change*, 204, 123409. https://doi.org/10.1016/j.techfore.2024.123409
+
+[33] Hananto & Veza (2025). Governance framework for intelligent digital Twin systems in battery storage aligning standards, Ma. *Computers*, 14(9), 365. https://doi.org/10.3390/computers14090365
+
+[34] DeVries, C. (2024). Governance framework for citizen digital twins in smart cities. *Intelligent & Human Futures*, 1(1), 1-14. Wisdom Academic Press.
+
+[35] Garske et al. (2024). Digital twins in sustainable transition exploring the role of EU data governance. *Frontiers in Research Metrics and Analytics*, 9. https://doi.org/10.3389/frma.2024.1303024
+
+[36] Henriksen et al. (2023). A New digital Twin for climate change adaptation, water management, and disaster Risk reduction (HIP. *Water*, 15(1), 25. https://doi.org/10.3390/w15010025
+
+[37] Rodríguez-Alonso, C., Pena-Regueiro, I., & García, Ó. (2024). Digital twin platform for water treatment plants using microservices architecture. *Sensors*, 24(5), 1568. https://doi.org/10.3390/s24051568
+
+[38] Alenezi & Alabaiadly (2026). Digital twins and Edge AI for smallOff-Grid water systems A review. *IEEE Access*, 14, 39960-39978. https://doi.org/10.1109/ACCESS.2026.3669429
+
+[39] Lei et al. (2023). Challenges of urban digital twins A systematic review and a delphi expert survey. *Automation in Construction*, 147, 104716. https://doi.org/10.1016/j.autcon.2022.104716
+
+[40] Weil et al. (2023). Urban digital Twin challenges A systematic review and perspectives for sustainable smart cities. *Sustainable Cities and Society*, 99, 104862. https://doi.org/10.1016/j.scs.2023.104862
