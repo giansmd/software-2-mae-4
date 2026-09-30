@@ -1,0 +1,16 @@
+# Title page (GaEE format)
+# Fields rendered verbatim by build_docx_gaee.py --titlepage
+
+title: A Digital Twin for Blue Carbon Assessment under Hydrological Restoration Scenarios in a Peruvian Mangrove Sanctuary
+
+author1: Gian Franco Miguel Gonzalo Samana Ramirez
+affiliation1: Universidad Nacional de Trujillo, Trujillo, Peru
+email1: gsamana@unitru.edu.pe
+orcid1: https://orcid.org/0009-0007-7475-2474
+
+author2: Eduardo Joel Romero Vasquez
+affiliation2: Universidad Nacional de Trujillo, Trujillo, Peru
+email2: eromerov@unitru.edu.pe
+orcid2: https://orcid.org/0009-0006-8473-8951
+
+credit: CRediT authorship contribution statement — Gian Franco Miguel Gonzalo Samana Ramirez: Conceptualization, Data curation, Formal analysis, Investigation, Methodology, Project administration, Resources, Software, Supervision, Validation, Visualization, Writing – original draft, Writing – review & editing. Eduardo Joel Romero Vasquez: Conceptualization, Data curation, Formal analysis, Investigation, Methodology, Project administration, Resources, Software, Supervision, Validation, Visualization, Writing – original draft, Writing – review & editing.
