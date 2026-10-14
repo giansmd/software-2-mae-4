@@ -20,6 +20,9 @@ frontend/out/
 # Artefactos de modelos ML (se regeneran entrenando desde el motor)
 backend/app/ml/artifacts/
 
+# Override local de compose (no versionado; no debe existir en el repo de Dokploy)
+docker-compose.override.yml
+
 # Entornos y secretos (NO commitear)
 .env
 .env.local
