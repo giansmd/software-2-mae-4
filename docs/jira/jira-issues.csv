@@ -1,4 +1,4 @@
-Issue Type,Issue id,Parent,Summary,Description,Priority,Story points,Labels,Epic Name
+Issue Type,Issue ID,Parent ID,Summary,Description,Priority,Story points,Labels,Epic Name
 Epic,E1,,,Auth: usuarios, roles y acceso,,,
 Story,E1-1,E1,"Como INVESTIGADOR quiero registrarme y autenticarme con JWT para usar la app sin compartir sesión","Criterio de aceptación: * Registro crea usuario con email único y contraseña hasheada. * Login devuelve token JWT válido. * Rate limiting por IP en login (60/15min) y registro (20/15min) según SEC-004.",High,3,auth;backend
 Story,E1-2,E1,"Como ADMIN quiero roles VISITANTE/INVESTIGADOR/ADMIN para controlar acciones por usuario","Criterio: * Rutas de escritura requieren rol adecuado. * VISITANTE es solo lectura. * Acceso denegado responde 403.",High,3,auth;backend;roles

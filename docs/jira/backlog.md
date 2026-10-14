@@ -21,7 +21,8 @@ Fuente de verdad: `README.md` y la estructura actual del repo. El CSV
 ## Importar a Jira (plan gratuito)
 
 1. Jira → Proyecto creado → **Importar issues desde CSV** (Settings > System > External import, o el botón "Import issues" del backlog).
-2. Subir `docs/jira/jira-issues.csv`, mapear: `Summary`→Summary, `Issue Type`, `Description`, `Parent`, `Priority`, `Story points`, `Labels`, `Epic Name`.
-3. El campo `Parent` (referenciando `Issue id`) crea la jerarquía Epic→Story→Subtask en Jira Cloud moderno (team-managed y company-managed).
+2. Subir `docs/jira/jira-issues.csv`, mapear: `Summary`→Summary, `Issue Type`, `Description`, `Parent ID`, `Issue ID`, `Priority`, `Story points`, `Labels`, `Epic Name`.
+3. El campo `Parent ID` (referenciando `Issue ID` según el formato de importación
+CSV de Atlassian) crea la jerarquía Epic→Story→Task.
 
 Nota límites free: sin tope de issues; 10 usuarios y 2 GB de adjuntos. Este CSV no usa adjuntos.

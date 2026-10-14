@@ -361,10 +361,10 @@ base real ni dependen de su esquema.
 1. En el proyecto de Jira: **Backlog → Import issues from CSV** (o Settings →
    System → External System Import → CSV).
 2. Selecciona el archivo `docs/jira/jira-issues.csv` y mapea los campos:
-   `Issue Type`, `Summary`, `Description`, `Parent`, `Priority`,
+   `Issue Type`, `Summary`, `Description`, `Issue ID`, `Parent ID`, `Priority`,
    `Story points`, `Labels`, `Epic Name`.
-3. El campo `Parent` (que referencia la columna `Issue id`) crea la jerarquía
-   Épica → Historia → Tarea en Jira Cloud.
+3. El campo `Parent ID` (referenciando la columna `Issue ID`) crea la jerarquía
+   Épica → Historia → Tarea.
 
 El plan gratuito no limita la cantidad de issues (10 usuarios, 2 GB de
 adjuntos); este CSV no usa adjuntos.
