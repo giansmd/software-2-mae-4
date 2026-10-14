@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Entrypoint del backend: espera a PostgreSQL, siembra la BD y arranca Uvicorn con hot-reload.
+# Entrypoint del backend: espera a PostgreSQL, siembra la BD y arranca Uvicorn.
 set -e
 
 # Log sin credenciales: solo host:puerto/db (se omite el userinfo de DATABASE_URL).
@@ -25,5 +25,12 @@ else
     echo "SEED_ON_STARTUP no activo: seed omitido (credenciales demo no se siembran)."
 fi
 
-echo "Arrancando Uvicorn en 0.0.0.0:8000 (hot-reload)"
-exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+# Modo producción por defecto (sin hot-reload). Para desarrollo local con
+# recarga automática: UVICORN_RELOAD=true (docker compose o .env).
+if [ "${UVICORN_RELOAD:-false}" = "true" ]; then
+    echo "Arrancando Uvicorn en 0.0.0.0:8000 (hot-reload)"
+    exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+else
+    echo "Arrancando Uvicorn en 0.0.0.0:8000"
+    exec uvicorn app.main:app --host 0.0.0.0 --port 8000
+fi

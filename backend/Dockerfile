@@ -12,4 +12,5 @@ COPY . .
 RUN chmod +x docker-entrypoint.sh
 
 EXPOSE 8000
-ENTRYPOINT ["./docker-entrypoint.sh"]
+# bash explícito: funciona igual si el archivo llega sin bit de ejecución
+ENTRYPOINT ["/bin/bash", "/app/docker-entrypoint.sh"]
