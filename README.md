@@ -347,5 +347,24 @@ base real ni dependen de su esquema.
 - Sin LLM/Gemini ni APIs externas: todo el cálculo y el entrenamiento del modelo
   de IA son locales (scikit-learn). El *surrogate* se entrena en el primer uso
   (unos segundos); su artefacto no se versiona.
-- El frontend consume la API vía `NEXT_PUBLIC_API_URL` (por defecto `http://localhost:8000/api`).
 - Las imágenes Docker son solo para desarrollo local (hot-reload en backend y frontend).
+
+## Gestión del proyecto (Jira)
+
+- `docs/jira/jira-issues.csv`: backlog completo para importar a Jira Cloud
+  (10 épicas, 28 historias de usuario y 3 tareas, con prioridad, story points,
+  labels y jerarquía via `Parent`).
+- `docs/jira/backlog.md`: referencia legible de las épicas y los pasos de importación.
+
+### Importar a Jira (plan gratuito)
+
+1. En el proyecto de Jira: **Backlog → Import issues from CSV** (o Settings →
+   System → External System Import → CSV).
+2. Selecciona el archivo `docs/jira/jira-issues.csv` y mapea los campos:
+   `Issue Type`, `Summary`, `Description`, `Parent`, `Priority`,
+   `Story points`, `Labels`, `Epic Name`.
+3. El campo `Parent` (que referencia la columna `Issue id`) crea la jerarquía
+   Épica → Historia → Tarea en Jira Cloud.
+
+El plan gratuito no limita la cantidad de issues (10 usuarios, 2 GB de
+adjuntos); este CSV no usa adjuntos.
