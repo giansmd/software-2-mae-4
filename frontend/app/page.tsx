@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   LineChart,
@@ -27,6 +27,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { ChartExportButtons } from "@/components/ui/chartExportButtons";
 
 const HYPOTHESIS_PCT = 25;
 const METHODS: PredictionMethod[] = ["engine", "ml", "ensemble"];
@@ -94,6 +95,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [simulating, setSimulating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     getScenarios()
@@ -303,23 +305,42 @@ export default function DashboardPage() {
       {chartData.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>{t("dash.projectedChart")}</CardTitle>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <CardTitle>{t("dash.projectedChart")}</CardTitle>
+                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                  Proyección comparativa de retención de carbono para los escenarios seleccionados.
+                </p>
+              </div>
+              <ChartExportButtons
+                containerRef={chartRef}
+                filename={`comparativa_carbono_${method}`}
+                source="Gemelo Digital · simulación"
+                method={t(`method.${method}`)}
+                params={`Escenarios: ${selectedScenarios.map((s) => s.name).join(", ")}`}
+              />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="h-[360px] w-full">
+            <div ref={chartRef} className="h-[360px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData} margin={{ right: 24 }}>
+                <LineChart data={chartData} margin={{ right: 24, bottom: 24 }}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                  <XAxis dataKey="year" />
+                  <XAxis
+                    dataKey="year"
+                    label={{ value: "Año", position: "insideBottom", offset: -18, fontSize: 12 }}
+                  />
                   <YAxis
                     label={{
                       value: t("dash.yLabel"),
                       angle: -90,
                       position: "insideLeft",
+                      offset: 10,
+                      fontSize: 12,
                     }}
                   />
                   <Tooltip />
-                  <Legend />
+                  <Legend verticalAlign="top" />
                   {selectedScenarios.map((s, i) => (
                     <Line
                       key={s.id}
@@ -334,6 +355,9 @@ export default function DashboardPage() {
                 </LineChart>
               </ResponsiveContainer>
             </div>
+            <p className="mt-2 border-t border-gray-200 pt-2 text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
+              Fuente: Gemelo Digital de Humedales · Método: {t(`method.${method}`)} · Datos: escenarios seleccionados
+            </p>
           </CardContent>
         </Card>
       )}

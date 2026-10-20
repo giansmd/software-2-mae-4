@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, Pencil, Loader2 } from "lucide-react";
 import {
@@ -21,6 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { TableExportButtons } from "@/components/ui/tableExportButtons";
 
 const EMPTY = {
   date: new Date().toISOString().slice(0, 10),
@@ -44,6 +45,7 @@ export default function MeasurementsPage() {
   const [editing, setEditing] = useState<Measurement | null>(null);
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({ ...EMPTY });
+  const tableRef = useRef<HTMLTableElement>(null);
 
   function requireAuth() {
     if (!isAuthed) {
@@ -290,8 +292,19 @@ export default function MeasurementsPage() {
       )}
 
       <Card>
+        <CardHeader>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <CardTitle>Registro de mediciones de campo</CardTitle>
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                Datos observados de cobertura vegetal, nivel freático, carbono orgánico del suelo y biomasa.
+              </p>
+            </div>
+            <TableExportButtons tableRef={tableRef} filename="mediciones_humedal" />
+          </div>
+        </CardHeader>
         <CardContent className="overflow-x-auto p-0">
-          <table className="w-full text-sm">
+          <table ref={tableRef} className="w-full text-sm">
             <thead className="bg-gray-100 text-left text-gray-600 dark:bg-gray-800 dark:text-gray-300">
               <tr>
                 <th className="px-4 py-2">Fecha</th>
@@ -348,6 +361,9 @@ export default function MeasurementsPage() {
               )}
             </tbody>
           </table>
+          <p className="px-4 pt-2 text-xs text-gray-500 dark:text-gray-400">
+            Fuente: Gemelo Digital de Humedales · Mediciones de campo · N = {items.length} registros
+          </p>
         </CardContent>
       </Card>
     </main>

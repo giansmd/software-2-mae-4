@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -32,6 +32,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CheckCircle2, XCircle, Loader2, ArrowLeft } from "lucide-react";
+import { ChartExportButtons } from "@/components/ui/chartExportButtons";
 
 function Kpi({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
@@ -65,6 +66,8 @@ export default function ScenarioPage() {
   const [loading, setLoading] = useState(true);
   const [simulating, setSimulating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const chart1Ref = useRef<HTMLDivElement>(null);
+  const chart2Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -268,17 +271,36 @@ export default function ScenarioPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>{t("scenarios.chartSerie")}</CardTitle>
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <CardTitle>{t("scenarios.chartSerie")}</CardTitle>
+                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        Proyección anual de carbono retenido y superficie efectiva bajo el escenario configurado.
+                      </p>
+                    </div>
+                    <ChartExportButtons
+                      containerRef={chart1Ref}
+                      filename={`serie_carbono_${scenario?.id ?? "scenario"}`}
+                      source="Gemelo Digital · simulación"
+                      method={t(`method.${result.method}`)}
+                      params={`Restauración: ${restoration_level}% · SLR: ${sea_level_rise} · Horizonte: ${horizon_year}`}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-[340px] w-full">
+                  <div ref={chart1Ref} className="h-[340px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={result.series}>
+                      <LineChart data={result.series} margin={{ left: 8, right: 16, top: 8, bottom: 24 }}>
                         <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                        <XAxis dataKey="year" />
-                        <YAxis />
+                        <XAxis
+                          dataKey="year"
+                          label={{ value: "Año", position: "insideBottom", offset: -18, fontSize: 12 }}
+                        />
+                        <YAxis
+                          label={{ value: "Carbono (t) / Superficie (ha)", angle: -90, position: "insideLeft", offset: 10, fontSize: 11 }}
+                        />
                         <Tooltip />
-                        <Legend />
+                        <Legend verticalAlign="top" />
                         <Line
                           type="monotone"
                           dataKey="retained_carbon"
@@ -298,21 +320,44 @@ export default function ScenarioPage() {
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
+                  <p className="mt-2 border-t border-gray-200 pt-2 text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                    Fuente: Gemelo Digital de Humedales · Método: {t(`method.${result.method}`)} · Escenario: {scenario?.name}
+                  </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle>{t("scenarios.chartCobertura")}</CardTitle>
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <CardTitle>{t("scenarios.chartCobertura")}</CardTitle>
+                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        Evolución anual de la cobertura vegetal efectiva del humedal.
+                      </p>
+                    </div>
+                    <ChartExportButtons
+                      containerRef={chart2Ref}
+                      filename={`cobertura_${scenario?.id ?? "scenario"}`}
+                      source="Gemelo Digital · simulación"
+                      method={t(`method.${result.method}`)}
+                      params={`Restauración: ${restoration_level}% · SLR: ${sea_level_rise} · Horizonte: ${horizon_year}`}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-[260px] w-full">
+                  <div ref={chart2Ref} className="h-[260px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={result.series}>
+                      <BarChart data={result.series} margin={{ left: 8, right: 16, top: 8, bottom: 24 }}>
                         <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                        <XAxis dataKey="year" />
-                        <YAxis />
+                        <XAxis
+                          dataKey="year"
+                          label={{ value: "Año", position: "insideBottom", offset: -18, fontSize: 12 }}
+                        />
+                        <YAxis
+                          label={{ value: "Cobertura (%)", angle: -90, position: "insideLeft", offset: 10, fontSize: 12 }}
+                        />
                         <Tooltip />
+                        <Legend verticalAlign="top" />
                         <Bar
                           dataKey="vegetation_cover"
                           name="Cobertura (%)"
@@ -321,6 +366,9 @@ export default function ScenarioPage() {
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
+                  <p className="mt-2 border-t border-gray-200 pt-2 text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                    Fuente: Gemelo Digital de Humedales · Método: {t(`method.${result.method}`)} · Escenario: {scenario?.name}
+                  </p>
                 </CardContent>
               </Card>
             </>

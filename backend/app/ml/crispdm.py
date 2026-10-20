@@ -455,10 +455,18 @@ def hypothesis_evidence(df: pd.DataFrame) -> pd.DataFrame:
 
 def _fig_to_png(fig) -> bytes:
     buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=130, bbox_inches="tight")
+    fig.savefig(buf, format="png", dpi=600, bbox_inches="tight")
     plt.close(fig)
     buf.seek(0)
     return buf.read()
+
+
+def _add_footnote(fig, source: str, method: str) -> None:
+    """Agrega nota al pie con fuente, método y fecha (interpretabilidad científica)."""
+    from datetime import datetime
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    footnote = f"Fuente: {source} · Método: {method} · Fecha: {date_str}"
+    fig.text(0.5, -0.02, footnote, ha="center", fontsize=8, style="italic", color="#666666")
 
 
 def fig_distributions(df: pd.DataFrame) -> bytes:
@@ -470,6 +478,7 @@ def fig_distributions(df: pd.DataFrame) -> bytes:
         ax.set_title(f"Distribución — {col}", fontsize=10)
         ax.set_xlabel("")
     fig.suptitle("Distribución de variables principales (SNLMT, Tumbes)", fontsize=12)
+    _add_footnote(fig, "SNLMT, Tumbes · GMW v3.0 y datos sintéticos del motor", "Análisis exploratorio")
     fig.tight_layout()
     return _fig_to_png(fig)
 
@@ -480,6 +489,7 @@ def fig_correlation(df: pd.DataFrame) -> bytes:
     fig, ax = plt.subplots(figsize=(9, 7))
     sns.heatmap(cm, annot=True, fmt=".2f", cmap="RdBu_r", center=0, ax=ax, cbar_kws={"shrink": 0.8})
     ax.set_title("Correlación de Pearson entre variables", fontsize=12)
+    _add_footnote(fig, "SNLMT, Tumbes · GMW v3.0 y datos sintéticos del motor", "Coeficiente de correlación de Pearson")
     fig.tight_layout()
     return _fig_to_png(fig)
 
@@ -497,6 +507,7 @@ def fig_model_comparison(comparison: pd.DataFrame) -> bytes:
     ax.set_title("Comparación de modelos", fontsize=12)
     ax.legend()
     ax.grid(axis="y", alpha=0.3)
+    _add_footnote(fig, "Dataset sintético del motor (N=" + str(len(comparison)) + " modelos)", "Validación cruzada 5-fold")
     fig.tight_layout()
     return _fig_to_png(fig)
 
@@ -515,6 +526,7 @@ def fig_predicted_vs_actual(result: ModelResult) -> bytes:
     ax.set_title(f"Predicho vs observado — {result.name}", fontsize=11)
     ax.legend()
     ax.grid(alpha=0.3)
+    _add_footnote(fig, f"Modelo {result.name} · Hold-out 20%", "Regresión")
     fig.tight_layout()
     return _fig_to_png(fig)
 
@@ -529,6 +541,7 @@ def fig_residuals(result: ModelResult) -> bytes:
     ax.set_ylabel("Residual (%)")
     ax.set_title(f"Residuales — {result.name}", fontsize=11)
     ax.grid(alpha=0.3)
+    _add_footnote(fig, f"Modelo {result.name} · Hold-out 20%", "Análisis de residuos")
     fig.tight_layout()
     return _fig_to_png(fig)
 
@@ -545,6 +558,7 @@ def fig_feature_importance(fi: pd.DataFrame) -> bytes:
     ax.set_xlabel("Importancia por permutación (caída de R²)")
     ax.set_title("Explicabilidad: importancia de variables", fontsize=12)
     ax.grid(axis="x", alpha=0.3)
+    _add_footnote(fig, "Dataset sintético del motor", f"Importancia por permutación · {fi['n_folds'].iloc[0] if 'n_folds' in fi.columns else 5}-fold CV")
     fig.tight_layout()
     return _fig_to_png(fig)
 
@@ -559,6 +573,7 @@ def fig_hypothesis(evidence: pd.DataFrame) -> bytes:
     ax.set_title("Evidencia de la hipótesis por nivel de restauración", fontsize=12)
     ax.legend()
     ax.grid(axis="y", alpha=0.3)
+    _add_footnote(fig, "Motor determinista de humedales", f"Hipótesis: ≥{HYPOTHESIS_THRESHOLD}% por tramo")
     fig.tight_layout()
     return _fig_to_png(fig)
 
@@ -571,5 +586,6 @@ def fig_gmw_trend(gmw: pd.DataFrame) -> bytes:
     ax.set_ylabel("Extensión de manglar (ha)")
     ax.set_title("Extensión de manglar del SNLMT — dato real GMW v3.0", fontsize=12)
     ax.grid(alpha=0.3)
+    _add_footnote(fig, "Global Mangrove Watch v3.0 (Bunting et al.)", "Teledetección satelital")
     fig.tight_layout()
     return _fig_to_png(fig)

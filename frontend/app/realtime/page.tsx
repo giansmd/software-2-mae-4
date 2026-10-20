@@ -5,6 +5,7 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
+  Legend,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -12,6 +13,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useRef } from "react";
 import { Activity, Pause, Play, RotateCcw, Wifi, WifiOff } from "lucide-react";
 import { getScenarios, errMessage } from "@/lib/api";
 import { useRealtimeSimulation, type RealtimeConnectionStatus } from "@/lib/realtime";
@@ -20,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import WetlandTwinPanel from "@/components/twin/WetlandTwinPanel";
 import { useI18n } from "@/lib/i18n";
+import { ChartExportButtons } from "@/components/ui/chartExportButtons";
 
 const STATUS_LABELS_ES: Record<RealtimeConnectionStatus, string> = {
   connecting: "Conectando",
@@ -65,6 +68,10 @@ export default function RealtimePage() {
   const realtime = useRealtimeSimulation(scenarioId);
   const scenario = scenarios.find((item) => item.id === scenarioId);
   const current = realtime.lastPoint;
+
+  const chart1Ref = useRef<HTMLDivElement>(null);
+  const chart2Ref = useRef<HTMLDivElement>(null);
+  const chart3Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     getScenarios()
@@ -187,57 +194,148 @@ export default function RealtimePage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>{t("realtime.chartCS")}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="h-[320px] w-full">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <CardTitle>{t("realtime.chartCS")}</CardTitle>
+                <ChartExportButtons
+                  containerRef={chart1Ref}
+                  filename={`carbono_superficie_${scenario?.id ?? "realtime"}`}
+                  source="Gemelo Digital · simulación"
+                  method="Motor físico determinista"
+                  params={scenario ? `Escenario: ${scenario.name}` : undefined}
+                />
+              </div>
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                Evolución temporal del carbono retenido y la superficie efectiva del humedal bajo el escenario seleccionado.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div ref={chart1Ref} className="h-[320px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={realtime.points} margin={{ left: 8, right: 16, top: 8 }}>
+                  <LineChart data={realtime.points} margin={{ left: 8, right: 16, top: 8, bottom: 24 }}>
                     <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                    <XAxis dataKey="time" tickFormatter={formatTime} minTickGap={32} />
-                    <YAxis yAxisId="carbon" />
-                    <YAxis yAxisId="area" orientation="right" />
+                    <XAxis
+                      dataKey="time"
+                      tickFormatter={formatTime}
+                      minTickGap={32}
+                      label={{ value: "Tiempo", position: "insideBottom", offset: -18, fontSize: 12 }}
+                    />
+                    <YAxis
+                      yAxisId="carbon"
+                      label={{ value: "Carbono (tC)", angle: -90, position: "insideLeft", offset: 10, fontSize: 12 }}
+                    />
+                    <YAxis
+                      yAxisId="area"
+                      orientation="right"
+                      label={{ value: "Superficie (ha)", angle: 90, position: "insideRight", offset: 10, fontSize: 12 }}
+                    />
                     <Tooltip labelFormatter={(value) => formatTime(String(value))} />
+                    <Legend verticalAlign="top" />
                     <Line yAxisId="carbon" type="monotone" dataKey="retained_carbon" name={t("realtime.chartCSline")} stroke="#12b76a" strokeWidth={2.5} dot={false} />
                     <Line yAxisId="area" type="monotone" dataKey="effective_area_ha" name={t("realtime.chartCSarea")} stroke="#465fff" strokeWidth={2} dot={false} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
+              <p className="mt-2 border-t border-gray-200 pt-2 text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                Fuente: Gemelo Digital de Humedales · Método: Motor físico determinista · Datos: simulación reproducible
+              </p>
             </CardContent>
           </Card>
 
           <div className="grid gap-6 xl:grid-cols-2">
             <Card>
-              <CardHeader><CardTitle>{t("realtime.chartFreatico")}</CardTitle></CardHeader>
+              <CardHeader>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <CardTitle>{t("realtime.chartFreatico")}</CardTitle>
+                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      Variación temporal del nivel de agua subterránea.
+                    </p>
+                  </div>
+                  <ChartExportButtons
+                    containerRef={chart2Ref}
+                    filename={`nivel_freatico_${scenario?.id ?? "realtime"}`}
+                    source="Gemelo Digital · simulación"
+                    method="Motor físico determinista"
+                    params={scenario ? `Escenario: ${scenario.name}` : undefined}
+                  />
+                </div>
+              </CardHeader>
               <CardContent>
-                <div className="h-[250px] w-full">
+                <div ref={chart2Ref} className="h-[250px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={realtime.points} margin={{ left: 8, right: 16 }}>
+                    <LineChart data={realtime.points} margin={{ left: 8, right: 16, top: 8, bottom: 24 }}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                      <XAxis dataKey="time" tickFormatter={formatTime} minTickGap={32} />
-                      <YAxis />
+                      <XAxis
+                        dataKey="time"
+                        tickFormatter={formatTime}
+                        minTickGap={32}
+                        label={{ value: "Tiempo", position: "insideBottom", offset: -18, fontSize: 12 }}
+                      />
+                      <YAxis
+                        label={{ value: "Nivel de agua (m)", angle: -90, position: "insideLeft", offset: 10, fontSize: 12 }}
+                      />
                       <Tooltip labelFormatter={(value) => formatTime(String(value))} />
-                      <Line type="monotone" dataKey="water_table" name={t("realtime.chartFreaticoLine")} stroke="#465fff" strokeWidth={2.5} dot={false} />
+                      <Legend verticalAlign="top" />
+                      <Line
+                        type="monotone"
+                        dataKey="water_table"
+                        name={t("realtime.chartFreaticoLine")}
+                        stroke="#465fff"
+                        strokeWidth={2.5}
+                        dot={false}
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
+                <p className="mt-2 border-t border-gray-200 pt-2 text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                  Fuente: Gemelo Digital de Humedales · Método: Motor físico determinista · Datos: simulación reproducible
+                </p>
               </CardContent>
             </Card>
             <Card>
-              <CardHeader><CardTitle>{t("realtime.chartCobertura")}</CardTitle></CardHeader>
+              <CardHeader>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <CardTitle>{t("realtime.chartCobertura")}</CardTitle>
+                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      Evolución de la cobertura vegetal efectiva del humedal.
+                    </p>
+                  </div>
+                  <ChartExportButtons
+                    containerRef={chart3Ref}
+                    filename={`cobertura_vegetal_${scenario?.id ?? "realtime"}`}
+                    source="Gemelo Digital · simulación"
+                    method="Motor físico determinista"
+                    params={scenario ? `Escenario: ${scenario.name}` : undefined}
+                  />
+                </div>
+              </CardHeader>
               <CardContent>
-                <div className="h-[250px] w-full">
+                <div ref={chart3Ref} className="h-[250px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={realtime.points} margin={{ left: 8, right: 16 }}>
+                    <AreaChart data={realtime.points} margin={{ left: 8, right: 16, top: 8, bottom: 24 }}>
                       <defs><linearGradient id="coverFill" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#12b76a" stopOpacity={0.35} /><stop offset="95%" stopColor="#12b76a" stopOpacity={0} /></linearGradient></defs>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                      <XAxis dataKey="time" tickFormatter={formatTime} minTickGap={32} />
-                      <YAxis tickFormatter={(value) => `${Math.round(Number(value) * 100)}%`} domain={[0, 1]} />
+                      <XAxis
+                        dataKey="time"
+                        tickFormatter={formatTime}
+                        minTickGap={32}
+                        label={{ value: "Tiempo", position: "insideBottom", offset: -18, fontSize: 12 }}
+                      />
+                      <YAxis
+                        tickFormatter={(value) => `${Math.round(Number(value) * 100)}%`}
+                        domain={[0, 1]}
+                        label={{ value: "Cobertura (%)", angle: -90, position: "insideLeft", offset: 10, fontSize: 12 }}
+                      />
                       <Tooltip formatter={(value) => [`${(Number(value) * 100).toFixed(1)}%`, t("realtime.chartCoberturaName")]} labelFormatter={(value) => formatTime(String(value))} />
+                      <Legend verticalAlign="top" />
                       <Area type="monotone" dataKey="vegetation_cover" name={t("realtime.chartCoberturaName")} stroke="#12b76a" fill="url(#coverFill)" strokeWidth={2.5} />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
+                <p className="mt-2 border-t border-gray-200 pt-2 text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                  Fuente: Gemelo Digital de Humedales · Método: Motor físico determinista · Datos: simulación reproducible
+                </p>
               </CardContent>
             </Card>
           </div>

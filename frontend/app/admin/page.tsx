@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, Loader2 } from "lucide-react";
 import {
@@ -21,6 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { TableExportButtons } from "@/components/ui/tableExportButtons";
 
 export default function AdminPage() {
   const { t } = useI18n();
@@ -37,6 +38,7 @@ export default function AdminPage() {
   const [fullName, setFullName] = useState("");
   const [institution, setInstitution] = useState("");
   const [userRole, setUserRole] = useState<Role>("INVESTIGADOR");
+  const usersTableRef = useRef<HTMLTableElement>(null);
 
   function requireAdmin() {
     if (!isAuthed) {
@@ -192,8 +194,12 @@ export default function AdminPage() {
               </Button>
             </form>
 
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Usuarios registrados</p>
+              <TableExportButtons tableRef={usersTableRef} filename="usuarios_gemelo_digital" />
+            </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table ref={usersTableRef} className="w-full text-sm">
                 <thead className="text-left text-gray-500">
                   <tr>
                     <th className="py-2">Nombre</th>
@@ -222,9 +228,12 @@ export default function AdminPage() {
                         </Button>
                       </td>
                     </tr>
-                  ))}
+                      ))}
                 </tbody>
               </table>
+              <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+                Fuente: Sistema de gestión del Gemelo Digital de Humedales · Total: {users.length} usuarios
+              </p>
             </div>
           </CardContent>
         </Card>

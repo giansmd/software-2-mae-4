@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -27,6 +27,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BrainCircuit, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { ChartExportButtons } from "@/components/ui/chartExportButtons";
 
 const COMPARISON_RESTORATIONS = [0, 20, 40, 60, 80, 90, 100];
 
@@ -113,6 +114,8 @@ export default function MLPage() {
   const [result, setResult] = useState<MLPredictionResult | null>(null);
   const [predicting, setPredicting] = useState(false);
   const [predictError, setPredictError] = useState<string | null>(null);
+  const chart1Ref = useRef<HTMLDivElement>(null);
+  const chart2Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     getMLMetadata()
@@ -242,51 +245,89 @@ export default function MLPage() {
           <div className="mb-8 grid gap-6 lg:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>{t("ml.importance.title")}</CardTitle>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {t("ml.importance.desc")}
-                </p>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <CardTitle>{t("ml.importance.title")}</CardTitle>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {t("ml.importance.desc")}
+                    </p>
+                  </div>
+                  <ChartExportButtons
+                    containerRef={chart1Ref}
+                    filename="feature_importance_ml"
+                    source="Gemelo Digital · Random Forest"
+                    method={metadata?.algorithm ?? "Random Forest"}
+                    params={metadata ? `Muestras: ${metadata.n_samples.toLocaleString()}` : undefined}
+                  />
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="h-[280px] w-full">
+                <div ref={chart1Ref} className="h-[280px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                       data={importances}
                       layout="vertical"
-                      margin={{ left: 24, right: 24 }}
+                      margin={{ left: 24, right: 24, bottom: 24 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                      <XAxis type="number" unit="%" />
+                      <XAxis
+                        type="number"
+                        unit="%"
+                        label={{ value: "Importancia (%)", position: "insideBottom", offset: -18, fontSize: 12 }}
+                      />
                       <YAxis
                         type="category"
                         dataKey="name"
                         width={140}
                         tick={{ fontSize: 12 }}
+                        label={{ value: "Variable", angle: -90, position: "insideLeft", offset: 10, fontSize: 12 }}
                       />
                       <Tooltip formatter={(v) => [`${v}%`, ""]} />
-                      <Bar dataKey="value" fill="#465fff" radius={[0, 4, 4, 0]} />
+                      <Legend verticalAlign="top" />
+                      <Bar dataKey="value" name="Importancia" fill="#465fff" radius={[0, 4, 4, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
+                <p className="mt-2 border-t border-gray-200 pt-2 text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                  Fuente: {metadata?.data_source ?? "Datos sintéticos del motor"} · Algoritmo: {metadata?.algorithm ?? "Random Forest"} · Entrenado con {metadata?.n_samples.toLocaleString() ?? "—"} muestras
+                </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>{t("ml.compare.title")}</CardTitle>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {t("ml.compare.desc")}
-                </p>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <CardTitle>{t("ml.compare.title")}</CardTitle>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {t("ml.compare.desc")}
+                    </p>
+                  </div>
+                  <ChartExportButtons
+                    containerRef={chart2Ref}
+                    filename="ml_vs_engine_comparison"
+                    source="Gemelo Digital · comparación de métodos"
+                    method="Motor físico vs Random Forest"
+                    params={`SLR: ${form.slr} · Horizonte: ${form.horizon}`}
+                  />
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="h-[280px] w-full">
+                <div ref={chart2Ref} className="h-[280px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={comparison} margin={{ right: 24 }}>
+                    <LineChart data={comparison} margin={{ right: 24, bottom: 24 }}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                      <XAxis dataKey="restoration" unit="%" />
-                      <YAxis unit="%" />
+                      <XAxis
+                        dataKey="restoration"
+                        unit="%"
+                        label={{ value: "Nivel de restauración (%)", position: "insideBottom", offset: -18, fontSize: 12 }}
+                      />
+                      <YAxis
+                        unit="%"
+                        label={{ value: "Variación de carbono (%)", angle: -90, position: "insideLeft", offset: 10, fontSize: 12 }}
+                      />
                       <Tooltip />
-                      <Legend />
+                      <Legend verticalAlign="top" />
                       <Line
                         type="monotone"
                         dataKey="engine"
@@ -315,6 +356,9 @@ export default function MLPage() {
                     {t("common.loading")}
                   </p>
                 )}
+                <p className="mt-2 border-t border-gray-200 pt-2 text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                  Fuente: Gemelo Digital de Humedales · Comparación: Motor físico determinista vs Emulador ML · Datos: escenarios sintéticos
+                </p>
               </CardContent>
             </Card>
           </div>
