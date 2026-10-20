@@ -455,7 +455,9 @@ def hypothesis_evidence(df: pd.DataFrame) -> pd.DataFrame:
 
 def _fig_to_png(fig) -> bytes:
     buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=600, bbox_inches="tight")
+    # Reserve a footer band so the interpretability note stays inside the canvas.
+    fig.subplots_adjust(bottom=max(fig.subplotpars.bottom, 0.2), top=min(fig.subplotpars.top, 0.9))
+    fig.savefig(buf, format="png", dpi=600, bbox_inches="tight", pad_inches=0.15)
     plt.close(fig)
     buf.seek(0)
     return buf.read()
@@ -466,7 +468,18 @@ def _add_footnote(fig, source: str, method: str) -> None:
     from datetime import datetime
     date_str = datetime.now().strftime("%Y-%m-%d")
     footnote = f"Fuente: {source} · Método: {method} · Fecha: {date_str}"
-    fig.text(0.5, -0.02, footnote, ha="center", fontsize=8, style="italic", color="#666666")
+    import textwrap
+
+    fig.text(
+        0.5,
+        0.035,
+        textwrap.fill(footnote, width=95),
+        ha="center",
+        va="bottom",
+        fontsize=7,
+        style="italic",
+        color="#666666",
+    )
 
 
 def fig_distributions(df: pd.DataFrame) -> bytes:

@@ -196,7 +196,12 @@ export default function AdminPage() {
 
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Usuarios registrados</p>
-              <TableExportButtons tableRef={usersTableRef} filename="usuarios_gemelo_digital" />
+              <TableExportButtons
+                tableRef={usersTableRef}
+                filename="usuarios_gemelo_digital"
+                description="Usuarios registrados y rol asignado."
+                source="Base de datos del Gemelo Digital"
+              />
             </div>
             <div className="overflow-x-auto">
               <table ref={usersTableRef} className="w-full text-sm">

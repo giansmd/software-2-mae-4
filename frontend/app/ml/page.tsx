@@ -257,6 +257,7 @@ export default function MLPage() {
                     filename="feature_importance_ml"
                     source="Gemelo Digital · Random Forest"
                     method={metadata?.algorithm ?? "Random Forest"}
+                    interpretation="Una importancia mayor indica mayor dependencia predictiva; no demuestra causalidad."
                     params={metadata ? `Muestras: ${metadata.n_samples.toLocaleString()}` : undefined}
                   />
                 </div>
@@ -308,6 +309,7 @@ export default function MLPage() {
                     filename="ml_vs_engine_comparison"
                     source="Gemelo Digital · comparación de métodos"
                     method="Motor físico vs Random Forest"
+                    interpretation="La distancia entre curvas muestra cuánto difieren las variaciones proyectadas según restauración."
                     params={`SLR: ${form.slr} · Horizonte: ${form.horizon}`}
                   />
                 </div>

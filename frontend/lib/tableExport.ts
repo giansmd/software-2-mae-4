@@ -4,10 +4,10 @@
 /**
  * Exporta una tabla HTML a CSV UTF-8 con BOM (Excel lo abre bien).
  */
-export function exportTableCsv(table: HTMLTableElement, filename: string): void {
+export function exportTableCsv(table: HTMLTableElement, filename: string, note?: string): void {
   const csv = tableToDelim(table, ",", true);
-  // BOM UTF-8 para que Excel detecte la codificación
-  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+  const metadata = note ? `# ${note.replace(/\n/g, "\n# ")}\n` : "";
+  const blob = new Blob(["\uFEFF" + metadata + csv], { type: "text/csv;charset=utf-8" });
   downloadBlob(blob, `${filename}.csv`);
 }
 
@@ -67,5 +67,5 @@ export function buildTableNote(parts: {
 }): string {
   const date = parts.date ?? new Date().toISOString().slice(0, 10);
   const nPart = parts.n !== undefined ? ` · N = ${parts.n}` : "";
-  return `${parts.description} · Fuente: ${parts.source}${nPart} · Fecha: ${date}`;
+  return `Interpretación: ${parts.description} · Fuente: ${parts.source}${nPart} · Fecha: ${date}`;
 }

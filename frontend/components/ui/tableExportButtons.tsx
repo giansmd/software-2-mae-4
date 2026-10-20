@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Download, Copy, Check } from "lucide-react";
-import { exportTableCsv, copyTableTsv } from "@/lib/tableExport";
+import { buildTableNote, exportTableCsv, copyTableTsv } from "@/lib/tableExport";
 import { Button } from "./button";
 
 interface TableExportButtonsProps {
@@ -10,6 +10,10 @@ interface TableExportButtonsProps {
   tableRef: React.RefObject<HTMLTableElement | null>;
   /** Nombre base del archivo (sin extensión) */
   filename: string;
+  /** Descripción breve de lo que muestran los datos */
+  description?: string;
+  /** Procedencia de los datos */
+  source?: string;
 }
 
 /**
@@ -19,12 +23,16 @@ interface TableExportButtonsProps {
 export function TableExportButtons({
   tableRef,
   filename,
+  description = "Datos tabulares exportados desde el Gemelo Digital",
+  source = "Gemelo Digital de Humedales",
 }: TableExportButtonsProps) {
   const [copied, setCopied] = useState(false);
 
   function handleCsv() {
     if (!tableRef.current) return;
-    exportTableCsv(tableRef.current, filename);
+    const n = Math.max(0, tableRef.current.querySelectorAll("tbody tr").length);
+    const note = buildTableNote({ description, source, n });
+    exportTableCsv(tableRef.current, filename, note);
   }
 
   async function handleCopy() {

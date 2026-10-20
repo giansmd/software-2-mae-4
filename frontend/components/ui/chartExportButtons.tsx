@@ -14,6 +14,8 @@ interface ChartExportButtonsProps {
   source: string;
   /** Método usado */
   method?: string;
+  /** Interpretación breve para incluir en la figura exportada */
+  interpretation?: string;
   /** Parámetros adicionales como texto */
   params?: string;
   /** Fecha (por defecto hoy ISO) */
@@ -29,6 +31,7 @@ export function ChartExportButtons({
   filename,
   source,
   method,
+  interpretation,
   params,
   date,
 }: ChartExportButtonsProps) {
@@ -40,7 +43,7 @@ export function ChartExportButtons({
     setBusy("png");
     setError(null);
     try {
-      const note = buildNote({ source, method, params, date });
+      const note = buildNote({ source, method, interpretation, params, date });
       await exportChartPng(containerRef.current, filename, note);
     } catch (e) {
       setError((e as Error).message);
@@ -52,7 +55,8 @@ export function ChartExportButtons({
   function handleSvg() {
     if (!containerRef.current) return;
     try {
-      exportChartSvg(containerRef.current, filename);
+      const note = buildNote({ source, method, interpretation, params, date });
+      exportChartSvg(containerRef.current, filename, note);
     } catch (e) {
       setError((e as Error).message);
     }

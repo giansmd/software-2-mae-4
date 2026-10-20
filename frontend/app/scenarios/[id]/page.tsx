@@ -283,6 +283,7 @@ export default function ScenarioPage() {
                       filename={`serie_carbono_${scenario?.id ?? "scenario"}`}
                       source="Gemelo Digital · simulación"
                       method={t(`method.${result.method}`)}
+                      interpretation="La serie muestra la evolución anual del carbono retenido y del área efectiva proyectada."
                       params={`Restauración: ${restoration_level}% · SLR: ${sea_level_rise} · Horizonte: ${horizon_year}`}
                     />
                   </div>
@@ -340,6 +341,7 @@ export default function ScenarioPage() {
                       filename={`cobertura_${scenario?.id ?? "scenario"}`}
                       source="Gemelo Digital · simulación"
                       method={t(`method.${result.method}`)}
+                      interpretation="La altura de cada barra representa la cobertura vegetal efectiva proyectada para ese año."
                       params={`Restauración: ${restoration_level}% · SLR: ${sea_level_rise} · Horizonte: ${horizon_year}`}
                     />
                   </div>

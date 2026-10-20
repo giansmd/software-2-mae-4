@@ -8,8 +8,8 @@ tanto en pantalla como en reportes exportables.
 """
 from __future__ import annotations
 
-import io
 import sys
+from datetime import date
 from pathlib import Path
 
 import pandas as pd
@@ -52,6 +52,43 @@ def get_results(n_samples: int, seed: int, cv_folds: int):
 
 def png_download(container, data: bytes, filename: str, label: str = "Descargar figura"):
     container.download_button(label, data, file_name=filename, mime="image/png", key=filename)
+
+
+def show_table(
+    frame: pd.DataFrame,
+    *,
+    filename: str,
+    interpretation: str,
+    source: str = "Dataset híbrido SNLMT y motor determinista MAE-4",
+    include_index: bool = False,
+) -> None:
+    st.caption(
+        f"**Interpretación:** {interpretation} · **Fuente:** {source} · "
+        f"**Método:** CRISP-DM · **Semilla:** {seed}"
+    )
+    st.dataframe(frame, width="stretch")
+    st.download_button(
+        "Descargar tabla (CSV)",
+        table_csv(frame, interpretation, source, include_index),
+        file_name=filename,
+        mime="text/csv",
+        key=f"table-{filename}",
+    )
+
+
+def table_csv(
+    frame: pd.DataFrame,
+    interpretation: str,
+    source: str,
+    include_index: bool = False,
+) -> bytes:
+    note = (
+        f"# Interpretación: {interpretation}\n"
+        f"# Fuente: {source}\n"
+        f"# Método: CRISP-DM · Semilla {seed}\n"
+        f"# Fecha de generación: {date.today().isoformat()}\n"
+    )
+    return (note + frame.to_csv(index=include_index)).encode("utf-8-sig")
 
 
 # ---------------------------------------------------------------------------
@@ -124,7 +161,12 @@ with tabs[0]:
             st.markdown(f"- {d}")
 
     st.subheader("Contexto del sitio de estudio")
-    st.dataframe(load_reference_data(), width="stretch")
+    show_table(
+        load_reference_data(),
+        filename="contexto_sitio_estudio.csv",
+        interpretation="Valores de referencia que describen la extensión, cobertura y contexto del sitio.",
+        source="Referencias del Santuario Nacional Los Manglares de Tumbes",
+    )
 
 # ---------------------------------------------------------------------------
 # Fase 2
@@ -133,17 +175,36 @@ with tabs[1]:
     st.header("Fase 2 — Comprensión de los datos (EDA)")
 
     st.subheader("Calidad del dataset")
-    st.dataframe(C.eda_quality(df), width="stretch")
+    show_table(
+        C.eda_quality(df),
+        filename="calidad_dataset.csv",
+        interpretation="Tipos, valores faltantes y valores únicos permiten detectar problemas de calidad.",
+    )
 
     st.subheader("Estadística descriptiva")
-    st.dataframe(C.eda_summary(df), width="stretch")
+    show_table(
+        C.eda_summary(df),
+        filename="estadistica_descriptiva.csv",
+        interpretation="Media, dispersión y cuantiles resumen la distribución de cada variable.",
+        include_index=True,
+    )
 
     st.subheader("Datos reales del SNLMT")
     st.markdown("**Serie multitemporal de extensión de manglar (Global Mangrove Watch v3.0)**")
-    st.dataframe(load_gmw_series(), width="stretch")
+    show_table(
+        load_gmw_series(),
+        filename="serie_gmw.csv",
+        interpretation="La serie permite comparar cambios observados en extensión de manglar entre años.",
+        source="Global Mangrove Watch v3.0",
+    )
 
     st.markdown("**Especies de mangle e índice de valor de importancia (IVI)**")
-    st.dataframe(load_species_table(), width="stretch")
+    show_table(
+        load_species_table(),
+        filename="especies_ivi.csv",
+        interpretation="El IVI permite comparar la importancia ecológica relativa de las especies registradas.",
+        source="Estudios de especies del SNLMT",
+    )
 
     st.subheader("Figuras de EDA")
     col1, col2 = st.columns(2)
@@ -184,12 +245,18 @@ with tabs[2]:
     c3.metric("Objetivo", C.TARGET)
 
     st.subheader("Matriz de atributos (primeras filas)")
-    st.dataframe(X.head(10), width="stretch")
+    show_table(
+        X.head(10),
+        filename="matriz_atributos_muestra.csv",
+        interpretation="Muestra de predictores codificados que recibe el modelo; no representa el dataset completo.",
+    )
 
     st.subheader("Variable objetivo")
-    st.dataframe(
+    show_table(
         y.describe().round(4).rename("horizon_variation_pct").to_frame(),
-        width="stretch",
+        filename="resumen_variable_objetivo.csv",
+        interpretation="Resumen estadístico de la variación de carbono que el modelo aprende a predecir.",
+        include_index=True,
     )
 
     st.subheader("Trazabilidad del dataset híbrido")
@@ -203,7 +270,11 @@ results = get_results(int(n_samples), int(seed), int(cv_folds))
 with tabs[3]:
     st.header("Fase 4 — Modelado")
     comparison = C.model_comparison_table(results)
-    st.dataframe(comparison, width="stretch")
+    show_table(
+        comparison,
+        filename="comparacion_modelos.csv",
+        interpretation="R² y errores comparan el desempeño de modelos; valores mejores dependen de la métrica.",
+    )
 
     best_name, best = C.select_best_model(results)
     st.success(f"**Mejor modelo seleccionado:** {best_name}")
@@ -223,7 +294,11 @@ with tabs[3]:
 
     st.subheader("Evidencia sobre la hipótesis del +25 %")
     ev = C.hypothesis_evidence(df)
-    st.dataframe(ev, width="stretch")
+    show_table(
+        ev,
+        filename="evidencia_hipotesis.csv",
+        interpretation="Compara variación de carbono y cumplimiento del umbral por tramo de restauración.",
+    )
     fig_hyp = C.fig_hypothesis(ev)
     st.image(fig_hyp, caption="Variación media por tramo de restauración")
     png_download(st, fig_hyp, "hipotesis_evidencia.png")
@@ -240,10 +315,19 @@ with tabs[4]:
         "de entrenamiento. El R² medio entre folds es el criterio de selección, por "
         "ser más robusto que una única partición de prueba."
     )
-    st.dataframe(comparison, width="stretch")
+    show_table(
+        comparison,
+        filename="evaluacion_modelos.csv",
+        interpretation="Resume el desempeño medio en validación cruzada y en el conjunto de prueba.",
+    )
 
     st.subheader("Pruebas estadísticas rigurosas")
-    st.dataframe(C.statistical_report(results), width="stretch")
+    show_table(
+        C.statistical_report(results),
+        filename="pruebas_estadisticas.csv",
+        interpretation="p < 0.05 indica evidencia estadística de diferencia entre modelos en la prueba indicada.",
+        source="Puntajes por fold de validación cruzada",
+    )
     st.caption(
         "t de Student pareada y Wilcoxon signed-rank sobre los puntajes por fold, "
         "comparando el mejor modelo contra los demás. Un p < 0.05 indica diferencia "
@@ -271,7 +355,12 @@ with tabs[4]:
 
     st.subheader("Explicabilidad — importancia por permutación")
     fi = C.permutation_importance_table(best, df)
-    st.dataframe(fi, width="stretch")
+    show_table(
+        fi,
+        filename="importancia_variables.csv",
+        interpretation="Una caída mayor de R² al permutar una variable indica mayor dependencia predictiva del modelo.",
+        source="Conjunto de prueba del dataset híbrido",
+    )
     fig_fi = C.fig_feature_importance(fi)
     st.image(fig_fi, caption="Importancia de variables del mejor modelo")
     png_download(st, fig_fi, "evaluacion_importancia.png")
@@ -298,13 +387,21 @@ with tabs[5]:
     c1, c2 = st.columns(2)
     c1.download_button(
         "Descargar comparación de modelos (CSV)",
-        comparison.to_csv(index=False).encode("utf-8"),
+        table_csv(
+            comparison,
+            "R² y errores comparan el desempeño de modelos; valores mejores dependen de la métrica.",
+            "Dataset híbrido SNLMT y motor determinista MAE-4",
+        ),
         file_name="modelos_comparacion.csv",
         mime="text/csv",
     )
     c2.download_button(
         "Descargar pruebas estadísticas (CSV)",
-        C.statistical_report(results).to_csv(index=False).encode("utf-8"),
+        table_csv(
+            C.statistical_report(results),
+            "p < 0.05 indica evidencia estadística de diferencia entre modelos en la prueba indicada.",
+            "Puntajes por fold de validación cruzada",
+        ),
         file_name="pruebas_estadisticas.csv",
         mime="text/csv",
     )
@@ -312,13 +409,22 @@ with tabs[5]:
     c3, c4 = st.columns(2)
     c3.download_button(
         "Descargar EDA descriptivo (CSV)",
-        C.eda_summary(df).to_csv().encode("utf-8"),
+        table_csv(
+            C.eda_summary(df),
+            "Media, dispersión y cuantiles resumen la distribución de cada variable.",
+            "Dataset híbrido SNLMT y motor determinista MAE-4",
+            include_index=True,
+        ),
         file_name="eda_descriptivo.csv",
         mime="text/csv",
     )
     c4.download_button(
         "Descargar evidencia de hipótesis (CSV)",
-        C.hypothesis_evidence(df).to_csv(index=False).encode("utf-8"),
+        table_csv(
+            C.hypothesis_evidence(df),
+            "Compara variación de carbono y cumplimiento del umbral por tramo de restauración.",
+            "Dataset híbrido SNLMT y motor determinista MAE-4",
+        ),
         file_name="hipotesis_evidencia.csv",
         mime="text/csv",
     )
@@ -326,7 +432,11 @@ with tabs[5]:
     st.subheader("Dataset híbrido")
     st.download_button(
         "Descargar dataset completo (CSV)",
-        df.to_csv(index=False).encode("utf-8"),
+        table_csv(
+            df,
+            "Registros usados para reproducir el análisis; resultados dependen de semilla y configuración.",
+            "Dataset híbrido SNLMT y motor determinista MAE-4",
+        ),
         file_name="dataset_hibrido_snlmt.csv",
         mime="text/csv",
     )

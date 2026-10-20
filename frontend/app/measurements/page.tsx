@@ -300,7 +300,12 @@ export default function MeasurementsPage() {
                 Datos observados de cobertura vegetal, nivel freático, carbono orgánico del suelo y biomasa.
               </p>
             </div>
-            <TableExportButtons tableRef={tableRef} filename="mediciones_humedal" />
+            <TableExportButtons
+              tableRef={tableRef}
+              filename="mediciones_humedal"
+              description="Mediciones observadas de carbono, cobertura y nivel freático por escenario."
+              source="Registro de mediciones del Gemelo Digital"
+            />
           </div>
         </CardHeader>
         <CardContent className="overflow-x-auto p-0">

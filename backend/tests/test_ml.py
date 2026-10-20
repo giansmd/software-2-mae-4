@@ -1,7 +1,10 @@
 """Tests for the ML surrogate model: dataset, training and endpoints."""
 from __future__ import annotations
 
+import struct
+
 import numpy as np
+import pandas as pd
 import pytest
 
 from app.ml.dataset import (
@@ -11,6 +14,7 @@ from app.ml.dataset import (
     generate_dataset,
     generate_series_dataset,
 )
+from app.ml.crispdm import fig_gmw_trend
 from app.ml.registry import get_model, predict, predict_series
 from app.ml.train import train_model
 from app.models.scenario import SeaLevelRise
@@ -92,6 +96,24 @@ def test_series_dataset_progress_1_matches_horizon_engine():
             baseline_carbon_density=float(data.X[row, SERIES_FEATURE_NAMES.index("baseline_carbon_density")]),
         )
         assert data.Y[row, var] == pytest.approx(engine["horizon_variation_pct"], abs=0.05)
+
+
+def test_exported_figure_is_complete_png_with_600_dpi_metadata():
+    image = fig_gmw_trend(
+        pd.DataFrame({"anio": [1996, 2020], "extension_ha": [3500, 4000]})
+    )
+    assert image.startswith(b"\x89PNG\r\n\x1a\n")
+    offset = 8
+    while offset < len(image):
+        length = struct.unpack_from(">I", image, offset)[0]
+        chunk_type = image[offset + 4 : offset + 8]
+        if chunk_type == b"pHYs":
+            x_ppm, y_ppm, unit = struct.unpack_from(">IIB", image, offset + 8)
+            assert unit == 1
+            assert x_ppm == y_ppm == round(600 / 0.0254)
+            return
+        offset += length + 12
+    pytest.fail("PNG missing physical resolution metadata")
 
 
 # ---------------------------------------------------------------------------

@@ -317,6 +317,7 @@ export default function DashboardPage() {
                 filename={`comparativa_carbono_${method}`}
                 source="Gemelo Digital · simulación"
                 method={t(`method.${method}`)}
+                interpretation="La pendiente compara la retención de carbono proyectada por año para los escenarios seleccionados."
                 params={`Escenarios: ${selectedScenarios.map((s) => s.name).join(", ")}`}
               />
             </div>

@@ -201,6 +201,7 @@ export default function RealtimePage() {
                   filename={`carbono_superficie_${scenario?.id ?? "realtime"}`}
                   source="Gemelo Digital · simulación"
                   method="Motor físico determinista"
+                  interpretation="Las dos curvas muestran la evolución observada en la simulación de carbono retenido y área efectiva."
                   params={scenario ? `Escenario: ${scenario.name}` : undefined}
                 />
               </div>
@@ -256,6 +257,7 @@ export default function RealtimePage() {
                     filename={`nivel_freatico_${scenario?.id ?? "realtime"}`}
                     source="Gemelo Digital · simulación"
                     method="Motor físico determinista"
+                    interpretation="La curva muestra cómo cambia el nivel de agua durante la simulación."
                     params={scenario ? `Escenario: ${scenario.name}` : undefined}
                   />
                 </div>
@@ -306,6 +308,7 @@ export default function RealtimePage() {
                     filename={`cobertura_vegetal_${scenario?.id ?? "realtime"}`}
                     source="Gemelo Digital · simulación"
                     method="Motor físico determinista"
+                    interpretation="La curva muestra la proporción de cobertura vegetal efectiva a través del tiempo."
                     params={scenario ? `Escenario: ${scenario.name}` : undefined}
                   />
                 </div>

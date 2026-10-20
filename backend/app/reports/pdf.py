@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from io import BytesIO
+from datetime import date
 
 from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
@@ -61,6 +62,16 @@ def build_pdf_report(result: SimulationResult) -> bytes:
         )
     )
     story.append(kpi)
+    story.append(Paragraph(
+        "<b>Interpretación:</b> la variación compara la retención proyectada al año horizonte con la retención base. "
+        "El cumplimiento de la hipótesis se evalúa frente al umbral de +25 %. La serie resume carbono, área y cobertura.",
+        styles["BodyText"],
+    ))
+    story.append(Paragraph(
+        f"<b>Fuente:</b> Gemelo Digital de Humedales · <b>Método:</b> {method_label} · "
+        f"<b>Fecha:</b> {date.today().isoformat()}",
+        styles["Italic"],
+    ))
     story.append(Spacer(1, 12))
 
     story.append(Paragraph("Serie temporal (cada 5 años)", styles["Heading3"]))
@@ -74,6 +85,11 @@ def build_pdf_report(result: SimulationResult) -> bytes:
     st = Table(series_rows, hAlign="LEFT")
     st.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), 0.5, colors.grey), ("FONTSIZE", (0, 0), (-1, -1), 8)]))
     story.append(st)
+    story.append(Paragraph(
+        "<b>Nota:</b> carbono retenido en tC; área efectiva en ha; cobertura como proporción [0–1]; "
+        "variación porcentual respecto al valor base. Se muestran observaciones cada cinco años.",
+        styles["Italic"],
+    ))
     story.append(Spacer(1, 12))
 
     # Line chart of retained carbon over time
@@ -90,6 +106,11 @@ def build_pdf_report(result: SimulationResult) -> bytes:
     drawing.add(chart)
     story.append(Paragraph("Retención de carbono azul (tC) por año", styles["Heading3"]))
     story.append(drawing)
+    story.append(Paragraph(
+        f"La curva muestra la proyección del método {method_label}; compare su valor final con la retención base de la tabla. "
+        f"Fuente: Gemelo Digital de Humedales · Fecha: {date.today().isoformat()}.",
+        styles["Italic"],
+    ))
 
     doc.build(story)
     return buf.getvalue()
