@@ -27,12 +27,19 @@ export async function exportChartPng(
   clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
   clone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
 
-  // Si hay nota, ampliar viewBox y añadir <text> al pie
-  if (note) injectNote(clone, note);
-
-  const bbox = clone.getBoundingClientRect();
+  // Dimensiones del SVG original (está en el DOM). El clon NO tiene layout.
+  const bbox = svg.getBoundingClientRect();
   const w = bbox.width;
-  const h = bbox.height + (note ? 40 : 0);
+  const originalH = bbox.height;
+  const h = originalH + (note ? 40 : 0);
+  if (!w || !originalH) throw new Error("El gráfico aún no tiene dimensiones visibles");
+
+  // Si hay nota, ampliar viewBox y añadir <text> al pie
+  if (note) injectNote(clone, note, w, originalH);
+
+  // Forzar width/height explícitos en el clon para que <img> los respete
+  clone.setAttribute("width", String(w));
+  clone.setAttribute("height", String(h));
 
   const svgString = new XMLSerializer().serializeToString(clone);
   const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
@@ -46,6 +53,7 @@ export async function exportChartPng(
       canvas.height = Math.round(h * SCALE);
       const ctx = canvas.getContext("2d");
       if (!ctx) {
+        URL.revokeObjectURL(url);
         reject(new Error("No se pudo crear el canvas"));
         return;
       }
@@ -56,12 +64,12 @@ export async function exportChartPng(
 
       canvas.toBlob(
         (b) => {
+          URL.revokeObjectURL(url);
           if (!b) {
-            reject(new Error("No se pudo generar el PNG"));
+            reject(new Error("El navegador rechazó generar el PNG"));
             return;
           }
           downloadBlob(b, `${filename}.png`);
-          URL.revokeObjectURL(url);
           resolve();
         },
         "image/png",
@@ -70,7 +78,7 @@ export async function exportChartPng(
     };
     img.onerror = () => {
       URL.revokeObjectURL(url);
-      reject(new Error("No se pudo cargar el SVG en el canvas"));
+      reject(new Error("El navegador no pudo cargar el SVG (revisa consola)"));
     };
     img.src = url;
   });
@@ -89,16 +97,15 @@ export function exportChartSvg(container: HTMLElement, filename: string): void {
   downloadBlob(blob, `${filename}.svg`);
 }
 
-function injectNote(svg: SVGElement, note: string): void {
+function injectNote(svg: SVGElement, note: string, w: number, h: number): void {
   const vb = svg.getAttribute("viewBox");
-  const bbox = svg.getBoundingClientRect();
   const [vx, vy, vw, vh] = vb
     ? vb.split(/\s+/).map(Number)
-    : [0, 0, bbox.width, bbox.height];
+    : [0, 0, w, h];
 
   // Ampliar viewBox 40px abajo
   svg.setAttribute("viewBox", `${vx} ${vy} ${vw} ${vh + 40}`);
-  svg.setAttribute("height", String(bbox.height + 40));
+  svg.setAttribute("height", String(h + 40));
 
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
   text.setAttribute("x", String(vx + 8));
