@@ -31,15 +31,35 @@ export async function exportChartPng(
   const bbox = svg.getBoundingClientRect();
   const w = bbox.width;
   const originalH = bbox.height;
-  const h = originalH + (note ? 40 : 0);
   if (!w || !originalH) throw new Error("El gráfico aún no tiene dimensiones visibles");
 
-  // Si hay nota, ampliar viewBox y añadir <text> al pie
-  if (note) injectNote(clone, note, w, originalH);
+  // Recharts usa width="100%" height="100%" con un viewBox interno pequeño.
+  // Para exportar necesitamos viewBox, width y height CONSISTENTES.
+  const origVb = svg.getAttribute("viewBox");
+  const [vx, vy, vw, vh] = origVb
+    ? origVb.split(/\s+/).map(Number)
+    : [0, 0, w, originalH];
 
-  // Forzar width/height explícitos en el clon para que <img> los respete
-  clone.setAttribute("width", String(w));
-  clone.setAttribute("height", String(h));
+  // Poner todos los atributos coherentes: viewBox define el contenido,
+  // width/height definen el tamaño al que se rasteriza el <img>.
+  clone.setAttribute("viewBox", `${vx} ${vy} ${vw} ${vh}`);
+  clone.setAttribute("width", String(vw));
+  clone.setAttribute("height", String(vh));
+
+  // Si hay nota, ampliar viewBox y añadir <text> al pie
+  const totalH = vh + (note ? 40 : 0);
+  if (note) {
+    clone.setAttribute("viewBox", `${vx} ${vy} ${vw} ${vh + 40}`);
+    clone.setAttribute("height", String(vh + 40));
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", String(vx + 8));
+    text.setAttribute("y", String(vy + vh + 24));
+    text.setAttribute("font-size", "11");
+    text.setAttribute("font-family", "Arial, sans-serif");
+    text.setAttribute("fill", "#555555");
+    text.textContent = note;
+    clone.appendChild(text);
+  }
 
   const svgString = new XMLSerializer().serializeToString(clone);
   const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
@@ -48,9 +68,12 @@ export async function exportChartPng(
   await new Promise<void>((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
+      // Usar dimensiones REALES del SVG rasterizado, no las calculadas.
+      const rw = img.naturalWidth || vw;
+      const rh = img.naturalHeight || totalH;
       const canvas = document.createElement("canvas");
-      canvas.width = Math.round(w * SCALE);
-      canvas.height = Math.round(h * SCALE);
+      canvas.width = Math.round(rw * SCALE);
+      canvas.height = Math.round(rh * SCALE);
       const ctx = canvas.getContext("2d");
       if (!ctx) {
         URL.revokeObjectURL(url);
@@ -59,8 +82,7 @@ export async function exportChartPng(
       }
       ctx.fillStyle = "#FFFFFF";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.scale(SCALE, SCALE);
-      ctx.drawImage(img, 0, 0, w, h);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
       canvas.toBlob(
         (b) => {
@@ -76,8 +98,9 @@ export async function exportChartPng(
         1.0,
       );
     };
-    img.onerror = () => {
+    img.onerror = (e) => {
       URL.revokeObjectURL(url);
+      console.error("[chartExport] img.onerror", e);
       reject(new Error("El navegador no pudo cargar el SVG (revisa consola)"));
     };
     img.src = url;
@@ -95,26 +118,6 @@ export function exportChartSvg(container: HTMLElement, filename: string): void {
   const str = new XMLSerializer().serializeToString(clone);
   const blob = new Blob([str], { type: "image/svg+xml;charset=utf-8" });
   downloadBlob(blob, `${filename}.svg`);
-}
-
-function injectNote(svg: SVGElement, note: string, w: number, h: number): void {
-  const vb = svg.getAttribute("viewBox");
-  const [vx, vy, vw, vh] = vb
-    ? vb.split(/\s+/).map(Number)
-    : [0, 0, w, h];
-
-  // Ampliar viewBox 40px abajo
-  svg.setAttribute("viewBox", `${vx} ${vy} ${vw} ${vh + 40}`);
-  svg.setAttribute("height", String(h + 40));
-
-  const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  text.setAttribute("x", String(vx + 8));
-  text.setAttribute("y", String(vy + vh + 24));
-  text.setAttribute("font-size", "11");
-  text.setAttribute("font-family", "Arial, sans-serif");
-  text.setAttribute("fill", "#555555");
-  text.textContent = note;
-  svg.appendChild(text);
 }
 
 function downloadBlob(blob: Blob, filename: string): void {
