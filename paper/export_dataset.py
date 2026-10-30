@@ -5,7 +5,7 @@ Genera un paquete reproducible para revisores y para el depósito de datos:
     artifacts/dataset/dataset_modelado.csv    semilla 42 (entrenamiento)
     artifacts/dataset/dataset_holdout.csv     semilla 43 (holdout independiente)
     artifacts/dataset/referencia_snlmt.csv    clases de cobertura reales
-    artifacts/dataset/especies_ivi.csv        IVI por especie
+    artifacts/dataset/especies_ivi.csv        IVI por franja (especie dominante)
     artifacts/dataset/gmw_serie.csv           serie de extensión GMW v3.0
     artifacts/dataset/diccionario_variables.csv
     artifacts/dataset/LEEME.md

@@ -46,9 +46,10 @@ import pandas as pd
 SNLMT_TOTAL_HA = 2972.0
 MANGROVE_HA = 1779.8
 DRY_FOREST_HA = 243.0
-# 1 779,8 ha / 2 972 ha = 59,88 % (la fuente publica 68,06 %, incompatible con
-# el área total del Santuario; se usa el valor derivado y se declara en el texto).
-MANGROVE_PCT = 59.88
+# 1 779,8 ha / 2 972 ha = 59,89 % del Santuario. El 68,06 % que publica la fuente
+# corresponde a la cobertura vegetal total (manglar + bosque seco = 2 022,8 ha),
+# no al manglar.
+MANGROVE_PCT = 59.89
 
 # Rangos NDVI observados por clase de cobertura (Sentinel-2).
 NDVI_RANGES: dict[str, tuple[float, float]] = {
@@ -72,13 +73,34 @@ CLASS_AREAS_HA: dict[str, float] = {
     "manglar_franja_alta": MANGROVE_HA * 0.0723,
 }
 
-# Especies de mangle y su índice de valor de importancia (IVI, %).
-SPECIES_IVI: dict[str, float] = {
-    "Rhizophora mangle": 86.92,
-    "Rhizophora harrisonii": 13.03,
-    "Avicennia germinans": 36.65,
-    "Laguncularia racemosa": 8.40,
-    "Conocarpus erectus": 3.20,
+# Especies de mangle registradas en el SNLMT.
+MANGROVE_SPECIES = [
+    "Rhizophora mangle",
+    "Rhizophora harrisonii",
+    "Avicennia germinans",
+    "Laguncularia racemosa",
+    "Conocarpus erectus",
+]
+
+# IVI reportado por franja (Dioses-Puelles et al., 2023). La fuente informa el
+# IVI de las especies dominantes de cada franja, no de la comunidad completa:
+# los valores no son sumables ni normalizables a 300.
+IVI_BY_STRIP: dict[str, tuple[str, float, str]] = {
+    "manglar_franja_baja": (
+        "Avicennia germinans",
+        36.65,
+        "Rhizophora mangle, Rhizophora harrisonii, Conocarpus erectus, Laguncularia racemosa",
+    ),
+    "manglar_franja_media": (
+        "Rhizophora mangle",
+        59.12,
+        "Rhizophora harrisonii",
+    ),
+    "manglar_franja_alta": (
+        "Rhizophora mangle",
+        86.92,
+        "Rhizophora harrisonii (13,03 % de IVI)",
+    ),
 }
 
 # Carbono azul del SNLMT: biomasa + 1 m de suelo (Consorcio Manglares, 2023).
@@ -132,13 +154,20 @@ def load_gmw_series() -> pd.DataFrame:
 
 
 def load_species_table() -> pd.DataFrame:
-    """Especies de mangle con su IVI observado en el SNLMT."""
-    df = pd.DataFrame(
-        {"especie": list(SPECIES_IVI), "ivi_pct": list(SPECIES_IVI.values())}
-    ).sort_values("ivi_pct", ascending=False)
-    df["data_source"] = "real"
+    """IVI reportado por franja de manglar (Dioses-Puelles et al., 2023)."""
+    rows = []
+    for strip, (dominant, ivi, companions) in IVI_BY_STRIP.items():
+        rows.append(
+            {
+                "franja": strip.replace("manglar_franja_", "franja "),
+                "especie_dominante": dominant,
+                "ivi_pct": ivi,
+                "especies_acompanantes": companions,
+            }
+        )
+    df = pd.DataFrame(rows)
     df["fuente"] = "Dioses-Puelles et al. (2023), Manglar 20(2)"
-    return df.reset_index(drop=True)
+    return df
 
 
 def build_hybrid_dataset(
@@ -227,7 +256,7 @@ def dataset_card() -> dict:
         "manglar_ha": MANGROVE_HA,
         "carbono_azul_MgC_ha": BLUE_CARBON_MGC_HA,
         "n_clases_cobertura": len(NDVI_RANGES),
-        "n_especies": len(SPECIES_IVI),
+        "n_especies": len(MANGROVE_SPECIES),
         "porcion_real": "covariables y calibración (literatura SNLMT)",
         "porcion_simulada": "variable objetivo (motor determinista, proyección 2050)",
         "licencia_gmw": "CC BY 4.0",

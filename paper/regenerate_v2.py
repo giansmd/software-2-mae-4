@@ -35,6 +35,12 @@ from app.ml.hybrid_dataset import (  # noqa: E402
     load_reference_data,
     load_species_table,
 )
+from scenario_analysis import (  # noqa: E402
+    band_by_scenario,
+    fig_hypothesis_scenarios,
+    parameter_sensitivity,
+    theoretical_bounds,
+)
 
 N_SAMPLES = 2000
 SEED = 42
@@ -126,18 +132,7 @@ def _reference_table() -> pd.DataFrame:
 
 
 def _species_table() -> pd.DataFrame:
-    sp = load_species_table()
-    total = pd.DataFrame(
-        [
-            {
-                "especie": "total",
-                "ivi_pct": round(float(sp["ivi_pct"].sum()), 2),
-                "data_source": "",
-                "fuente": "suma no normalizada a 300",
-            }
-        ]
-    )
-    return pd.concat([sp, total], ignore_index=True)
+    return load_species_table()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -230,6 +225,13 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     evidence = C.hypothesis_evidence(df)
+    band_slr = band_by_scenario(df)
+    bounds = theoretical_bounds()
+    sensitivity = parameter_sensitivity(df)
+    noise_rng = np.random.default_rng(SEED)
+    noisy = df.copy()
+    noisy[C.TARGET] = noisy[C.TARGET] + noise_rng.normal(0.0, 2.0, len(noisy))
+    noisy_metrics = C.train_and_evaluate(noisy, cv_folds=CV_FOLDS, seed=SEED)[best_name].metrics
     ci_rows = []
     for band, group in df.groupby(
         pd.cut(
@@ -262,13 +264,7 @@ def main(argv: list[str] | None = None) -> int:
         "fig07_importancia.png": C.fig_feature_importance(
             importance.rename(columns={"importancia_media_r2": "importancia_media", "desv_std_r2": "desv_std"})
         ),
-        "fig08_hipotesis.png": C.fig_hypothesis(
-            evidence.rename(
-                columns={"variacion_media_pct": "variacion_media"}
-            ).assign(
-                tramo_restauracion=lambda d: d["tramo_restauracion"].astype(str)
-            )
-        ),
+        "fig08_hipotesis.png": fig_hypothesis_scenarios(band_slr),
     }
     for name, data in figures.items():
         (fig_dir / name).write_bytes(data)
@@ -293,6 +289,9 @@ def main(argv: list[str] | None = None) -> int:
         "tab07_importancia_variables.csv": importance,
         "tab08_evidencia_hipotesis.csv": evidence,
         "tab09_intervalos_confianza.csv": boot_tbl,
+        "tab10_hipotesis_por_escenario.csv": band_slr,
+        "tab11_sensibilidad.csv": sensitivity,
+        "tab12_limites_teoricos.csv": bounds,
     }
     for name, frame in tables.items():
         frame.to_csv(tab_dir / name, index=False)
@@ -329,6 +328,15 @@ def main(argv: list[str] | None = None) -> int:
             "umbral_pct": C.HYPOTHESIS_THRESHOLD,
             "pct_global_cumple": round(100 * float(df["meets_hypothesis"].mean()), 2),
             "variacion_media_global_pct": round(float(df["horizon_variation_pct"].mean()), 2),
+        },
+        "escenarios": band_slr.to_dict(orient="records"),
+        "limites_teoricos": bounds.to_dict(orient="records"),
+        "sensibilidad": sensitivity.to_dict(orient="records"),
+        "ruido_objetivo": {
+            "sigma_pp": 2.0,
+            "r2": round(noisy_metrics["r2"], 4),
+            "mae_pp": round(noisy_metrics["mae"], 4),
+            "rmse_pp": round(noisy_metrics["rmse"], 4),
         },
     }
     (tab_dir / "resultados_v2.json").write_text(
