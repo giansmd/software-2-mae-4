@@ -46,7 +46,9 @@ import pandas as pd
 SNLMT_TOTAL_HA = 2972.0
 MANGROVE_HA = 1779.8
 DRY_FOREST_HA = 243.0
-MANGROVE_PCT = 68.06
+# 1 779,8 ha / 2 972 ha = 59,88 % (la fuente publica 68,06 %, incompatible con
+# el área total del Santuario; se usa el valor derivado y se declara en el texto).
+MANGROVE_PCT = 59.88
 
 # Rangos NDVI observados por clase de cobertura (Sentinel-2).
 NDVI_RANGES: dict[str, tuple[float, float]] = {
@@ -139,13 +141,19 @@ def load_species_table() -> pd.DataFrame:
     return df.reset_index(drop=True)
 
 
-def build_hybrid_dataset(n_samples: int = 8000, seed: int = 42) -> pd.DataFrame:
+def build_hybrid_dataset(
+    n_samples: int = 8000, seed: int = 42, horizon_year: int = 2050
+) -> pd.DataFrame:
     """Dataset de modelado: covariables reales + variable objetivo del motor.
 
     Las covariables se anclan a los rangos observados en el SNLMT (restauración,
     NDVI de manglar, área, densidad de carbono). La variable objetivo
     (variación % de carbono retenido a 2050) la produce el motor determinista:
     es la porción **simulada** del dataset híbrido.
+
+    El horizonte se fija en 2050 (``horizon_year``). El motor normaliza las
+    pérdidas por ascenso del nivel del mar al año horizonte, por lo que otros
+    años no introducen variabilidad en la variación porcentual.
     """
     from app.simulations.engine import run_simulation
     from app.models.scenario import SeaLevelRise
@@ -166,7 +174,9 @@ def build_hybrid_dataset(n_samples: int = 8000, seed: int = 42) -> pd.DataFrame:
     rng.shuffle(restoration)
 
     slr_codes = rng.integers(0, 3, n_samples)
-    horizon = rng.integers(2030, 2101, n_samples)
+    # Horizonte fijo en 2050: las pérdidas del motor se normalizan al año
+    # horizonte, así que muestrear 2030-2100 no añadía variabilidad real.
+    horizon = np.full(n_samples, horizon_year, dtype=int)
     months = rng.integers(1, 13, n_samples)
     ndvi = rng.uniform(*NDVI_RANGES["manglar_franja_media"], n_samples)
 

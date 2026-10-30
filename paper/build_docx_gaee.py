@@ -36,6 +36,8 @@ from pathlib import Path
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls
 from docx.shared import Cm, Pt, RGBColor
 
 MARKER_RE = re.compile(r"\[\[(FIG|TABLA|REF):([^\]|]+)(?:\|([^\]]+))?\]\]")
@@ -156,78 +158,117 @@ def _add_table(doc: Document, csv_path: Path, caption: str) -> None:
         p.alignment = WD_ALIGN_PARAGRAPH.LEFT
     table = doc.add_table(rows=len(rows), cols=len(rows[0]))
     table.style = "Light Grid Accent 1"
+    table.autofit = True
+    # Tablas anchas (hasta 10 columnas): cuerpo reducido y encabezado repetido
+    # para que sigan siendo legibles en una columna de revista.
     for i, row in enumerate(rows):
         for j, cell in enumerate(row):
             if j < len(table.columns):
                 table.cell(i, j).text = str(cell)
-                if i == 0:
-                    for p in table.cell(i, j).paragraphs:
-                        for r in p.runs:
+                for p in table.cell(i, j).paragraphs:
+                    for r in p.runs:
+                        r.font.size = Pt(7.5)
+                        if i == 0:
                             r.bold = True
+    header = table.rows[0]._tr
+    header.get_or_add_trPr().append(
+        parse_xml(f'<w:tblHeader {nsdecls("w")} w:val="true"/>')
+    )
+
+
+def _render_line(doc: Document, line: str, figures_dir: Path, tables_dir: Path,
+                 report: BuildReport) -> None:
+    """Renderiza una línea: texto con **negrita**/*cursiva* o un marcador FIG/TABLA."""
+    pos = 0
+    paragraph = doc.add_paragraph()
+    for match in MARKER_RE.finditer(line):
+        literal = line[pos:match.start()]
+        if literal:
+            _add_runs(paragraph, literal)
+
+        kind, target, caption = match.group(1), match.group(2).strip(), (match.group(3) or "").strip()
+
+        if kind == "FIG":
+            path = figures_dir / target
+            if not path.exists():
+                report.errors.append(f"Figure not found: {target}")
+            else:
+                doc.add_picture(str(path), width=Cm(15.5))
+                # GaEE requires alt text: reuse the caption, verbatim.
+                if caption:
+                    shape = doc.inline_shapes[-1]
+                    shape._inline.docPr.set("descr", caption)
+                doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
+                report.figures.append(target)
+                if caption:
+                    cp = doc.add_paragraph()
+                    run = cp.add_run(caption)
+                    run.italic = True
+                    run.font.size = Pt(9)
+                    cp.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        elif kind == "TABLA":
+            path = tables_dir / target
+            if not path.exists():
+                report.errors.append(f"Table not found: {target}")
+            else:
+                _add_table(doc, path, caption)
+                report.tables.append(target)
+
+        elif kind == "REF":
+            # Legacy marker: the translated corpus carries literal [n],
+            # so a REF marker here indicates a stale section file.
+            report.errors.append(f"Unexpected REF marker in translated corpus: {target}")
+
+        pos = match.end()
+
+    tail = line[pos:]
+    if tail:
+        _add_runs(paragraph, tail)
+    if not paragraph.runs:
+        paragraph._element.getparent().remove(paragraph._element)
 
 
 def _render_section(doc: Document, text: str, figures_dir: Path, tables_dir: Path,
                     ref_map: dict[str, int], report: BuildReport) -> None:
+    """Une las líneas de un mismo párrafo Markdown antes de renderizarlo.
+
+    Un párrafo puede ocupar varias líneas (reajuste a 100 caracteres). Se unen
+    con espacio para que la negrita y la cursiva que cruzan líneas se
+    interpreten bien y no queden párrafos partidos en el .docx.
+    """
+    buffer: list[str] = []
+
+    def flush() -> None:
+        if not buffer:
+            return
+        merged = " ".join(part.strip() for part in buffer)
+        buffer.clear()
+        _render_line(doc, merged, figures_dir, tables_dir, report)
+
     for raw in text.split("\n"):
         line = raw.rstrip()
 
         heading = HEADING_RE.match(line)
         if heading:
+            flush()
             level = min(len(heading.group(1)), 4)
             doc.add_heading(heading.group(2).strip(), level=level)
             continue
 
         if not line.strip():
+            flush()
             continue
 
-        pos = 0
-        paragraph = doc.add_paragraph()
-        for match in MARKER_RE.finditer(line):
-            literal = line[pos:match.start()]
-            if literal:
-                _add_runs(paragraph, literal)
+        # Los marcadores de figura y tabla ocupan su propio párrafo.
+        if MARKER_RE.search(line):
+            flush()
+            _render_line(doc, line, figures_dir, tables_dir, report)
+            continue
 
-            kind, target, caption = match.group(1), match.group(2).strip(), (match.group(3) or "").strip()
+        buffer.append(line)
 
-            if kind == "FIG":
-                path = figures_dir / target
-                if not path.exists():
-                    report.errors.append(f"Figure not found: {target}")
-                else:
-                    doc.add_picture(str(path), width=Cm(15.5))
-                    # GaEE requires alt text: reuse the caption, verbatim.
-                    if caption:
-                        shape = doc.inline_shapes[-1]
-                        shape._inline.docPr.set("descr", caption)
-                    doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
-                    report.figures.append(target)
-                    if caption:
-                        cp = doc.add_paragraph()
-                        run = cp.add_run(caption)
-                        run.italic = True
-                        run.font.size = Pt(9)
-                        cp.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-            elif kind == "TABLA":
-                path = tables_dir / target
-                if not path.exists():
-                    report.errors.append(f"Table not found: {target}")
-                else:
-                    _add_table(doc, path, caption)
-                    report.tables.append(target)
-
-            elif kind == "REF":
-                # Legacy marker: the translated corpus carries literal [n],
-                # so a REF marker here indicates a stale section file.
-                report.errors.append(f"Unexpected REF marker in translated corpus: {target}")
-
-            pos = match.end()
-
-        tail = line[pos:]
-        if tail:
-            _add_runs(paragraph, tail)
-        if not paragraph.runs:
-            paragraph._element.getparent().remove(paragraph._element)
+    flush()
 
 
 def build(content_dir: Path, out_path: Path, figures_dir: Path | None = None,
