@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "Si usa este software o los resultados asociados, cite esta versión."
+title: "MAE-4: prototipo de gemelo digital para la evaluación del carbono azul (SNLMT)"
+abstract: >-
+  Prototipo de gemelo digital del Santuario Nacional Los Manglares de Tumbes.
+  Implementa un motor determinista de retención de carbono azul, un emulador de
+  aprendizaje automático, las seis fases de CRISP-DM, una API REST con WebSocket
+  y un panel web desplegable con Docker Compose.
+authors:
+  - family-names: "Samana Ramirez"
+    given-names: "Gian Franco Miguel Gonzalo"
+    orcid: "https://orcid.org/0009-0007-7475-2474"
+    affiliation: "Universidad Nacional de Trujillo, Trujillo, Perú"
+    email: "gsamana@unitru.edu.pe"
+  - family-names: "Romero Vasquez"
+    given-names: "Eduardo Joel"
+    orcid: "https://orcid.org/0009-0006-8473-8951"
+    affiliation: "Universidad Nacional de Trujillo, Trujillo, Perú"
+    email: "eromerov@unitru.edu.pe"
+type: software
+license: MIT
+repository-code: "https://github.com/giansmd/software-2-mae-4"
+url: "https://software2mae4-web-vbickj-ec658a-169-58-140-8.sslip.io"
+version: "1.0.0"
+date-released: "2026-10-29"
+keywords:
+  - gemelo digital
+  - carbono azul
+  - manglar
+  - CRISP-DM
+  - restauración hidrológica

@@ -106,6 +106,20 @@ la imagen hay que eliminarlo en desarrollo (`docker compose down -v`) y volver a
 levantar el stack. Para conservar esos datos se requiere una migración con
 `pg_upgrade`; no se debe borrar el volumen.
 
+## Despliegue
+
+En producción el stack se despliega con **Dokploy** (Docker Compose + Traefik). El
+compose no publica puertos del host: Traefik enruta el dominio al frontend (3000) y la
+ruta `/api` al backend (8000), con TLS de Let's Encrypt. El backend expone un
+`healthcheck` en `/health` y el frontend espera a que esté sano antes de arrancar.
+
+Guía completa (variables, dominios, respaldo y reversión): [`docs/deployment.md`](docs/deployment.md).
+Plan de trabajo pendiente de infraestructura: [`README-DOKPLOY.md`](README-DOKPLOY.md).
+
+El sembrado de demostración queda **desactivado** salvo que `SEED_ON_STARTUP=true`; en
+Dokploy debe permanecer en `false` y `RATE_LIMIT_TRUST_PROXY=true` para que el limitador
+use la IP real detrás del proxy.
+
 ## Variables de entorno
 
 Ver `.env.example`. La mayoría tiene valor por defecto en `docker-compose.yml`.
@@ -327,7 +341,7 @@ Incluye tests del motor (restauración alta > baja; hipótesis ≥ +25 %; SLR re
 tests de integración contra SQLite (auth, control de roles, CRUD, simulación y exportación
 de los tres formatos de reporte) y tests del modelo de IA (dataset reproducible, calidad de
 la regresión/clasificación, monotonía, selector de método `engine`/`ml`/`ensemble` y endpoints
-`/api/ml`). **59 tests pasan.**
+`/api/ml`). **67 tests pasan.**
 
 Los tests siempre corren contra una base SQLite local hermética (`test_mae4.db`),
 ignorando cualquier `DATABASE_URL` presente en el entorno: nunca escriben sobre una
@@ -341,6 +355,20 @@ base real ni dependen de su esquema.
   despliega detrás de un proxy inverso de confianza, activa `RATE_LIMIT_TRUST_PROXY=true`
   para que la cuota use el primer salto de ese header. El limitador es en memoria y por
   proceso: no se comparte entre workers; al escalar, sustituir por un store compartido.
+
+## Reproducibilidad y citación
+
+- Licencia: **MIT** (`LICENSE`); los datos de Global Mangrove Watch conservan CC BY 4.0.
+- Citación: `CITATION.cff` (versión 1.0.0, autores y ORCID).
+- Dataset para revisores:
+
+```bash
+python paper/export_dataset.py   # artifacts/dataset/*.csv + diccionario de variables
+```
+
+  Incluye la muestra de modelado (semilla 42), el holdout independiente (semilla 43) y
+  las tablas empíricas del SNLMT.
+- Figuras y tablas del artículo: `python paper/regenerate_v2.py`.
 
 ## Notas
 
