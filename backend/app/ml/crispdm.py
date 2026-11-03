@@ -463,11 +463,127 @@ def _fig_to_png(fig) -> bytes:
     return buf.read()
 
 
-def _add_footnote(fig, source: str, method: str) -> None:
+# Etiquetas de las figuras. ``lang="es"`` conserva el texto de la aplicación;
+# ``lang="en"`` se usa para la versión en inglés del manuscrito.
+FIG_TEXTS = {
+    "es": {
+        "source": "Fuente",
+        "method": "Método",
+        "date": "Fecha",
+        "dist_suptitle": "Distribución de variables principales (SNLMT, Tumbes)",
+        "dist_title": "Distribución — {var}",
+        "dist_source": "SNLMT, Tumbes · GMW v3.0 y datos sintéticos del motor",
+        "dist_method": "Análisis exploratorio",
+        "corr_title": "Correlación de Pearson entre variables",
+        "corr_method": "Coeficiente de correlación de Pearson",
+        "cmp_ylabel": "R²",
+        "cmp_title": "Comparación de modelos",
+        "cmp_test": "R² prueba",
+        "cmp_cv": "R² CV (media)",
+        "cmp_source": "Dataset sintético del motor",
+        "cmp_method": "Validación cruzada (10 particiones)",
+        "pv_x": "Variación observada (%)",
+        "pv_y": "Variación predicha (%)",
+        "pv_title": "Predicho vs observado — {model}",
+        "pv_identity": "Identidad",
+        "pv_source": "Modelo {model} · partición de prueba (20 %)",
+        "pv_method": "Regresión",
+        "res_x": "Variación predicha (%)",
+        "res_y": "Residual (%)",
+        "res_title": "Residuales — {model}",
+        "res_method": "Análisis de residuos",
+        "fi_x": "Importancia por permutación (caída de R²)",
+        "fi_title": "Explicabilidad: importancia de variables",
+        "fi_method": "Importancia por permutación · validación cruzada de {n} particiones",
+        "hyp_x": "Tramo de restauración hidrológica",
+        "hyp_y": "Variación media de carbono (%)",
+        "hyp_title": "Evidencia de la hipótesis por nivel de restauración",
+        "hyp_threshold": "Umbral +25 %",
+        "hyp_source": "Motor determinista de humedales",
+        "hyp_method": "Hipótesis: ≥{th}% por tramo",
+        "gmw_x": "Año",
+        "gmw_y": "Extensión de manglar (ha)",
+        "gmw_title": "Extensión de manglar del SNLMT — dato real GMW v3.0",
+        "gmw_method": "Teledetección satelital",
+    },
+    "en": {
+        "source": "Source",
+        "method": "Method",
+        "date": "Date",
+        "dist_suptitle": "Distribution of the main variables (SNLMT, Tumbes)",
+        "dist_title": "Distribution — {var}",
+        "dist_source": "SNLMT, Tumbes · GMW v3.0 and synthetic engine data",
+        "dist_method": "Exploratory analysis",
+        "corr_title": "Pearson correlation between variables",
+        "corr_method": "Pearson correlation coefficient",
+        "cmp_ylabel": "R²",
+        "cmp_title": "Model comparison",
+        "cmp_test": "Test R²",
+        "cmp_cv": "CV R² (mean)",
+        "cmp_source": "Synthetic engine dataset",
+        "cmp_method": "Cross-validation (10 folds)",
+        "pv_x": "Observed change (%)",
+        "pv_y": "Predicted change (%)",
+        "pv_title": "Predicted vs observed — {model}",
+        "pv_identity": "Identity",
+        "pv_source": "Model {model} · test split (20 %)",
+        "pv_method": "Regression",
+        "res_x": "Predicted change (%)",
+        "res_y": "Residual (%)",
+        "res_title": "Residuals — {model}",
+        "res_method": "Residual analysis",
+        "fi_x": "Permutation importance (R² drop)",
+        "fi_title": "Explainability: variable importance",
+        "fi_method": "Permutation importance · {n}-fold cross-validation",
+        "hyp_x": "Hydrological restoration band",
+        "hyp_y": "Mean change in carbon (%)",
+        "hyp_title": "Hypothesis evidence by restoration level",
+        "hyp_threshold": "+25 % threshold",
+        "hyp_source": "Deterministic wetland engine",
+        "hyp_method": "Hypothesis: ≥{th}% per band",
+        "gmw_x": "Year",
+        "gmw_y": "Mangrove extent (ha)",
+        "gmw_title": "Mangrove extent of the SNLMT — observed GMW v3.0 data",
+        "gmw_method": "Satellite remote sensing",
+    },
+}
+
+VAR_LABELS = {
+    "es": {
+        "restoration_level": "Nivel de restauración (%)",
+        "sea_level_rise_code": "Escenario de ascenso (0-2)",
+        "horizon_year": "Año horizonte",
+        "baseline_area_ha": "Área de línea base (ha)",
+        "baseline_carbon_density": "Densidad de carbono (tC/ha)",
+        "ndvi": "NDVI",
+        TARGET: "Variación del carbono retenido (%)",
+    },
+    "en": {
+        "restoration_level": "Restoration level (%)",
+        "sea_level_rise_code": "Sea-level scenario (0-2)",
+        "horizon_year": "Horizon year",
+        "baseline_area_ha": "Baseline area (ha)",
+        "baseline_carbon_density": "Carbon density (tC/ha)",
+        "ndvi": "NDVI",
+        TARGET: "Change in retained carbon (%)",
+    },
+}
+
+
+def _texts(lang: str) -> dict[str, str]:
+    return FIG_TEXTS.get(lang, FIG_TEXTS["es"])
+
+
+def _var_label(lang: str, name: str) -> str:
+    return VAR_LABELS.get(lang, VAR_LABELS["es"]).get(name, name)
+
+
+def _add_footnote(fig, source: str, method: str, lang: str = "es") -> None:
     """Agrega nota al pie con fuente, método y fecha (interpretabilidad científica)."""
     from datetime import datetime
+    t = _texts(lang)
     date_str = datetime.now().strftime("%Y-%m-%d")
-    footnote = f"Fuente: {source} · Método: {method} · Fecha: {date_str}"
+    footnote = f"{t['source']}: {source} · {t['method']}: {method} · {t['date']}: {date_str}"
     import textwrap
 
     fig.text(
@@ -482,123 +598,133 @@ def _add_footnote(fig, source: str, method: str) -> None:
     )
 
 
-def fig_distributions(df: pd.DataFrame) -> bytes:
+def fig_distributions(df: pd.DataFrame, lang: str = "es") -> bytes:
     """Histogramas de las variables principales."""
+    t = _texts(lang)
     cols = ["restoration_level", TARGET, "baseline_carbon_density", "ndvi"]
     fig, axes = plt.subplots(2, 2, figsize=(11, 7))
     for ax, col in zip(axes.ravel(), cols):
         sns.histplot(df[col], kde=True, ax=ax, color="#2a6f97")
-        ax.set_title(f"Distribución — {col}", fontsize=10)
+        ax.set_title(t["dist_title"].format(var=_var_label(lang, col)), fontsize=10)
         ax.set_xlabel("")
-    fig.suptitle("Distribución de variables principales (SNLMT, Tumbes)", fontsize=12)
-    _add_footnote(fig, "SNLMT, Tumbes · GMW v3.0 y datos sintéticos del motor", "Análisis exploratorio")
+    fig.suptitle(t["dist_suptitle"], fontsize=12)
+    _add_footnote(fig, t["dist_source"], t["dist_method"], lang)
     fig.tight_layout()
     return _fig_to_png(fig)
 
 
-def fig_correlation(df: pd.DataFrame) -> bytes:
+def fig_correlation(df: pd.DataFrame, lang: str = "es") -> bytes:
     """Mapa de calor de correlaciones."""
+    t = _texts(lang)
     cm = correlation_matrix(df)
     fig, ax = plt.subplots(figsize=(9, 7))
     sns.heatmap(cm, annot=True, fmt=".2f", cmap="RdBu_r", center=0, ax=ax, cbar_kws={"shrink": 0.8})
-    ax.set_title("Correlación de Pearson entre variables", fontsize=12)
-    _add_footnote(fig, "SNLMT, Tumbes · GMW v3.0 y datos sintéticos del motor", "Coeficiente de correlación de Pearson")
+    ax.set_title(t["corr_title"], fontsize=12)
+    _add_footnote(fig, t["dist_source"], t["corr_method"], lang)
     fig.tight_layout()
     return _fig_to_png(fig)
 
 
-def fig_model_comparison(comparison: pd.DataFrame) -> bytes:
+def fig_model_comparison(comparison: pd.DataFrame, lang: str = "es") -> bytes:
     """Barras comparativas de R² de test y CV por modelo."""
+    t = _texts(lang)
     fig, ax = plt.subplots(figsize=(10, 5))
     x = np.arange(len(comparison))
     w = 0.38
-    ax.bar(x - w / 2, comparison["r2_test"], w, label="R² test", color="#2a6f97")
-    ax.bar(x + w / 2, comparison["cv_r2_media"], w, label="R² CV (media)", color="#e07a5f")
+    ax.bar(x - w / 2, comparison["r2_test"], w, label=t["cmp_test"], color="#2a6f97")
+    ax.bar(x + w / 2, comparison["cv_r2_media"], w, label=t["cmp_cv"], color="#e07a5f")
     ax.set_xticks(x)
     ax.set_xticklabels(comparison["modelo"], rotation=20, ha="right", fontsize=9)
-    ax.set_ylabel("R²")
-    ax.set_title("Comparación de modelos", fontsize=12)
-    ax.legend()
+    ax.set_ylabel(t["cmp_ylabel"])
+    ax.set_title(t["cmp_title"], fontsize=12)
+    ax.legend(loc="lower right")
     ax.grid(axis="y", alpha=0.3)
-    _add_footnote(fig, "Dataset sintético del motor (N=" + str(len(comparison)) + " modelos)", "Validación cruzada 5-fold")
+    _add_footnote(fig, t["cmp_source"], t["cmp_method"], lang)
     fig.tight_layout()
     return _fig_to_png(fig)
 
 
-def fig_predicted_vs_actual(result: ModelResult) -> bytes:
+def fig_predicted_vs_actual(result: ModelResult, lang: str = "es") -> bytes:
     """Dispersión de valores predichos frente a observados."""
+    t = _texts(lang)
     fig, ax = plt.subplots(figsize=(6.5, 6))
     ax.scatter(result.y_test, result.y_pred_test, alpha=0.35, s=14, color="#2a6f97")
     lims = [
         min(result.y_test.min(), result.y_pred_test.min()),
         max(result.y_test.max(), result.y_pred_test.max()),
     ]
-    ax.plot(lims, lims, "--", color="#e07a5f", lw=1.5, label="Identidad")
-    ax.set_xlabel("Variación observada (%)")
-    ax.set_ylabel("Variación predicha (%)")
-    ax.set_title(f"Predicho vs observado — {result.name}", fontsize=11)
+    ax.plot(lims, lims, "--", color="#e07a5f", lw=1.5, label=t["pv_identity"])
+    ax.set_xlabel(t["pv_x"])
+    ax.set_ylabel(t["pv_y"])
+    ax.set_title(t["pv_title"].format(model=result.name), fontsize=11)
     ax.legend()
     ax.grid(alpha=0.3)
-    _add_footnote(fig, f"Modelo {result.name} · Hold-out 20%", "Regresión")
+    _add_footnote(fig, t["pv_source"].format(model=result.name), t["pv_method"], lang)
     fig.tight_layout()
     return _fig_to_png(fig)
 
 
-def fig_residuals(result: ModelResult) -> bytes:
+def fig_residuals(result: ModelResult, lang: str = "es") -> bytes:
     """Residuales frente a valores predichos."""
+    t = _texts(lang)
     resid = result.y_test - result.y_pred_test
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.scatter(result.y_pred_test, resid, alpha=0.35, s=14, color="#3d5a80")
     ax.axhline(0, ls="--", color="#e07a5f", lw=1.5)
-    ax.set_xlabel("Variación predicha (%)")
-    ax.set_ylabel("Residual (%)")
-    ax.set_title(f"Residuales — {result.name}", fontsize=11)
+    ax.set_xlabel(t["res_x"])
+    ax.set_ylabel(t["res_y"])
+    ax.set_title(t["res_title"].format(model=result.name), fontsize=11)
     ax.grid(alpha=0.3)
-    _add_footnote(fig, f"Modelo {result.name} · Hold-out 20%", "Análisis de residuos")
+    _add_footnote(fig, t["pv_source"].format(model=result.name), t["res_method"], lang)
     fig.tight_layout()
     return _fig_to_png(fig)
 
 
-def fig_feature_importance(fi: pd.DataFrame) -> bytes:
+def fig_feature_importance(fi: pd.DataFrame, lang: str = "es") -> bytes:
     """Importancia por permutación."""
+    t = _texts(lang)
+    n_folds = int(fi["n_folds"].iloc[0]) if "n_folds" in fi.columns else 5
     fig, ax = plt.subplots(figsize=(8, 5))
+    labels = [_var_label(lang, name) for name in fi["variable"]][::-1]
     ax.barh(
-        fi["variable"][::-1],
+        labels,
         fi["importancia_media"][::-1],
         xerr=fi["desv_std"][::-1],
         color="#2a6f97",
     )
-    ax.set_xlabel("Importancia por permutación (caída de R²)")
-    ax.set_title("Explicabilidad: importancia de variables", fontsize=12)
+    ax.set_xlabel(t["fi_x"])
+    ax.set_title(t["fi_title"], fontsize=12)
     ax.grid(axis="x", alpha=0.3)
-    _add_footnote(fig, "Dataset sintético del motor", f"Importancia por permutación · {fi['n_folds'].iloc[0] if 'n_folds' in fi.columns else 5}-fold CV")
+    _add_footnote(fig, t["cmp_source"], t["fi_method"].format(n=n_folds), lang)
     fig.tight_layout()
     return _fig_to_png(fig)
 
 
-def fig_hypothesis(evidence: pd.DataFrame) -> bytes:
+def fig_hypothesis(evidence: pd.DataFrame, lang: str = "es") -> bytes:
     """Evidencia de la hipótesis del +25 % por tramo de restauración."""
+    t = _texts(lang)
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.bar(evidence["tramo_restauracion"].astype(str), evidence["variacion_media"], color="#2a6f97")
-    ax.axhline(HYPOTHESIS_THRESHOLD, ls="--", color="#e07a5f", lw=1.5, label="Umbral +25 %")
-    ax.set_xlabel("Tramo de restauración hidrológica")
-    ax.set_ylabel("Variación media de carbono (%)")
-    ax.set_title("Evidencia de la hipótesis por nivel de restauración", fontsize=12)
+    ax.axhline(HYPOTHESIS_THRESHOLD, ls="--", color="#e07a5f", lw=1.5, label=t["hyp_threshold"])
+    ax.set_xlabel(t["hyp_x"])
+    ax.set_ylabel(t["hyp_y"])
+    ax.set_title(t["hyp_title"], fontsize=12)
     ax.legend()
     ax.grid(axis="y", alpha=0.3)
-    _add_footnote(fig, "Motor determinista de humedales", f"Hipótesis: ≥{HYPOTHESIS_THRESHOLD}% por tramo")
+    _add_footnote(fig, t["hyp_source"], t["hyp_method"].format(th=HYPOTHESIS_THRESHOLD), lang)
     fig.tight_layout()
     return _fig_to_png(fig)
 
 
-def fig_gmw_trend(gmw: pd.DataFrame) -> bytes:
+def fig_gmw_trend(gmw: pd.DataFrame, lang: str = "es") -> bytes:
     """Serie multitemporal real de extensión de manglar (GMW v3.0)."""
+    t = _texts(lang)
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.plot(gmw["anio"], gmw["extension_ha"], marker="o", color="#2d6a4f", lw=2)
-    ax.set_xlabel("Año")
-    ax.set_ylabel("Extensión de manglar (ha)")
-    ax.set_title("Extensión de manglar del SNLMT — dato real GMW v3.0", fontsize=12)
+    ax.set_xlabel(t["gmw_x"])
+    ax.set_ylabel(t["gmw_y"])
+    ax.set_title(t["gmw_title"], fontsize=12)
     ax.grid(alpha=0.3)
-    _add_footnote(fig, "Global Mangrove Watch v3.0 (Bunting et al.)", "Teledetección satelital")
+    _add_footnote(fig, "Global Mangrove Watch v3.0 (Bunting et al.)", t["gmw_method"], lang)
     fig.tight_layout()
     return _fig_to_png(fig)

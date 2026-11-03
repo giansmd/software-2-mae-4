@@ -1,0 +1,11 @@
+variable,descripcion,unidad,valores
+restoration_level,Nivel de restauración hidrológica,%,"uniforme 0-100, con 50 % en los extremos"
+sea_level_rise,Escenario IPCC de ascenso del nivel del mar,categoría,low | medium | high
+horizon_year,Año horizonte de la proyección,año,fijo en 2050
+baseline_area_ha,Área efectiva de línea base,ha,uniforme 50-300
+baseline_carbon_density,Densidad de carbono suelo + biomasa,tC/ha,uniforme 50-120
+ndvi,NDVI del manglar de franja media,índice,"uniforme 0,728-0,808"
+month,Mes de la observación,mes,1-12; no se usa como atributo
+horizon_variation_pct,Variación porcentual del carbono retenido (objetivo),%,salida del motor
+horizon_carbon_tC,Carbono retenido en el horizonte,tC,salida del motor
+meets_hypothesis,Indicador de variación ≥ +25 %,0/1,derivado del objetivo

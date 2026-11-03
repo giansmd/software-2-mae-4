@@ -5,6 +5,7 @@ Uso:
 """
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -26,7 +27,11 @@ def norm(text: str) -> str:
 
 
 def main() -> int:
-    refs = json.loads(REFS.read_text(encoding="utf-8"))
+    ap = argparse.ArgumentParser(description="Verify article DOIs against Crossref.")
+    ap.add_argument("--refs", type=Path, default=REFS)
+    ap.add_argument("--report", type=Path, default=REPORT)
+    args = ap.parse_args()
+    refs = json.loads(args.refs.read_text(encoding="utf-8"))
     report = []
     for key, ref in refs.items():
         match = re.search(r"https://doi\.org/(\S+)", ref)
@@ -58,13 +63,13 @@ def main() -> int:
         report.append(entry)
 
     REPORT.parent.mkdir(parents=True, exist_ok=True)
-    REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
     bad = [r for r in report if r["estado"] != "ok"]
     print(f"DOI verificados: {len(report) - len(bad)}/{len(report)}")
     for r in bad:
         print(f"  {r['clave']:18s} {r['estado']:16s} {r.get('titulo_crossref', '')[:80]}")
-    print(f"Reporte: {REPORT}")
+    print(f"Reporte: {args.report}")
     return 0
 
 

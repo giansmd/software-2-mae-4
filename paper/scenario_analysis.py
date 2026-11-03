@@ -140,13 +140,36 @@ def parameter_sensitivity(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def fig_hypothesis_scenarios(evidence: pd.DataFrame) -> bytes:
+SCENARIO_FIG_TEXTS = {
+    "es": {
+        "label": "ascenso {scenario}",
+        "names": {"bajo": "bajo", "medio": "medio", "alto": "alto"},
+        "threshold": "umbral +25 %",
+        "x": "Tramo de restauración hidrológica",
+        "y": "Variación media del carbono retenido (%)",
+        "title": "Hipótesis por tramo y escenario de ascenso del nivel del mar",
+        "note": "Motor determinista · el umbral solo es alcanzable en el escenario bajo",
+    },
+    "en": {
+        "label": "{scenario} SLR",
+        "names": {"bajo": "low", "medio": "medium", "alto": "high"},
+        "threshold": "+25 % threshold",
+        "x": "Hydrological restoration band",
+        "y": "Mean change in retained carbon (%)",
+        "title": "Hypothesis by restoration band and sea-level rise scenario",
+        "note": "Deterministic engine · the threshold is only reachable in the low scenario",
+    },
+}
+
+
+def fig_hypothesis_scenarios(evidence: pd.DataFrame, lang: str = "es") -> bytes:
     """Barras agrupadas por tramo y escenario, con el umbral del +25 %."""
     import matplotlib
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
+    t = SCENARIO_FIG_TEXTS.get(lang, SCENARIO_FIG_TEXTS["es"])
     bands = [b[2] for b in BANDS]
     scenarios = ["bajo", "medio", "alto"]
     colors = {"bajo": "#2a6f97", "medio": "#f4a261", "alto": "#e76f51"}
@@ -157,20 +180,21 @@ def fig_hypothesis_scenarios(evidence: pd.DataFrame) -> bytes:
     for offset, scenario in zip((-width, 0, width), scenarios):
         subset = evidence[evidence["escenario"] == scenario].set_index("tramo")
         values = [float(subset.loc[b, "variacion_media_pct"]) if b in subset.index else np.nan for b in bands]
-        ax.bar(x + offset, values, width, label=f"ascenso {scenario}", color=colors[scenario])
+        label = t["label"].format(scenario=t["names"][scenario])
+        ax.bar(x + offset, values, width, label=label, color=colors[scenario])
 
-    ax.axhline(THRESHOLD, ls="--", color="#6a040f", lw=1.5, label="umbral +25 %")
+    ax.axhline(THRESHOLD, ls="--", color="#6a040f", lw=1.5, label=t["threshold"])
     ax.set_xticks(x)
     ax.set_xticklabels(bands)
-    ax.set_xlabel("Tramo de restauración hidrológica")
-    ax.set_ylabel("Variación media del carbono retenido (%)")
-    ax.set_title("Hipótesis por tramo y escenario de ascenso del nivel del mar", fontsize=12)
+    ax.set_xlabel(t["x"])
+    ax.set_ylabel(t["y"])
+    ax.set_title(t["title"], fontsize=12)
     ax.legend(fontsize=8)
     ax.grid(axis="y", alpha=0.3)
     fig.text(
         0.5,
         0.02,
-        "Motor determinista · el umbral solo es alcanzable en el escenario bajo",
+        t["note"],
         ha="center",
         fontsize=7,
         style="italic",

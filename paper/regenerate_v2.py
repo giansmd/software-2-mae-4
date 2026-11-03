@@ -112,8 +112,25 @@ def _eda_table(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+def _largest_remainder(values: list[float], total: float = 100.0) -> list[float]:
+    """Reparte ``total`` en porcentajes de dos decimales que suman exacto.
+
+    Método del mayor residuo: trunca a dos decimales y entrega las centésimas
+    sobrantes a las clases con mayor fracción descartada.
+    """
+    exact = [total * v / sum(values) for v in values]
+    cents = [int(v * 100) for v in exact]
+    missing = int(round(total * 100)) - sum(cents)
+    order = sorted(range(len(values)), key=lambda i: exact[i] * 100 - cents[i], reverse=True)
+    for i in order[:missing]:
+        cents[i] += 1
+    return [c / 100 for c in cents]
+
+
 def _reference_table() -> pd.DataFrame:
     ref = load_reference_data()
+    pct = _largest_remainder([float(v) for v in ref["area_ha"]])
+    ref = ref.assign(pct_area=pct)
     total = pd.DataFrame(
         [
             {
@@ -123,16 +140,180 @@ def _reference_table() -> pd.DataFrame:
                 "ndvi_medio": np.nan,
                 "area_ha": round(float(ref["area_ha"].sum()), 2),
                 "es_manglar": np.nan,
+                "pct_area": 100.0,
             }
         ]
     )
-    ref = pd.concat([ref, total], ignore_index=True)
-    ref["pct_area"] = (100 * ref["area_ha"] / SNLMT_TOTAL_HA).round(2)
-    return ref
+    return pd.concat([ref, total], ignore_index=True)
 
 
 def _species_table() -> pd.DataFrame:
     return load_species_table()
+
+
+# --- Traducción de tablas para la versión en inglés -------------------------
+
+EN_COLUMNS = {
+    "tab01_cobertura_snlmt.csv": {
+        "clase_cobertura": "Cover class",
+        "ndvi_min": "NDVI min",
+        "ndvi_max": "NDVI max",
+        "ndvi_medio": "NDVI mean",
+        "area_ha": "Area (ha)",
+        "es_manglar": "Mangrove",
+        "pct_area": "Share (%)",
+    },
+    "tab02_gmw_serie.csv": {
+        "anio": "Year",
+        "extension_ha": "Extent (ha)",
+        "data_source": "Data source",
+        "fuente": "Source",
+    },
+    "tab03_especies_ivi.csv": {
+        "franja": "Band",
+        "especie_dominante": "Dominant species",
+        "ivi_pct": "IVI (%)",
+        "especies_acompanantes": "Companion species",
+        "fuente": "Source",
+    },
+    "tab04_eda_descriptivo.csv": {
+        "variable": "Variable",
+        "media": "Mean",
+        "mediana": "Median",
+        "desv_std": "SD",
+        "min": "Min",
+        "max": "Max",
+    },
+    "tab05_comparacion_modelos.csv": {
+        "modelo": "Model",
+        "r2_prueba": "Test R²",
+        "mae_prueba_pp": "Test MAE (pp)",
+        "rmse_prueba_pp": "Test RMSE (pp)",
+        "r2_cv_media": "CV R² (mean)",
+        "r2_holdout": "Holdout R²",
+        "mae_holdout_pp": "Holdout MAE (pp)",
+    },
+    "tab06_pruebas_estadisticas.csv": {
+        "comparacion": "Comparison",
+        "t_pareada": "Paired t",
+        "p_t": "p (t)",
+        "cohen_d": "Cohen's d",
+        "wilcoxon_folds": "Wilcoxon W",
+        "p_wilcoxon_folds": "p (Wilcoxon)",
+        "n_dif_no_nulas": "Non-zero differences",
+        "dif_mae_pp": "ΔMAE (pp)",
+    },
+    "tab07_importancia_variables.csv": {
+        "variable": "Variable",
+        "importancia_media_r2": "Mean importance (R² drop)",
+        "desv_std_r2": "SD",
+    },
+    "tab08_evidencia_hipotesis.csv": {
+        "tramo_restauracion": "Restoration band",
+        "variacion_media_pct": "Mean change (%)",
+        "variacion_mediana_pct": "Median change (%)",
+        "pct_cumple_hipotesis_pct": "Share above +25 % (%)",
+        "ic95_lo": "95 % CI low",
+        "ic95_hi": "95 % CI high",
+    },
+    "tab09_intervalos_confianza.csv": {
+        "modelo": "Model",
+        "mae_media_pp": "Mean MAE (pp)",
+        "ic95_lo_pp": "95 % CI low (pp)",
+        "ic95_hi_pp": "95 % CI high (pp)",
+    },
+    "tab10_hipotesis_por_escenario.csv": {
+        "tramo": "Band (%)",
+        "escenario": "SLR scenario",
+        "variacion_media_pct": "Mean change (%)",
+        "ic95_lo_pct": "95 % CI low",
+        "ic95_hi_pct": "95 % CI high",
+        "pct_sobre_umbral": "% above +25",
+    },
+    "tab11_sensibilidad.csv": {
+        "pct_sobre_umbral_tramo_alto": "Share above threshold, high band (%)",
+        "maximo_bajo_pct": "Max, low SLR (%)",
+        "maximo_medio_pct": "Max, medium SLR (%)",
+        "maximo_alto_pct": "Max, high SLR (%)",
+        "restauracion_minima_bajo_pct": "Min. restoration, low SLR (%)",
+    },
+    "tab12_limites_teoricos.csv": {
+        "escenario": "SLR scenario",
+        "maximo_teorico_pct": "Theoretical maximum (%)",
+        "restauracion_minima_pct": "Minimum restoration (%)",
+    },
+}
+
+EN_MODELS = {
+    "Regresión lineal (base)": "Linear regression (baseline)",
+    "Ridge (regularizado)": "Ridge (regularized)",
+}
+
+EN_CLASSES = {
+    "cuerpos_agua": "Water bodies",
+    "salitrosas_banco_arena": "Salt flats and sand banks",
+    "bosque_seco_semidenso": "Semi-dense dry forest",
+    "bosque_seco_denso": "Dense dry forest",
+    "manglar_franja_baja": "Low mangrove band",
+    "manglar_franja_media": "Medium mangrove band",
+    "manglar_franja_alta": "High mangrove band",
+    "total": "Total",
+}
+
+EN_VARIABLES = {
+    "restoration_level": "Restoration level (%)",
+    "sea_level_rise_code": "SLR scenario code (0–2)",
+    "horizon_year": "Horizon year",
+    "baseline_area_ha": "Baseline area (ha)",
+    "baseline_carbon_density": "Carbon density (tC/ha)",
+    "ndvi": "NDVI",
+    "horizon_variation_pct": "Change in retained carbon (%)",
+    "horizon_carbon_tC": "Retained carbon at horizon (tC)",
+    "sea_level_rise": "SLR scenario",
+}
+
+EN_SLR = {"bajo": "low", "medio": "medium", "alto": "high", "todos": "all"}
+EN_BANDS = {"franja baja": "low band", "franja media": "medium band", "franja alta": "high band"}
+
+
+def translate_table(name: str, frame: pd.DataFrame) -> pd.DataFrame:
+    """Renombra columnas y valores al inglés para el manuscrito."""
+    out = frame.copy()
+    out = out.rename(columns=EN_COLUMNS.get(name, {}))
+    if name == "tab01_cobertura_snlmt.csv" and "Cover class" in out:
+        out["Cover class"] = out["Cover class"].replace(EN_CLASSES)
+        if "Mangrove" in out:
+            out["Mangrove"] = out["Mangrove"].map(
+                lambda v: "—" if pd.isna(v) else ("Yes" if bool(v) else "No")
+            )
+    if name.endswith("comparacion_modelos.csv") and "Model" in out:
+        out["Model"] = out["Model"].replace(EN_MODELS)
+    if name.endswith("pruebas_estadisticas.csv") and "Comparison" in out:
+        for es, en in EN_MODELS.items():
+            out["Comparison"] = out["Comparison"].str.replace(es, en, regex=False)
+    if name == "tab04_eda_descriptivo.csv" and "Variable" in out:
+        out["Variable"] = out["Variable"].replace(EN_VARIABLES)
+    if name == "tab07_importancia_variables.csv" and "Variable" in out:
+        out["Variable"] = out["Variable"].replace(EN_VARIABLES)
+    if name == "tab09_intervalos_confianza.csv" and "Model" in out:
+        out["Model"] = out["Model"].replace(EN_MODELS)
+    if name == "tab03_especies_ivi.csv" and "Band" in out:
+        out["Band"] = out["Band"].replace(EN_BANDS)
+        out["Companion species"] = out["Companion species"].astype(str).str.replace(
+            r"(\d),(\d)", r"\1.\2", regex=True
+        )
+    if name == "tab02_gmw_serie.csv" and "Data source" in out:
+        out["Data source"] = out["Data source"].replace({"real": "observed"})
+    if "SLR scenario" in out:
+        out["SLR scenario"] = out["SLR scenario"].replace(EN_SLR)
+    # Dos decimales fijos en las columnas de porcentaje y área.
+    for column in ("Share (%)", "Area (ha)", "Mean change (%)", "95 % CI low", "95 % CI high",
+                   "% above +25"):
+        if column in out:
+            out[column] = out[column].map(
+                lambda v: "—" if pd.isna(v) else f"{float(v):.2f}"
+            )
+    return out.fillna("—")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -141,6 +322,12 @@ def main(argv: list[str] | None = None) -> int:
         "--out",
         type=Path,
         default=ROOT.parent.parent / "semana 11" / "articulo",
+    )
+    ap.add_argument(
+        "--lang",
+        choices=("es", "en"),
+        default="es",
+        help="Idioma de tablas, figuras y nombres de modelo.",
     )
     args = ap.parse_args(argv)
     fig_dir = args.out / "figuras"
@@ -226,6 +413,27 @@ def main(argv: list[str] | None = None) -> int:
 
     evidence = C.hypothesis_evidence(df)
     band_slr = band_by_scenario(df)
+    band_slr = band_slr.astype({"tramo": str, "escenario": str})
+    glob_lo, glob_hi = _bootstrap_mean_ci(df["horizon_variation_pct"].to_numpy())
+    band_slr = pd.concat(
+        [
+            band_slr,
+            pd.DataFrame(
+                [
+                    {
+                        "tramo": "Total",
+                        "escenario": "todos" if args.lang == "es" else "all",
+                        "n": int(len(df)),
+                        "variacion_media_pct": round(float(df["horizon_variation_pct"].mean()), 2),
+                        "ic95_lo_pct": round(glob_lo, 2),
+                        "ic95_hi_pct": round(glob_hi, 2),
+                        "pct_sobre_umbral": round(100 * float(df["meets_hypothesis"].mean()), 2),
+                    }
+                ]
+            ),
+        ],
+        ignore_index=True,
+    )
     bounds = theoretical_bounds()
     sensitivity = parameter_sensitivity(df)
     noise_rng = np.random.default_rng(SEED)
@@ -253,18 +461,25 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     print("[5/6] Figuras (600 dpi)")
+    comp_for_fig = comparison.copy()
+    if args.lang == "en":
+        comp_for_fig["modelo"] = comp_for_fig["modelo"].replace(EN_MODELS)
     figures = {
-        "fig01_tendencia_gmw.png": C.fig_gmw_trend(load_gmw_series()),
-        "fig02_distribuciones.png": C.fig_distributions(df),
+        "fig01_tendencia_gmw.png": C.fig_gmw_trend(load_gmw_series(), lang=args.lang),
+        "fig02_distribuciones.png": C.fig_distributions(df, lang=args.lang),
         "fig04_comparacion_modelos.png": C.fig_model_comparison(
-            comparison.rename(columns={"r2_prueba": "r2_test", "r2_cv_media": "cv_r2_media"})
+            comp_for_fig.rename(columns={"r2_prueba": "r2_test", "r2_cv_media": "cv_r2_media"}),
+            lang=args.lang,
         ),
-        "fig05_predicho_observado.png": C.fig_predicted_vs_actual(best),
-        "fig06_residuales.png": C.fig_residuals(best),
+        "fig05_predicho_observado.png": C.fig_predicted_vs_actual(best, lang=args.lang),
+        "fig06_residuales.png": C.fig_residuals(best, lang=args.lang),
         "fig07_importancia.png": C.fig_feature_importance(
-            importance.rename(columns={"importancia_media_r2": "importancia_media", "desv_std_r2": "desv_std"})
+            importance.assign(n_folds=CV_FOLDS).rename(
+                columns={"importancia_media_r2": "importancia_media", "desv_std_r2": "desv_std"}
+            ),
+            lang=args.lang,
         ),
-        "fig08_hipotesis.png": fig_hypothesis_scenarios(band_slr),
+        "fig08_hipotesis.png": fig_hypothesis_scenarios(band_slr, lang=args.lang),
     }
     for name, data in figures.items():
         (fig_dir / name).write_bytes(data)
@@ -294,6 +509,8 @@ def main(argv: list[str] | None = None) -> int:
         "tab12_limites_teoricos.csv": bounds,
     }
     for name, frame in tables.items():
+        if args.lang == "en":
+            frame = translate_table(name, frame)
         frame.to_csv(tab_dir / name, index=False)
 
     norm = C.residual_normality(best.y_test, best.y_pred_test)
